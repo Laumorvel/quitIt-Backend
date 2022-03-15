@@ -9,7 +9,6 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="group")
 public class Group {
 
 	@Id
@@ -20,9 +19,7 @@ public class Group {
 	/**
 	 * Constructor vacio.
 	 */
-	public Group() {
-		super();
-	}
+	public Group() {}
 	
 	/**
 	 * Constructor con el nombre del grupo.
