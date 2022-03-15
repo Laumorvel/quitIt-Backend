@@ -4,8 +4,8 @@ import java.util.Objects;
 
 
 /**
- * CLASE QUE COMPRUEBA LAS CREDENCIALES AL HACER EL LOGIN
- * @author adela
+ * Clase que comprueba las credenciales del login
+ * @author adela y laura
  *
  */
 public class LoginCredentials {
@@ -17,14 +17,12 @@ public class LoginCredentials {
     private String password;
     
     /**
-	 * CONSTRUCTOR VACIO
+	 * Constructor vacio
 	 */
-	public LoginCredentials() {
-		super();
-	}
+	public LoginCredentials() {}
 	
 	/**
-	 * CONSTRUCTOR CON EMAIL Y PASSWORD
+	 * Constructor con todos los atributos de loginCredentials
 	 */
 	public LoginCredentials(String email, String password) {
 		super();
@@ -33,7 +31,7 @@ public class LoginCredentials {
 	}
 
 	/**
-	 * GETTER Y SETTERS DE LOS ATRIBUTOS
+	 * Getters y setters
 	 * @return
 	 */
 	public String getEmail() {
@@ -54,7 +52,7 @@ public class LoginCredentials {
 
 	
 	/**
-	 * HASHCODE Y EQUALS DE LA ID
+	 * HashCode y Equals de la id
 	 */
 	@Override
 	public int hashCode() {
@@ -74,7 +72,7 @@ public class LoginCredentials {
 	}
 
 	/**
-	 * TOSTRING DE TODOS LOS ATRIBUTOS DE LOGINCREDENTIALS
+	 * ToString de todos los atributos de loginCredentials
 	 */
 	@Override
 	public String toString() {

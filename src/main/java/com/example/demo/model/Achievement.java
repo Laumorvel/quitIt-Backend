@@ -8,8 +8,13 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+/**
+ * El usuario obtendra logros según los días que lleve sin fumar
+ * @author adela y laura
+ *
+ */
+
 @Entity
-@Table(name="achievement")
 public class Achievement {
 	
 	@Id
@@ -21,9 +26,7 @@ public class Achievement {
 	/**
 	 * Constructor vacio.
 	 */
-	public Achievement() {
-		super();
-	}
+	public Achievement() {}
 	
 	/**
 	 * Constructor con todos los atributos de logro

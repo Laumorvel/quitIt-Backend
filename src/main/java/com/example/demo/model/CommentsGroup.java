@@ -1,5 +1,6 @@
 package com.example.demo.model;
 
+import java.time.LocalDate;
 import java.util.Objects;
 
 import javax.persistence.Entity;
@@ -8,40 +9,35 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 @Entity
-public class Incidence {
-	
+public class CommentsGroup {
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	private String subject;
 	private String text;
 	private User user;
-	private State state;
-	
+	private LocalDate date;
 	
 	/**
-	 * Constructor vacio
+	 * Constructor vacio.
 	 */
-	public Incidence() {}
+	public CommentsGroup() {}
 
 	/**
-	 * Constructor con todos los atributos de las incidencias
-	 * @param subject
+	 * Constructor con todos los atributos de Comentario
 	 * @param text
 	 * @param user
-	 * @param state
+	 * @param date
 	 */
-	public Incidence(String subject, String text, User user, State state) {
+	public CommentsGroup(String text, User user, LocalDate date) {
 		super();
-		this.subject = subject;
 		this.text = text;
 		this.user = user;
-		this.state = state;
+		this.date = date;
 	}
 
-
 	/**
-	 * Getters y setter de indicendia
+	 * Getters y setters de los comentarios
 	 * @return
 	 */
 	public Long getId() {
@@ -51,16 +47,6 @@ public class Incidence {
 
 	public void setId(Long id) {
 		this.id = id;
-	}
-
-
-	public String getSubject() {
-		return subject;
-	}
-
-
-	public void setSubject(String subject) {
-		this.subject = subject;
 	}
 
 
@@ -84,18 +70,17 @@ public class Incidence {
 	}
 
 
-	public State getState() {
-		return state;
+	public LocalDate getDate() {
+		return date;
 	}
 
 
-	public void setState(State state) {
-		this.state = state;
+	public void setDate(LocalDate date) {
+		this.date = date;
 	}
-
 
 	/**
-	 * HashCode y Equals de la id de la incidencia
+	 * HashCode y Equals de la id de los comentarios
 	 */
 	@Override
 	public int hashCode() {
@@ -111,21 +96,17 @@ public class Incidence {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Incidence other = (Incidence) obj;
+		CommentsGroup other = (CommentsGroup) obj;
 		return Objects.equals(id, other.id);
 	}
 
-	
 	/**
-	 * ToString de los atributos de incidencia
+	 * ToString de los atributos de los Comentarios
 	 */
 	@Override
 	public String toString() {
-		return "Incidence [id=" + id + ", subject=" + subject + ", text=" + text + ", user=" + user + ", state=" + state
-				+ "]";
+		return "ComentsCommunity [id=" + id + ", text=" + text + ", user=" + user + ", date=" + date + "]";
 	}
 	
 	
-	
-
 }
