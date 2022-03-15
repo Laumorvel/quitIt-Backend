@@ -1,22 +1,14 @@
 package com.example.demo.controller;
 
 
-import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -25,7 +17,6 @@ import com.example.demo.model.LoginCredentials;
 import com.example.demo.model.User;
 import com.example.demo.repository.UserRepo;
 import com.example.demo.security.JWTUtil;
-import com.example.demo.service.UserService;
 
 
 @RestController
@@ -39,10 +30,7 @@ public class AuthController {
     @Autowired private JWTUtil jwtUtil;
     @Autowired private AuthenticationManager authManager;
     @Autowired private PasswordEncoder passwordEncoder;
-    /**
-     * INYECYAMOS EL SERVICIO DEL USUARIO
-     */
-    @Autowired private UserService userService;
+    
 
     /**
      * POSTMAPPING QUE NOS PERMITE REGISTRAR USUARIOS EN NUESTRA APLICACIÓN
