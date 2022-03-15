@@ -29,9 +29,12 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
  */
 @Entity
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 @Table(name = "user")
 >>>>>>> laura
+=======
+>>>>>>> 853f8e5924441d2fde3708328ee19bfd4aa0e7ac
 public class User {
 
 	@Id
