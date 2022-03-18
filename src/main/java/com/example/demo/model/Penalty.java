@@ -2,11 +2,12 @@ package com.example.demo.model;
 
 import java.util.Objects;
 
+import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToOne;
 
+@Entity
 public class Penalty {
 
 	@Id
@@ -26,7 +27,6 @@ public class Penalty {
 	 * @param text
 	 */
 	public Penalty(String name, String text) {
-		super();
 		this.name = name;
 		this.text = text;
 	}

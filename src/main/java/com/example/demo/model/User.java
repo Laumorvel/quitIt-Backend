@@ -10,8 +10,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
-import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -45,7 +45,7 @@ public class User {
 
 	@Column(nullable = false)
 	private String password;
-	
+
 	private String rol;
 
 	/**
@@ -53,29 +53,19 @@ public class User {
 	 * a utilizar la aplicación.
 	 */
 	@Column(nullable = false)
-	private Integer days = 0;
+	private Integer daysInARowWithoutSmoking = 0;
 
 	/**
-	 * Representa los cigarrillos que solía fumar al día.
+	 * Los cigarrillos que ha evitado fumar desde que comenzó a usar la app
 	 */
-	@Column(nullable = false)
-	private Integer cigarretes;
-
-	/**
-	 * Representa el dinero que el usuario solía gastar en tabaco a la semana.
-	 * Posteriormente se realizará el cálculo de cuánto gasta al día puesto que no
-	 * se suele saber cuánto se gasta al día en tabaco. Los fumadores suelen tener
-	 * una idea más aproximada de lo que gastan a la semana.
-	 */
-	@Column(nullable = false)
-	private Double money;
+	private Integer cigarettesAvoided;
 
 	/**
 	 * Representa los días TOTALES que el usuario no ha fumado desde que comenzó a
 	 * utilizar la aplicación.
 	 */
 	@Column(nullable = false)
-	private Integer timeWithoutSmoking = 0;
+	private Integer totalTimeWithoutSmoking = 0;
 
 	@JsonIgnore
 	@OneToMany
@@ -86,21 +76,29 @@ public class User {
 	private List<User> userList = new ArrayList<>();
 
 	@JsonIgnore
-	@OneToMany
+	@ManyToMany
 	private List<Achievement> achievementList = new ArrayList<>();
-	
+
 	@JsonIgnore
-	@OneToMany
+	@ManyToMany
 	private List<Penalty> penalties = new ArrayList<>();
 
-	@Column(nullable = false)
+	/**
+	 * La fecha en la que comenzó a utilizar la app
+	 */
 	private LocalDate startDate;
 
+	/**
+	 * Representa los cigarrillos que solía fumar al día.
+	 */
 	@Column(nullable = false)
-	private Integer cigarettesBefore;
+	private Integer cigarettesBeforePerDay;
 
+	/**
+	 * Dinero que solía gastar como fumador
+	 */
 	@Column(nullable = false)
-	private Double packagePrice;
+	private Double moneyPerDay;
 
 	/**
 	 * Representa los días que el usuario SÍ ha fumado desde que comenzó a utilizar
@@ -108,85 +106,33 @@ public class User {
 	 */
 	@Column(nullable = false)
 	private Integer smokingDays = 0;
-
-	private Integer daysSmoker;
-	private Integer cigarettesSmoking;
-	private double moneySmoker;
 	
+	/**
+	 * Representa los cigarrillos que el usuario sí ha fumado desde que comenzó a usar la app
+	 */
+	private Integer cigarettesSmoked;
+	
+	/**
+	 * El dinero que lleva ahorrado
+	 */
+	private double moneySaved;
+
 	/**
 	 * Constructor vacío.
 	 */
-	public User() {
-	}
+	public User() {}
 
-	/**
-	 * Constructor con todos los atributos menos las listas
-	 * 
-	 * @param name
-	 * @param lastName
-	 * @param email
-	 * @param password
-	 * @param days
-	 * @param cigarretes
-	 * @param money
-	 * @param timeWithoutSmoking
-	 * @param startDate
-	 * @param cigarettesBefore
-	 * @param packagePrice
-	 * @param smokingDays
-	 */
-	public User(String name, String lastName, String email, String password, String rol,
-			 Integer cigarettesBefore, Double packagePrice) {
+	public User(String name, String lastName, String email, String password, String rol, Integer cigarettesBeforePerDay,
+			Double moneyPerDay) {
 		this.name = name;
 		this.lastName = lastName;
 		this.email = email;
 		this.password = password;
-		this.money = calculaDineroDiario(money);
-		this.cigarettesBefore = cigarettesBefore;
-		this.packagePrice = packagePrice;
 		this.rol = rol;
+		this.cigarettesBeforePerDay = cigarettesBeforePerDay;
+		this.moneyPerDay = moneyPerDay;
 	}
 
-	/**
-	 * Constructor con todos los atributos de user
-	 * 
-	 * @param name
-	 * @param lastName
-	 * @param email
-	 * @param password
-	 * @param days
-	 * @param cigarretes
-	 * @param money
-	 * @param timeWithoutSmoking
-	 * @param groupList
-	 * @param userList
-	 * @param achievementList
-	 * @param startDate
-	 * @param cigarettesBefore
-	 * @param packagePrice
-	 * @param smokingDays
-	 */
-	public User(String name, String lastName, String email, String password, Integer days, Integer cigarretes,
-			Double money, Integer timeWithoutSmoking, List<Group> groupList, List<User> userList,
-			List<Achievement> achievementList, LocalDate startDate, Integer cigarettesBefore, Double packagePrice,
-			Integer smokingDays, String rol) {
-		this.name = name;
-		this.lastName = lastName;
-		this.email = email;
-		this.password = password;
-		this.days = days;
-		this.cigarretes = cigarretes;
-		this.money = calculaDineroDiario(money);
-		this.timeWithoutSmoking = timeWithoutSmoking;
-		this.groupList = groupList;
-		this.userList = userList;
-		this.achievementList = achievementList;
-		this.startDate = startDate;
-		this.cigarettesBefore = cigarettesBefore;
-		this.packagePrice = packagePrice;
-		this.smokingDays = smokingDays;
-		this.rol = rol;
-	}
 
 	/**
 	 * Getters y setter de user
@@ -233,36 +179,84 @@ public class User {
 		this.password = password;
 	}
 
-	public Integer getDays() {
-		return days;
+	public Integer getDaysInARowWithoutSmoking() {
+		return daysInARowWithoutSmoking;
 	}
 
-	public void setDays(Integer days) {
-		this.days = days;
+	public void setDaysInARowWithoutSmoking(Integer daysInARowWithoutSmoking) {
+		this.daysInARowWithoutSmoking = daysInARowWithoutSmoking;
 	}
 
-	public Integer getCigarretes() {
-		return cigarretes;
+	public Integer getCigarettesAvoided() {
+		return cigarettesAvoided;
 	}
 
-	public void setCigarretes(Integer cigarretes) {
-		this.cigarretes = cigarretes;
+	public void setCigarettesAvoided(Integer cigarettesAvoided) {
+		this.cigarettesAvoided = cigarettesAvoided;
 	}
 
-	public Double getMoney() {
-		return money;
+	public Integer getTotalTimeWithoutSmoking() {
+		return totalTimeWithoutSmoking;
 	}
 
-	public void setMoney(Double money) {
-		this.money = money;
+	public void setTotalTimeWithoutSmoking(Integer totalTimeWithoutSmoking) {
+		this.totalTimeWithoutSmoking = totalTimeWithoutSmoking;
+	}
+
+	public List<Achievement> getAchievementList() {
+		return achievementList;
+	}
+
+	public void setAchievementList(List<Achievement> achievementList) {
+		this.achievementList = achievementList;
+	}
+
+	public List<Penalty> getPenalties() {
+		return penalties;
+	}
+
+	public void setPenalties(List<Penalty> penalties) {
+		this.penalties = penalties;
+	}
+
+	public Integer getCigarettesBeforePerDay() {
+		return cigarettesBeforePerDay;
+	}
+
+	public void setCigarettesBeforePerDay(Integer cigarettesBeforePerDay) {
+		this.cigarettesBeforePerDay = cigarettesBeforePerDay;
+	}
+
+	public Double getMoneyPerDay() {
+		return moneyPerDay;
+	}
+
+	public void setMoneyPerDay(Double moneyPerDay) {
+		this.moneyPerDay = moneyPerDay;
+	}
+
+	public Integer getCigarettesSmoked() {
+		return cigarettesSmoked;
+	}
+
+	public void setCigarettesSmoked(Integer cigarettesSmoked) {
+		this.cigarettesSmoked = cigarettesSmoked;
+	}
+
+	public double getMoneySaved() {
+		return moneySaved;
+	}
+
+	public void setMoneySaved(double moneySaved) {
+		this.moneySaved = moneySaved;
 	}
 
 	public Integer getTimeWithoutSmoking() {
-		return timeWithoutSmoking;
+		return totalTimeWithoutSmoking;
 	}
 
 	public void setTimeWithoutSmoking(Integer timeWithoutSmoking) {
-		this.timeWithoutSmoking = timeWithoutSmoking;
+		this.totalTimeWithoutSmoking = timeWithoutSmoking;
 	}
 
 	public List<Group> getGroupList() {
@@ -281,13 +275,6 @@ public class User {
 		this.userList = userList;
 	}
 
-	public List<Achievement> getAchievementList() {
-		return achievementList;
-	}
-
-	public void setAchievementList(List<Achievement> achievementList) {
-		this.achievementList = achievementList;
-	}
 
 	public LocalDate getStartDate() {
 		return startDate;
@@ -296,22 +283,7 @@ public class User {
 	public void setStartDate(LocalDate startDate) {
 		this.startDate = startDate;
 	}
-
-	public Integer getCigarettesBefore() {
-		return cigarettesBefore;
-	}
-
-	public void setCigarettesBefore(Integer cigarettesBefore) {
-		this.cigarettesBefore = cigarettesBefore;
-	}
-
-	public Double getPackagePrice() {
-		return packagePrice;
-	}
-
-	public void setPackagePrice(Double packagePrice) {
-		this.packagePrice = packagePrice;
-	}
+	
 
 	public Integer getSmokingDays() {
 		return smokingDays;
@@ -321,8 +293,6 @@ public class User {
 		this.smokingDays = smokingDays;
 	}
 
-	
-	
 	public String getRol() {
 		return rol;
 	}
@@ -331,36 +301,12 @@ public class User {
 		this.rol = rol;
 	}
 
-	public List<Penalty> getPenalties() {
-		return penalties;
-	}
-
-	public void setPenalties(List<Penalty> penalties) {
-		this.penalties = penalties;
-	}
-
-	public Integer getDaysSmoker() {
-		return daysSmoker;
-	}
-
-	public void setDaysSmoker(Integer daysSmoker) {
-		this.daysSmoker = daysSmoker;
-	}
-
-	public Integer getCigarettesSmoking() {
-		return cigarettesSmoking;
-	}
-
-	public void setCigarettesSmoking(Integer cigarettesSmoking) {
-		this.cigarettesSmoking = cigarettesSmoking;
-	}
-
 	public double getMoneySmoker() {
-		return moneySmoker;
+		return moneySaved;
 	}
 
 	public void setMoneySmoker(double moneySmoker) {
-		this.moneySmoker = moneySmoker;
+		this.moneySaved = moneySmoker;
 	}
 
 	/**
@@ -383,29 +329,15 @@ public class User {
 		return Objects.equals(id, other.id);
 	}
 
-	/**
-	 * ToString con todos los datos del usuario
-	 */
 	@Override
 	public String toString() {
 		return "User [id=" + id + ", name=" + name + ", lastName=" + lastName + ", email=" + email + ", password="
-				+ password + ", days=" + days + ", cigarretes=" + cigarretes + ", money=" + money
-				+ ", timeWithoutSmoking=" + timeWithoutSmoking + ", groupList=" + groupList + ", userList=" + userList
-				+ ", achievementList=" + achievementList + ", startDate=" + startDate + ", cigarettesBefore="
-				+ cigarettesBefore + ", packagePrice=" + packagePrice + ", smokingDays=" + smokingDays + "]";
-	}
-
-	// --- MÉTODOS PROPIOS ---//
-
-	/**
-	 * Método que calcula y redondea a dos decimales el dinero gastado diariamente
-	 * por el usuario.
-	 * 
-	 * @param dineroSemanal
-	 * @return
-	 */
-	public Double calculaDineroDiario(Double dineroSemanal) {
-		return Math.round((dineroSemanal / 7) * 100d) / 100d;
+				+ password + ", rol=" + rol + ", daysInARowWithoutSmoking=" + daysInARowWithoutSmoking
+				+ ", cigarettesAvoided=" + cigarettesAvoided + ", totalTimeWithoutSmoking=" + totalTimeWithoutSmoking
+				+ ", groupList=" + groupList + ", userList=" + userList + ", achievementList=" + achievementList
+				+ ", penalties=" + penalties + ", startDate=" + startDate + ", cigarettesBeforePerDay="
+				+ cigarettesBeforePerDay + ", moneyPerDay=" + moneyPerDay + ", smokingDays=" + smokingDays
+				+ ", cigarettesSmoked=" + cigarettesSmoked + ", moneySaved=" + moneySaved + "]";
 	}
 
 }

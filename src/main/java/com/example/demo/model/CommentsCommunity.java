@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 
 @Entity
 public class CommentsCommunity {
@@ -15,6 +16,7 @@ public class CommentsCommunity {
 			@GeneratedValue(strategy = GenerationType.IDENTITY)
 			private Long id;
 			private String text;
+			@ManyToOne
 			private User user;
 			private LocalDate date;
 			
