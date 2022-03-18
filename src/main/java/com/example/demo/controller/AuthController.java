@@ -52,6 +52,7 @@ public class AuthController {
         user.setPassword(encodedPass);
         user = userRepo.save(user);
         String token = jwtUtil.generateToken(user.getEmail(), user.getRol());
+        System.out.println("HOLA");
         return Collections.singletonMap("access_token", token);
     	}
 	    else {
