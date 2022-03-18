@@ -83,7 +83,7 @@ public class AuthController {
 
             return Collections.singletonMap("access_token", token);
         }catch (AuthenticationException authExc){
-        	if(this.userRepo.getEmail(body.getEmail()) != null) {
+        	if(this.userRepo.findByEmail(body.getEmail()) != null) {
         		throw new Exception();
         	}
         	else {
