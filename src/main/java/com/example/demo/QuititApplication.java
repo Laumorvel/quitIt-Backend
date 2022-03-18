@@ -27,8 +27,11 @@ public class QuititApplication {
 		User usuario1 = new User("Adela","Lira","adela@gmail.com", passwordEncoder.encode("12345"),
 				"ADMIN", 3, 4.15 );
 		
+		User usuario2 = new User("Laura","Moreno","laura@gmail.com", passwordEncoder.encode("12345"),
+				"ADMIN", 7, 2.0 );
+		
 		return (args) -> {
-			repositorioUsers.saveAll(Arrays.asList(usuario1));
+			repositorioUsers.saveAll(Arrays.asList(usuario1, usuario2));
 			
 			
 
