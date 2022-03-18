@@ -31,6 +31,9 @@ public class AuthController {
     @Autowired private AuthenticationManager authManager;
     @Autowired private PasswordEncoder passwordEncoder;
     
+    
+    
+    
 
     /**
      * POSTMAPPING QUE NOS PERMITE REGISTRAR USUARIOS EN NUESTRA APLICACIÓN
@@ -45,9 +48,10 @@ public class AuthController {
     	
     	if (userRepo.findByEmail(user.getEmail())==null) {
         String encodedPass = passwordEncoder.encode(user.getPassword());
+        user.setRol("user");
         user.setPassword(encodedPass);
         user = userRepo.save(user);
-        String token = jwtUtil.generateToken(user.getEmail());
+        String token = jwtUtil.generateToken(user.getEmail(), user.getRol());
         return Collections.singletonMap("access_token", token);
     	}
 	    else {
@@ -73,7 +77,8 @@ public class AuthController {
 
             authManager.authenticate(authInputToken);
 
-            String token = jwtUtil.generateToken(body.getEmail());
+            String rol = userRepo.findByEmail(body.getEmail()).getRol();
+            String token = jwtUtil.generateToken(body.getEmail(), rol);
 
             return Collections.singletonMap("access_token", token);
         }catch (AuthenticationException authExc){
