@@ -45,6 +45,8 @@ public class User {
 
 	@Column(nullable = false)
 	private String password;
+	
+	private String rol;
 
 	/**
 	 * Representa los días SEGUIDOS que el usuario lleva sin fumar desde que comenzó
@@ -107,6 +109,10 @@ public class User {
 	@Column(nullable = false)
 	private Integer smokingDays = 0;
 
+	private Integer daysSmoker;
+	private Integer cigarettesSmoking;
+	private double moneySmoker;
+	
 	/**
 	 * Constructor vacío.
 	 */
@@ -129,21 +135,16 @@ public class User {
 	 * @param packagePrice
 	 * @param smokingDays
 	 */
-	public User(String name, String lastName, String email, String password, Integer days, Integer cigarretes,
-			Double money, Integer timeWithoutSmoking, LocalDate startDate, Integer cigarettesBefore,
-			Double packagePrice, Integer smokingDays) {
+	public User(String name, String lastName, String email, String password, String rol,
+			 Integer cigarettesBefore, Double packagePrice) {
 		this.name = name;
 		this.lastName = lastName;
 		this.email = email;
 		this.password = password;
-		this.days = days;
-		this.cigarretes = cigarretes;
 		this.money = calculaDineroDiario(money);
-		this.timeWithoutSmoking = timeWithoutSmoking;
-		this.startDate = startDate;
 		this.cigarettesBefore = cigarettesBefore;
 		this.packagePrice = packagePrice;
-		this.smokingDays = smokingDays;
+		this.rol = rol;
 	}
 
 	/**
@@ -168,7 +169,7 @@ public class User {
 	public User(String name, String lastName, String email, String password, Integer days, Integer cigarretes,
 			Double money, Integer timeWithoutSmoking, List<Group> groupList, List<User> userList,
 			List<Achievement> achievementList, LocalDate startDate, Integer cigarettesBefore, Double packagePrice,
-			Integer smokingDays) {
+			Integer smokingDays, String rol) {
 		this.name = name;
 		this.lastName = lastName;
 		this.email = email;
@@ -184,6 +185,7 @@ public class User {
 		this.cigarettesBefore = cigarettesBefore;
 		this.packagePrice = packagePrice;
 		this.smokingDays = smokingDays;
+		this.rol = rol;
 	}
 
 	/**
@@ -317,6 +319,48 @@ public class User {
 
 	public void setSmokingDays(Integer smokingDays) {
 		this.smokingDays = smokingDays;
+	}
+
+	
+	
+	public String getRol() {
+		return rol;
+	}
+
+	public void setRol(String rol) {
+		this.rol = rol;
+	}
+
+	public List<Penalty> getPenalties() {
+		return penalties;
+	}
+
+	public void setPenalties(List<Penalty> penalties) {
+		this.penalties = penalties;
+	}
+
+	public Integer getDaysSmoker() {
+		return daysSmoker;
+	}
+
+	public void setDaysSmoker(Integer daysSmoker) {
+		this.daysSmoker = daysSmoker;
+	}
+
+	public Integer getCigarettesSmoking() {
+		return cigarettesSmoking;
+	}
+
+	public void setCigarettesSmoking(Integer cigarettesSmoking) {
+		this.cigarettesSmoking = cigarettesSmoking;
+	}
+
+	public double getMoneySmoker() {
+		return moneySmoker;
+	}
+
+	public void setMoneySmoker(double moneySmoker) {
+		this.moneySmoker = moneySmoker;
 	}
 
 	/**
