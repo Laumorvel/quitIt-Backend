@@ -31,13 +31,16 @@ public class QuititApplication {
 				"ADMIN", 7, 2.0 );
 		
 		return (args) -> {
+
 			repositorioUsers.saveAll(Arrays.asList(usuario1, usuario2));
+
 			
 			
 
 			
 		};
 	}
+
 
 	
 	
