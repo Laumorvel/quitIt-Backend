@@ -26,15 +26,20 @@ public class QuititApplication {
 	CommandLineRunner initData (UserRepo repositorioUsers) {		
 		User usuario1 = new User("Adela","Lira","adela@gmail.com", passwordEncoder.encode("12345"),
 				"ADMIN", 3, 4.15 );
+		User usuario2 = new User("Laura","Moreno","laura@gmail.com", passwordEncoder.encode("12345"),
+				"ADMIN", 5, 6.00 );
+		User usuario3 = new User("Pepi","Garcia","pepi@gmail.com", passwordEncoder.encode("12345"),
+				"USER", 20, 5.00 );
 		
 		return (args) -> {
-			repositorioUsers.saveAll(Arrays.asList(usuario1));
+			repositorioUsers.saveAll(Arrays.asList(usuario1,usuario2,usuario3));
 			
 			
 
 			
 		};
 	}
+
 
 	
 	
