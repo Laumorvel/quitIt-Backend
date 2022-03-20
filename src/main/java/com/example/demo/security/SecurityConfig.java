@@ -30,6 +30,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		         .authorizeHttpRequests()
 		         .antMatchers("/auth/**").permitAll()
 		         .antMatchers("/user/**").permitAll()
+		         .antMatchers("/user").permitAll()
 		         .and()
 		         .userDetailsService(uds)
 		         .exceptionHandling()

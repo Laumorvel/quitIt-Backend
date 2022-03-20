@@ -9,90 +9,80 @@ import javax.persistence.Id;
 
 @Entity
 public class Message {
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	private String to;
+	private String toUser;
 	private String subject;
 	private String text;
-	private String from;
-	
+	private String fromUser;
+
 	/**
 	 * Constructor vacio
 	 */
-	public Message() {}
-
+	public Message() {
+	}
 
 	/**
 	 * Constructor con todos los atributos
+	 * 
 	 * @param to
 	 * @param subject
 	 * @param text
 	 * @param from
 	 */
 	public Message(String to, String subject, String text, String from) {
-		super();
-		this.to = to;
+		this.toUser = to;
 		this.subject = subject;
 		this.text = text;
-		this.from = from;
+		this.fromUser = from;
 	}
-
 
 	/**
 	 * Getters y setters del mensaje
+	 * 
 	 * @return
 	 */
 	public Long getId() {
 		return id;
 	}
 
-
 	public void setId(Long id) {
 		this.id = id;
 	}
 
-
 	public String getTo() {
-		return to;
+		return toUser;
 	}
-
 
 	public void setTo(String to) {
-		this.to = to;
+		this.toUser = to;
 	}
-
 
 	public String getSubject() {
 		return subject;
 	}
 
-
 	public void setSubject(String subject) {
 		this.subject = subject;
 	}
-
 
 	public String getText() {
 		return text;
 	}
 
-
 	public void setText(String text) {
 		this.text = text;
 	}
 
-
 	public String getFrom() {
-		return from;
+		return fromUser;
 	}
-
 
 	public void setFrom(String from) {
-		this.from = from;
+		this.fromUser = from;
 	}
-
 
 	/**
 	 * HashCode y Equals de la id
@@ -101,7 +91,6 @@ public class Message {
 	public int hashCode() {
 		return Objects.hash(id);
 	}
-
 
 	@Override
 	public boolean equals(Object obj) {
@@ -115,19 +104,12 @@ public class Message {
 		return Objects.equals(id, other.id);
 	}
 
-	
 	/**
 	 * ToString con todos los atributos
 	 */
 	@Override
 	public String toString() {
-		return "Message [id=" + id + ", to=" + to + ", subject=" + subject + ", text=" + text + ", from=" + from + "]";
+		return "Message [id=" + id + ", to=" + toUser + ", subject=" + subject + ", text=" + text + ", from=" + fromUser + "]";
 	}
-	
-	
-	
-	
-	
-	
 
 }

@@ -68,7 +68,7 @@ public class User {
 	private Integer totalTimeWithoutSmoking = 0;
 
 	@JsonIgnore
-	@OneToMany
+	@ManyToMany
 	private List<Group> groupList = new ArrayList<>();
 
 	@JsonIgnore
