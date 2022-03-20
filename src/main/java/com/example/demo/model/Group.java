@@ -17,6 +17,7 @@ public class Group {
 	@Column(nullable = false)
 	private String name;
 
+
 	/**
 	 * Constructor vacio.
 	 */
@@ -37,30 +38,29 @@ public class Group {
 	 * 
 	 * @return
 	 */
+
 	public Long getId() {
 		return id;
 	}
-
+	
 	public void setId(Long id) {
 		this.id = id;
 	}
-
+	
 	public String getName() {
 		return name;
 	}
-
+	
 	public void setName(String name) {
 		this.name = name;
 	}
-
-	/**
-	 * HashCode y Equals de la id del grupo.
-	 */
+	
+	
 	@Override
 	public int hashCode() {
 		return Objects.hash(id);
 	}
-
+	
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -72,13 +72,11 @@ public class Group {
 		Group other = (Group) obj;
 		return Objects.equals(id, other.id);
 	}
-
-	/**
-	 * ToString con todos los datos del grupo.
-	 */
+	
+	
+	
 	@Override
 	public String toString() {
 		return "Group [id=" + id + ", name=" + name + "]";
 	}
-
 }
