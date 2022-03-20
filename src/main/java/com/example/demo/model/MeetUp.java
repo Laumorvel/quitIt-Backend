@@ -9,6 +9,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -23,6 +24,7 @@ public class MeetUp {
 	private LocalDateTime date;
 	private String place;
 	@JsonIgnore
+	@ManyToMany
 	private List<User> assistantsList = new ArrayList<>();
 	
 	
@@ -39,7 +41,6 @@ public class MeetUp {
 	 * @param place
 	 */
 	public MeetUp(String title, String description, LocalDateTime date, String place) {
-		super();
 		this.title = title;
 		this.description = description;
 		this.date = date;

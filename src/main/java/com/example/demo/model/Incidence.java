@@ -6,6 +6,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 
 @Entity
 public class Incidence {
@@ -15,6 +16,7 @@ public class Incidence {
 	private Long id;
 	private String subject;
 	private String text;
+	@ManyToOne
 	private User user;
 	private State state;
 	
@@ -32,7 +34,6 @@ public class Incidence {
 	 * @param state
 	 */
 	public Incidence(String subject, String text, User user, State state) {
-		super();
 		this.subject = subject;
 		this.text = text;
 		this.user = user;

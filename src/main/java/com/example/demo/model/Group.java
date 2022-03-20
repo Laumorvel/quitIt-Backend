@@ -2,37 +2,39 @@ package com.example.demo.model;
 
 import java.util.Objects;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.Table;
 
-@Entity
+@Entity(name = "grupo")
 public class Group {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
+	@Column(nullable = false)
 	private String name;
-	
+
 	/**
 	 * Constructor vacio.
 	 */
-	public Group() {}
-	
+	public Group() {
+	}
+
 	/**
 	 * Constructor con el nombre del grupo.
+	 * 
 	 * @param name
 	 */
 	public Group(String name) {
-		super();
 		this.name = name;
 	}
 
-	
 	/**
 	 * Getters y setters del grupo.
+	 * 
 	 * @return
 	 */
 	public Long getId() {
@@ -78,11 +80,5 @@ public class Group {
 	public String toString() {
 		return "Group [id=" + id + ", name=" + name + "]";
 	}
-	
-	
-	
-	
-	
-	
-	
+
 }
