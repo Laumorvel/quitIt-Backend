@@ -6,7 +6,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.Table;
 
 /**
  * El usuario obtendra logros según los días que lleve sin fumar
@@ -34,7 +33,6 @@ public class Achievement {
 	 * @param text
 	 */
 	public Achievement(String name, String text) {
-		super();
 		this.name = name;
 		this.text = text;
 	}
