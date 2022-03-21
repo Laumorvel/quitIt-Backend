@@ -34,7 +34,6 @@ public class Incidence {
 	 * @param state
 	 */
 	public Incidence(String subject, String text, User user, State state) {
-		super();
 		this.subject = subject;
 		this.text = text;
 		this.user = user;

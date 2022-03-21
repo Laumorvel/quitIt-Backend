@@ -41,7 +41,6 @@ public class MeetUp {
 	 * @param place
 	 */
 	public MeetUp(String title, String description, LocalDateTime date, String place) {
-		super();
 		this.title = title;
 		this.description = description;
 		this.date = date;
