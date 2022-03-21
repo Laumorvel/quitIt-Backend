@@ -1,6 +1,5 @@
 package com.example.demo.controller;
 
-
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Collections;
@@ -28,10 +27,8 @@ import com.example.demo.model.User;
 import com.example.demo.repository.UserRepo;
 import com.example.demo.security.JWTUtil;
 
-
 @RestController
 public class AuthController {
-
 
     @Autowired private UserRepo userRepo;
     @Autowired private JWTUtil jwtUtil;
@@ -101,30 +98,30 @@ public class AuthController {
 			throw new RuntimeException();
 		}
 	}
-    
-    
-    
-    
-    @ExceptionHandler(PasswordException.class)
-    public ResponseEntity<ApiError> passwordError(PasswordException ex) throws Exception {
-    	ApiError e = new ApiError();
-    	e.setEstado(HttpStatus.BAD_REQUEST);
-    	e.setMensaje(ex.getMessage());
-    	e.setFecha(LocalDateTime.now());
-    	
-    	return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e);
-	} 
-    
 
-    @ExceptionHandler(EmailPasswordException.class)
-    public ResponseEntity<ApiError> emailPasswordError(EmailPasswordException ex) throws Exception {
-    	ApiError e = new ApiError();
-    	e.setEstado(HttpStatus.BAD_REQUEST);
-    	e.setMensaje(ex.getMessage());
-    	e.setFecha(LocalDateTime.now());
-    	
-    	return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e);
-	} 
+	
+	
+	//-EXCEPCIONES----------------------------------------------------------------------------------------
 
-    
+	@ExceptionHandler(PasswordException.class)
+	public ResponseEntity<ApiError> passwordError(PasswordException ex) throws Exception {
+		ApiError e = new ApiError();
+		e.setEstado(HttpStatus.BAD_REQUEST);
+		e.setMensaje(ex.getMessage());
+		e.setFecha(LocalDateTime.now());
+
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e);
+	}
+
+	@ExceptionHandler(EmailPasswordException.class)
+	public ResponseEntity<ApiError> emailPasswordError(EmailPasswordException ex) throws Exception {
+		ApiError e = new ApiError();
+		e.setEstado(HttpStatus.BAD_REQUEST);
+		e.setMensaje(ex.getMessage());
+		e.setFecha(LocalDateTime.now());
+
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e);
+	}
+
+
 }
