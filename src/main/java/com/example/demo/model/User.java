@@ -116,16 +116,20 @@ public class User {
 	 * El dinero que lleva ahorrado
 	 */
 	private double moneySaved;
+	
+	@Column(nullable = false)
+	private String username;
 
 	/**
 	 * Constructor vacío.
 	 */
 	public User() {}
 
-	public User(String name, String lastName, String email, String password, String rol, Integer cigarettesBeforePerDay,
+	public User(String name, String lastName, String username, String email, String password, String rol, Integer cigarettesBeforePerDay,
 			Double moneyPerDay) {
 		this.name = name;
 		this.lastName = lastName;
+		this.username=username;
 		this.email = email;
 		this.password = password;
 		this.rol = rol;
@@ -307,6 +311,16 @@ public class User {
 
 	public void setMoneySmoker(double moneySmoker) {
 		this.moneySaved = moneySmoker;
+	}
+	
+	
+
+	public String getUsername() {
+		return username;
+	}
+
+	public void setUsername(String username) {
+		this.username = username;
 	}
 
 	/**

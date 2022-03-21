@@ -24,10 +24,10 @@ public class QuititApplication {
 
 	@Bean
 	CommandLineRunner initData (UserRepo repositorioUsers) {		
-		User usuario1 = new User("Adela","Lira","adela@gmail.com", passwordEncoder.encode("12345"),
+		User usuario1 = new User("Adela","Lira","adelalira","adela@gmail.com", passwordEncoder.encode("12345"),
 				"ADMIN", 3, 4.15 );
 		
-		User usuario2 = new User("Laura","Moreno","laura@gmail.com", passwordEncoder.encode("12345"),
+		User usuario2 = new User("Laura","Moreno","lauramoreno","laura@gmail.com", passwordEncoder.encode("12345"),
 				"ADMIN", 7, 2.0 );
 		
 		return (args) -> {
