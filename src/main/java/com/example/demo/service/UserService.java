@@ -11,8 +11,13 @@ public class UserService {
 	
 	@Autowired UserRepo userRepo;
 
-	public User findByEmail(String email) {
-		return this.userRepo.findByEmail(email);
+	public User getUserEmail(String email) {
+		return userRepo.findByEmail(email);
+	}
+	
+	
+	public User getUsername(String username) {
+		return userRepo.findByUsername(username);
 	}
 
 }

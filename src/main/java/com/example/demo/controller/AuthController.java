@@ -1,6 +1,7 @@
 package com.example.demo.controller;
 
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.Map;
@@ -13,6 +14,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -20,6 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.demo.error.ApiError;
 import com.example.demo.error.EmailPasswordException;
 import com.example.demo.error.PasswordException;
+import com.example.demo.error.UserExistException;
 import com.example.demo.model.LoginCredentials;
 import com.example.demo.model.User;
 import com.example.demo.repository.UserRepo;
@@ -44,7 +47,8 @@ public class AuthController {
     	
     	if (userRepo.findByEmail(user.getEmail())==null) {
         String encodedPass = passwordEncoder.encode(user.getPassword());
-        user.setRol("user");
+        user.setRol("USER");
+        user.setStartDate(LocalDate.now());
         user.setPassword(encodedPass);
         user = userRepo.save(user);
         String token = jwtUtil.generateToken(user.getEmail(), user.getRol());
@@ -52,7 +56,7 @@ public class AuthController {
         return Collections.singletonMap("access_token", token);
     	}
 	    else {
-			throw new Exception();
+			throw new UserExistException();
 		}
     }
 
@@ -80,6 +84,23 @@ public class AuthController {
             	
         } 
     }
+    
+    
+
+	/**
+	 * Comprueba que es usuario se encuentre o no logueado.
+	 * @return
+	 * @throws Exception
+	 */
+	@GetMapping("/login")
+	public ResponseEntity<String> comprobarLogueo() throws Exception {
+
+		try {
+			return ResponseEntity.ok("");
+		} catch (Exception e) {
+			throw new RuntimeException();
+		}
+	}
     
     
     
