@@ -20,7 +20,7 @@ public interface UserRepo extends JpaRepository<User, Long> {
 	 */
 	public User findByEmail(String email);
 
-	//public String getEmail(String email);
+	public User findByUsername(String username);
 
 
 
