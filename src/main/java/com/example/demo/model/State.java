@@ -8,10 +8,10 @@ package com.example.demo.model;
  */
 public enum State {
 
-	RESULTA,
+	RESULT,
 
-	EN_PROCESO,
+	IN_PROCESS,
 
-	ENVIADA;
+	PENDING;
 
 }

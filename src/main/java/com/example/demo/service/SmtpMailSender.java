@@ -15,16 +15,19 @@ public class SmtpMailSender {
 	@Autowired
 	private JavaMailSender javaMailSender;
 	
-	public void send(String to, String subject, String body) throws MessagingException {
+	public void send(String to, String subject, String body, String from) throws MessagingException {
 	
 		MimeMessage message = javaMailSender.createMimeMessage();
 		MimeMessageHelper helper;
 		
+		String finalMessage = body + ". By: " + from;
+		
 		helper = new MimeMessageHelper(message,true);
+		
 		
 		helper.setSubject(subject);
 		helper.setTo(to);
-		helper.setText(body,true);
+		helper.setText(finalMessage,true);
 		
 		
 		javaMailSender.send(message);
