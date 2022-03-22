@@ -13,7 +13,7 @@ public class EmailPasswordException extends RuntimeException{
 	private static final long serialVersionUID = -7238076647889171067L;
 
 	public EmailPasswordException() {
-		super("The email and password is incorrect");
+		super("The email or password is incorrect");
 	}	
 
 }

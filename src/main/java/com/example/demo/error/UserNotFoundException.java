@@ -13,7 +13,7 @@ public class UserNotFoundException extends RuntimeException{
 	 */
 	private static final long serialVersionUID = 2518408353976859288L;
 
-	public UserNotFoundException(Long id) {
-		super("The user with the id " + id + " does not exit");
+	public UserNotFoundException() {
+		super("The user does not exit");
 	}	
 }
