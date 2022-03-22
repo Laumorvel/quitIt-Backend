@@ -61,8 +61,8 @@ public class UserController {
 	
 	@PostMapping("/mail")
     public void sendEmail(@RequestBody Message datos) throws MessagingException {
-    	datos.setTo("aalira.96@gmail.com");
+    	datos.setToUser("aalira.96@gmail.com");
     	
-		smtpMailSender.send(datos.getTo(), datos.getSubject(), datos.getText());
+		smtpMailSender.send(datos.getToUser(), datos.getSubject(), datos.getText(), datos.getFromUser());
 	} 
 }

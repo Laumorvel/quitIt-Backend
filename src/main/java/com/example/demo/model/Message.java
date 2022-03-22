@@ -44,6 +44,15 @@ public class Message {
 	 * 
 	 * @return
 	 */
+
+	/**
+	 * HashCode y Equals de la id
+	 */
+	@Override
+	public int hashCode() {
+		return Objects.hash(id);
+	}
+
 	public Long getId() {
 		return id;
 	}
@@ -52,12 +61,12 @@ public class Message {
 		this.id = id;
 	}
 
-	public String getTo() {
+	public String getToUser() {
 		return toUser;
 	}
 
-	public void setTo(String to) {
-		this.toUser = to;
+	public void setToUser(String toUser) {
+		this.toUser = toUser;
 	}
 
 	public String getSubject() {
@@ -76,20 +85,12 @@ public class Message {
 		this.text = text;
 	}
 
-	public String getFrom() {
+	public String getFromUser() {
 		return fromUser;
 	}
 
-	public void setFrom(String from) {
-		this.fromUser = from;
-	}
-
-	/**
-	 * HashCode y Equals de la id
-	 */
-	@Override
-	public int hashCode() {
-		return Objects.hash(id);
+	public void setFromUser(String fromUser) {
+		this.fromUser = fromUser;
 	}
 
 	@Override
@@ -104,13 +105,15 @@ public class Message {
 		return Objects.equals(id, other.id);
 	}
 
+	@Override
+	public String toString() {
+		return "Message [id=" + id + ", toUser=" + toUser + ", subject=" + subject + ", text=" + text + ", fromUser="
+				+ fromUser + "]";
+	}
+
 	/**
 	 * ToString con todos los atributos
 	 */
-	@Override
-	public String toString() {
-		return "Message [id=" + id + ", to=" + toUser + ", subject=" + subject + ", text=" + text + ", from=" + fromUser + "]";
-	}
 
 }
 
