@@ -37,7 +37,7 @@ public class UserController {
     	User result =  userRepo.findByEmail(email);
         
     	if(result==null) {
-    		throw new UserNotFoundException(result.getId());
+    		throw new UserNotFoundException();
     	}
     	else {
     		return ResponseEntity.status(HttpStatus.OK).body(result);
