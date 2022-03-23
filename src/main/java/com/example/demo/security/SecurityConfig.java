@@ -33,6 +33,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		         .antMatchers("/user").permitAll()
 		         .antMatchers("/mail").permitAll()
 		         .antMatchers("/email").permitAll()
+		         .antMatchers("/commentsCommunity").permitAll()
 		         .and()
 		         .userDetailsService(uds)
 		         .exceptionHandling()
