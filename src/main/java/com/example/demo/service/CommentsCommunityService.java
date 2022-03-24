@@ -1,12 +1,15 @@
 package com.example.demo.service;
 
+import java.io.Console;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.model.CommentsCommunity;
+import com.example.demo.model.Penalty;
 import com.example.demo.model.User;
 import com.example.demo.repository.CommentsCommunityRepo;
 import com.example.demo.repository.UserRepo;
@@ -20,7 +23,9 @@ public class CommentsCommunityService {
 	
 	
 	public List<CommentsCommunity> getComments() {
-		return commentsCommutinyRepo.findAll();
+		
+		System.out.println(commentsCommutinyRepo.findAllCommentsComunity());
+		return commentsCommutinyRepo.findAllCommentsComunity();
 	}
 
 

@@ -34,6 +34,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		         .antMatchers("/mail").permitAll()
 		         .antMatchers("/email").permitAll()
 		         .antMatchers("/commentsCommunity").permitAll()
+		         .antMatchers("/incidence").permitAll()		         
 		         .and()
 		         .userDetailsService(uds)
 		         .exceptionHandling()
