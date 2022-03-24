@@ -9,7 +9,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import com.example.demo.model.CommentsCommunity;
 import com.example.demo.model.User;
+import com.example.demo.repository.CommentsCommunityRepo;
 import com.example.demo.repository.UserRepo;
 
 @SpringBootApplication
@@ -23,7 +25,7 @@ public class QuititApplication {
 	}
 
 	@Bean
-	CommandLineRunner initData (UserRepo repositorioUsers) {		
+	CommandLineRunner initData (UserRepo repositorioUsers, CommentsCommunityRepo commentsCommunityRepo) {		
 		User usuario1 = new User("Adela","Lira","adelalira","adela@gmail.com", passwordEncoder.encode("12345"),
 				"ADMIN", 3, 4.15 );
 		
@@ -32,6 +34,8 @@ public class QuititApplication {
 		
 		User usuarioUser = new User("Loli","Montero","lolimontero","loli@gmail.com", passwordEncoder.encode("12345"),
 				"USER", 17, 9.0);
+		
+		//CommentsCommunity comentarioComunidad1 = new CommentsCommunity("")
 		
 		return (args) -> {
 
