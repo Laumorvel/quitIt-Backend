@@ -23,8 +23,6 @@ public class CommentsCommunityService {
 	
 	
 	public List<CommentsCommunity> getComments() {
-		
-		System.out.println(commentsCommutinyRepo.findAllCommentsComunity());
 		return commentsCommutinyRepo.findAllCommentsComunity();
 	}
 

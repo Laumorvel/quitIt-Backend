@@ -15,13 +15,19 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.error.UserNotFoundException;
+import com.example.demo.model.Achievement;
 import com.example.demo.model.CommentsCommunity;
 import com.example.demo.model.Incidence;
+import com.example.demo.model.MeetUp;
 import com.example.demo.model.Message;
+import com.example.demo.model.Penalty;
 import com.example.demo.model.User;
 import com.example.demo.repository.UserRepo;
+import com.example.demo.service.AchievementService;
 import com.example.demo.service.CommentsCommunityService;
 import com.example.demo.service.IncidenceService;
+import com.example.demo.service.MeetUpService;
+import com.example.demo.service.PenaltyService;
 import com.example.demo.service.SmtpMailSender;
 import com.example.demo.service.UserService;
 
@@ -35,6 +41,12 @@ public class UserController {
 	 @Autowired private CommentsCommunityService commentsCommunityService;
 	 
 	 @Autowired private IncidenceService incidenceService;
+	 
+	 @Autowired private MeetUpService meetUpService;
+	 
+	 @Autowired private AchievementService achievementService;
+	 
+	 @Autowired private PenaltyService penaltyService;
 	 
 	 @Autowired private SmtpMailSender smtpMailSender;
 	    
@@ -102,6 +114,30 @@ public class UserController {
 			}
 		}
 	
+	 
+	 @GetMapping("/users")
+	    public List<User> getAllUsers() {
+	    	return userService.getAllUsers();
+		}
+	 
+	 
+	 @GetMapping("/meetUp")
+	    public List<MeetUp> getAllMeetUps() {
+	    	return meetUpService.getAllMeetUps(); 	
+		}
+	 
+	 @GetMapping("/achievement")
+	    public List<Achievement> getAllAchievement() {
+	    	return achievementService.getAllAchievement(); 	
+		}
+	 
+	 @GetMapping("/penalty")
+	    public List<Penalty> getAllPenalty() {
+	    	return penaltyService.getAllPenalty(); 	
+		}
+	 
+	 
+	 
 	
 	@PostMapping("/mail")
     public void sendEmail(@RequestBody Message datos) throws MessagingException {
@@ -109,6 +145,8 @@ public class UserController {
     	
 		smtpMailSender.send(datos.getToUser(), datos.getSubject(), datos.getText(), datos.getFromUser());
 	} 
+	
+	
 	
 	
 }

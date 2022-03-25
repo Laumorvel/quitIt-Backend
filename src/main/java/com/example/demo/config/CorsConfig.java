@@ -79,7 +79,32 @@ public class CorsConfig implements WebMvcConfigurer {
 				.exposedHeaders("Access-Control-Allow-Origin", "Access-Control-Allow-Credentials");
 				
 				
+				registry.addMapping("/users").allowedOrigins(urlFront)
+				.allowedHeaders("GET", "POST", "OPTIONS", "PUT", "Content-Type", "X-Requested-With", "accept",
+						"Origin", "Access-Control-Request-Method", "Access-Control-Request-Headers",
+						"Authorization")
+				.exposedHeaders("Access-Control-Allow-Origin", "Access-Control-Allow-Credentials");
 				
+				
+				registry.addMapping("/achievement").allowedOrigins(urlFront)
+				.allowedHeaders("GET", "POST", "OPTIONS", "PUT", "Content-Type", "X-Requested-With", "accept",
+						"Origin", "Access-Control-Request-Method", "Access-Control-Request-Headers",
+						"Authorization")
+				.exposedHeaders("Access-Control-Allow-Origin", "Access-Control-Allow-Credentials");
+				
+				
+				registry.addMapping("/penalty").allowedOrigins(urlFront)
+				.allowedHeaders("GET", "POST", "OPTIONS", "PUT", "Content-Type", "X-Requested-With", "accept",
+						"Origin", "Access-Control-Request-Method", "Access-Control-Request-Headers",
+						"Authorization")
+				.exposedHeaders("Access-Control-Allow-Origin", "Access-Control-Allow-Credentials");
+				
+				
+				registry.addMapping("/meetUp").allowedOrigins(urlFront)
+				.allowedHeaders("GET", "POST", "OPTIONS", "PUT", "Content-Type", "X-Requested-With", "accept",
+						"Origin", "Access-Control-Request-Method", "Access-Control-Request-Headers",
+						"Authorization")
+				.exposedHeaders("Access-Control-Allow-Origin", "Access-Control-Allow-Credentials");
 				
 				
 			};
