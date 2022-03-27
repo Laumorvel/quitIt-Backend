@@ -12,4 +12,5 @@ public interface CommentsCommunityRepo  extends JpaRepository<CommentCommunity, 
 	@Query(value="SELECT * FROM comments_community", nativeQuery = true)
 	List<CommentCommunity>getComentarios();
 
+
 }

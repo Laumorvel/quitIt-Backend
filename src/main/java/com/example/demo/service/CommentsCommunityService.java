@@ -13,6 +13,7 @@ import com.example.demo.repository.UserRepo;
 
 @Service
 public class CommentsCommunityService {
+
 	@Autowired
 	CommentsCommunityRepo commentsCommutinyRepo;
 

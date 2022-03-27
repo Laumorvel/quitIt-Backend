@@ -109,7 +109,7 @@ public class CommentCommunity {
 	 */
 	@Override
 	public String toString() {
-		return "ComentsCommunity [id=" + id + ", text=" + text + ", user=" + user + ", date=" + date + "]";
+		return "CommentsCommunity [id=" + id + ", text=" + text + ", user=" + user + ", date=" + date + "]";
 	}
 
 }
