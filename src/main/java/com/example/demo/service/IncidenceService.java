@@ -1,11 +1,8 @@
 package com.example.demo.service;
 
-import java.time.LocalDate;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.example.demo.model.CommentsCommunity;
 import com.example.demo.model.Incidence;
 import com.example.demo.model.State;
 import com.example.demo.model.User;

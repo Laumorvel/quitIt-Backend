@@ -12,6 +12,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -106,37 +107,41 @@ public class User {
 	 */
 	@Column(nullable = false)
 	private Integer smokingDays = 0;
-	
+
 	/**
-	 * Representa los cigarrillos que el usuario sí ha fumado desde que comenzó a usar la app
+	 * Representa los cigarrillos que el usuario sí ha fumado desde que comenzó a
+	 * usar la app
 	 */
 	private Integer cigarettesSmoked;
-	
+
 	/**
 	 * El dinero que lleva ahorrado
 	 */
 	private double moneySaved;
-	
+
 	@Column(nullable = false)
 	private String username;
+
+	@OneToOne
+	private FileDB file;
 
 	/**
 	 * Constructor vacío.
 	 */
-	public User() {}
+	public User() {
+	}
 
-	public User(String name, String lastName, String username, String email, String password, String rol, Integer cigarettesBeforePerDay,
-			Double moneyPerDay) {
+	public User(String name, String lastName, String username, String email, String password, String rol,
+			Integer cigarettesBeforePerDay, Double moneyPerDay) {
 		this.name = name;
 		this.lastName = lastName;
-		this.username=username;
+		this.username = username;
 		this.email = email;
 		this.password = password;
 		this.rol = rol;
 		this.cigarettesBeforePerDay = cigarettesBeforePerDay;
 		this.moneyPerDay = moneyPerDay;
 	}
-
 
 	/**
 	 * Getters y setter de user
@@ -279,7 +284,6 @@ public class User {
 		this.userList = userList;
 	}
 
-
 	public LocalDate getStartDate() {
 		return startDate;
 	}
@@ -287,7 +291,6 @@ public class User {
 	public void setStartDate(LocalDate startDate) {
 		this.startDate = startDate;
 	}
-	
 
 	public Integer getSmokingDays() {
 		return smokingDays;
@@ -312,8 +315,6 @@ public class User {
 	public void setMoneySmoker(double moneySmoker) {
 		this.moneySaved = moneySmoker;
 	}
-	
-	
 
 	public String getUsername() {
 		return username;
@@ -321,6 +322,14 @@ public class User {
 
 	public void setUsername(String username) {
 		this.username = username;
+	}
+
+	public FileDB getFile() {
+		return file;
+	}
+
+	public void setFile(FileDB file) {
+		this.file = file;
 	}
 
 	/**
