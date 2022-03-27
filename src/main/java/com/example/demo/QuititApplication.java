@@ -12,7 +12,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import com.example.demo.model.Achievement;
-import com.example.demo.model.CommentsCommunity;
+import com.example.demo.model.CommentCommunity;
 import com.example.demo.model.MeetUp;
 import com.example.demo.model.Penalty;
 import com.example.demo.model.User;
@@ -58,9 +58,9 @@ public class QuititApplication {
 		
 		
 		//Comentarios de la comunidad
-		CommentsCommunity comentarioComunidad1 = new CommentsCommunity("Buenos dias!",usuarioUser1, fecha1);
+		CommentCommunity comentarioComunidad1 = new CommentCommunity("Buenos dias!",usuarioUser1, fecha1);
 		
-		CommentsCommunity comentarioComunidad2 = new CommentsCommunity("Otro día más sumando!!!",usuarioUser2, fecha1);
+		CommentCommunity comentarioComunidad2 = new CommentCommunity("Otro día más sumando!!!",usuarioUser2, fecha1);
 		
 		
 		//MeetUps
