@@ -1,5 +1,6 @@
 package com.example.demo.controller;
 
+
 import java.util.List;
 
 import javax.mail.MessagingException;
@@ -15,7 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.error.UserNotFoundException;
-import com.example.demo.model.CommentsCommunity;
+import com.example.demo.model.CommentCommunity;
 import com.example.demo.model.Message;
 import com.example.demo.model.User;
 import com.example.demo.repository.UserRepo;
@@ -64,13 +65,13 @@ public class UserController {
 
 
 	 @GetMapping("/commentsCommunity")
-	    public List<CommentsCommunity> getComments() {
+	    public List<CommentCommunity> getComments() {
 	    	return commentsCommunityService.getComments();
 	     	
 		}
 	 
 	 @PostMapping("/commentsCommunity")
-	    public CommentsCommunity addCommentsCommunity(@RequestBody CommentsCommunity datos) {
+	    public CommentCommunity addCommentsCommunity(@RequestBody CommentCommunity datos) {
 	    	
 	    	String email = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 	        User result =  userRepo.findByEmail(email);

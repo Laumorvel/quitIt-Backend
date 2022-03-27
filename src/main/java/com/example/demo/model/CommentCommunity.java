@@ -12,13 +12,14 @@ import javax.persistence.ManyToOne;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
-public class CommentsCommunity {
+public class CommentCommunity {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	private String text;
 
+	@JsonIgnore
 	@ManyToOne
 	private User user;
 	private LocalDate date;
@@ -26,7 +27,7 @@ public class CommentsCommunity {
 	/**
 	 * Constructor vacio.
 	 */
-	public CommentsCommunity() {
+	public CommentCommunity() {
 	}
 
 	/**
@@ -36,10 +37,14 @@ public class CommentsCommunity {
 	 * @param user
 	 * @param date
 	 */
-	public CommentsCommunity(String text, User user, LocalDate date) {
+	public CommentCommunity(String text, User user, LocalDate date) {
 		this.text = text;
 		this.user = user;
 		this.date = date;
+	}
+	
+	public CommentCommunity(String text) {
+		this.text = text;
 	}
 
 	/**
@@ -95,7 +100,7 @@ public class CommentsCommunity {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		CommentsCommunity other = (CommentsCommunity) obj;
+		CommentCommunity other = (CommentCommunity) obj;
 		return Objects.equals(id, other.id);
 	}
 
