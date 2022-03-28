@@ -8,7 +8,7 @@ import javax.persistence.Lob;
 import org.hibernate.annotations.GenericGenerator;
 
 @Entity
-public class FileDB {
+public class File {
 
 	@Id
 	@GeneratedValue(generator = "files")
@@ -22,10 +22,10 @@ public class FileDB {
 
 	private static Integer COUNT = 0;
 
-	public FileDB() {
+	public File() {
 	}
 
-	public FileDB(String name, String type, byte[] data) {
+	public File(String name, String type, byte[] data) {
 		this.name = name;
 		this.type = type;
 		this.data = data;
