@@ -123,7 +123,7 @@ public class User {
 	private String username;
 
 	@OneToOne
-	private FileDB file;
+	private File file;
 
 	/**
 	 * Constructor vacío.
@@ -324,11 +324,11 @@ public class User {
 		this.username = username;
 	}
 
-	public FileDB getFile() {
+	public File getFile() {
 		return file;
 	}
 
-	public void setFile(FileDB file) {
+	public void setFile(File file) {
 		this.file = file;
 	}
 
