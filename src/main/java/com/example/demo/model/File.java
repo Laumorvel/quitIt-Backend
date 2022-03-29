@@ -8,6 +8,7 @@ import javax.persistence.Lob;
 import org.hibernate.annotations.GenericGenerator;
 
 @Entity
+
 public class File {
 
 	@Id
@@ -60,5 +61,6 @@ public class File {
 	public void setData(byte[] data) {
 		this.data = data;
 	}
+
 
 }
