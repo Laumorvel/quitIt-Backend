@@ -10,14 +10,17 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.demo.error.IncidenceNotExist;
 import com.example.demo.error.UserNotFoundException;
-import com.example.demo.model.CommentCommunity;
 import com.example.demo.model.Achievement;
+import com.example.demo.model.CommentCommunity;
 import com.example.demo.model.Incidence;
 import com.example.demo.model.MeetUp;
 import com.example.demo.model.Message;
@@ -86,6 +89,18 @@ public class UserController {
 	     	
 		}
 	 
+	 @GetMapping("/commentsCommunity/{idC}")
+	    public CommentCommunity getCommentById(@PathVariable Long idC) {
+		 CommentCommunity comment= incidenceService.getCommentById(idC);
+			
+			if (comment == null) {
+				throw new IncidenceNotExist((long)idC);
+			} else {
+				return comment;
+			}
+	     	
+		}
+	 
 	 @PostMapping("/commentsCommunity")
 	    public CommentCommunity addCommentsCommunity(@RequestBody CommentCommunity datos) {
 	    	
@@ -115,6 +130,31 @@ public class UserController {
 			}
 		}
 	
+	 
+	 @PutMapping("/incidence/{idi}")
+		public Incidence editIncidence(@PathVariable Long idi, @RequestBody CommentCommunity comentario) {
+		 
+		 String email = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+	     User result =  userRepo.findByEmail(email);
+	     
+	     if(result==null) {
+				throw new UserNotFoundException();
+			}
+			else {
+				Incidence incidence= incidenceService.editIncidence(idi, comentario);
+				
+				if (incidence == null) {
+					throw new IncidenceNotExist(idi);
+				} else {
+					return incidence;
+				}
+			}
+		}
+	 
+	 @GetMapping("/incidence")
+	    public List<Incidence> getAllIncidences() {
+	    	return incidenceService.getAllIncidences();
+		}
 	 
 	 @GetMapping("/users")
 	    public List<User> getAllUsers() {
