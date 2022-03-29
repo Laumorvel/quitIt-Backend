@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
@@ -22,6 +23,7 @@ import com.example.demo.error.FileNotFoundException;
 import com.example.demo.error.UserNotFoundException;
 import com.example.demo.fileMessage.MessageFile;
 import com.example.demo.model.File;
+import com.example.demo.model.FileCredentials;
 import com.example.demo.model.User;
 import com.example.demo.repository.UserRepo;
 import com.example.demo.service.FileService;
@@ -37,6 +39,7 @@ public class FileController {
 
 	/**
 	 * Consigue una imagen concreta
+	 * 
 	 * @return la imagen buscada
 	 */
 	@GetMapping("/file")
@@ -55,6 +58,7 @@ public class FileController {
 
 	/**
 	 * Método para añadir una nueva imagen del usuario
+	 * 
 	 * @param file
 	 * @return mensaje de error o éxito de la subida de la imagen
 	 * @throws IOException
@@ -62,7 +66,22 @@ public class FileController {
 	@PostMapping("/file")
 	public ResponseEntity<MessageFile> addFile(@RequestParam("file") MultipartFile file) throws IOException {
 
-		// Se comprueba que el usuario exista
+		String msg;
+		// Se devuelve un mensaje indicando si se pudo o no subir la imagen
+		try {
+			fileService.addFile(file);
+			msg = "Your file was successfully uploaded";
+			return ResponseEntity.status(HttpStatus.OK).body(new MessageFile(msg));
+		} catch (Exception e) {
+			msg = "Failed upload. Your file encountered an error while trying to upload it";
+			return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(new MessageFile(msg));
+		}
+
+	}
+
+	@PostMapping("/file/user")
+	public File setAndGetFileFromUser(@RequestBody FileCredentials fileName) {
+		// Se consigue al usuario
 		User user;
 		try {
 			String email = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -71,32 +90,21 @@ public class FileController {
 			throw new UserNotFoundException();
 		}
 
-		// Se comprueba que el usuario no posea ya una imagen
-		if (user.getFile() != null) {//--> aquí daba error lunes 28 marzo.  ARREGLAR
-			throw new AlreadyExistingFileException();
-		} else {
-			String msg;
-			//Se devuelve un mensaje indicando si se pudo o no subir la imagen
-			try {
-				fileService.addFile(file);
-				msg = "Your file was successfully uploaded";
-				return ResponseEntity.status(HttpStatus.OK).body(new MessageFile(msg));
-			} catch (Exception e) {
-				msg = "Failed upload. Your file encountered an error while trying to upload it";
-				return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(new MessageFile(msg));
-			}
-		}
+		return fileService.setFileToUser(fileName.getFileName(), user);
 	}
-	
+
 	/**
-	 * Modifica la imagen del usuario sustituyéndola por otra que se pasa por requestParam
+	 * Modifica la imagen del usuario sustituyéndola por otra que se pasa por
+	 * requestParam
+	 * 
 	 * @param id
 	 * @param file
 	 * @return mensaje de éxito o error de la subida de imagen
 	 * @throws IOException
 	 */
 	@PutMapping("/file/{id}")
-	public File modifyFileFromUser(@PathVariable String id, @RequestParam("file") MultipartFile file) throws IOException {
+	public File modifyFileFromUser(@PathVariable String id, @RequestParam("file") MultipartFile file)
+			throws IOException {
 		User user;
 		try {
 			String email = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -106,8 +114,8 @@ public class FileController {
 		}
 		return fileService.modifyFileFromUser(user, file);
 	}
-	
-	//EXCEPCIONES------------------------------------------------------------
+
+	// EXCEPCIONES------------------------------------------------------------
 
 	/**
 	 * Se gestiona la excepción específica si el archivo no se encuentra
