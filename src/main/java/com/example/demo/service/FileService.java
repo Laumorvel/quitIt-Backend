@@ -11,12 +11,16 @@ import com.example.demo.error.FileNotFoundException;
 import com.example.demo.model.File;
 import com.example.demo.model.User;
 import com.example.demo.repository.FileRepository;
+import com.example.demo.repository.UserRepo;
 
 @Service
 public class FileService {
 
 	@Autowired
 	private FileRepository fileRepo;
+
+	@Autowired
+	private UserRepo userRepo;
 
 	/**
 	 * Transforma la imagen que recibe, que es un objeto multipartfile en fileDB
@@ -28,13 +32,13 @@ public class FileService {
 	 */
 	public File addFile(MultipartFile file) throws IOException {
 		String fileName = StringUtils.cleanPath(file.getOriginalFilename());
-		File FileDB = new File(fileName, file.getContentType(), file.getBytes());
-		return fileRepo.save(FileDB);
+		File file1 = new File(fileName, file.getContentType(), file.getBytes());
+		return fileRepo.save(file1);
 	}
 
 	/**
 	 * Consigue la imagen guardada del usuario a través del id de la foto que posee
-	 * guardada en la bbdd
+	 * guardada en la bbdd el usuario
 	 * 
 	 * @param user
 	 * @return FileDB del usuario
@@ -85,6 +89,28 @@ public class FileService {
 		} catch (Exception e) {
 			throw new FileNotFoundException();
 		}
+	}
+
+	/**
+	 * Encuentra la imagen en la bbdd y se la asigna al usuario correspondiente
+	 * @param fileName
+	 * @param user
+	 * @return la imagen del usuario
+	 */
+	public File setFileToUser(String fileName, User user) {
+		// Encuentro el archivo en la bbdd
+		File file;
+		try {
+			file = fileRepo.findByName(fileName);
+		} catch (Exception e) {
+			throw new FileNotFoundException();
+		}
+
+		// Se la asigno al usuario
+		user.setFile(file);
+		userRepo.save(user);
+		return file;
+
 	}
 
 }

@@ -12,7 +12,7 @@ import org.hibernate.annotations.GenericGenerator;
 public class File {
 
 	@Id
-	@GeneratedValue(generator = "files")
+	@GeneratedValue(generator = "uuid")
 	@GenericGenerator(name = "uuid", strategy = "uuid2")
 	private String id;
 	private String name;
@@ -20,8 +20,6 @@ public class File {
 
 	@Lob
 	private byte[] data;
-
-	private static Integer COUNT = 0;
 
 	public File() {
 	}
@@ -64,12 +62,5 @@ public class File {
 		this.data = data;
 	}
 
-	public static Integer getCOUNT() {
-		return COUNT;
-	}
-
-	public static void setCOUNT(Integer COUNT) {
-		COUNT = COUNT;
-	}
 
 }
