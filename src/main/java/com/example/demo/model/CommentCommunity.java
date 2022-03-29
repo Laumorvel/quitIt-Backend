@@ -19,10 +19,11 @@ public class CommentCommunity {
 	private Long id;
 	private String text;
 
-	@JsonIgnore
+	
 	@ManyToOne
 	private User user;
 	private LocalDate date;
+	
 
 	/**
 	 * Constructor vacio.

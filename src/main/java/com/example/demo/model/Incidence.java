@@ -18,7 +18,9 @@ public class Incidence {
 	private String text;
 	@ManyToOne
 	private User user;
-	private State state;
+	@ManyToOne	
+	private CommentCommunity comment;
+	private State state;																							
 	
 	
 	/**
@@ -94,6 +96,15 @@ public class Incidence {
 		this.state = state;
 	}
 
+	
+
+	public CommentCommunity getComment() {
+		return comment;
+	}
+
+	public void setComment(CommentCommunity comment) {
+		this.comment = comment;
+	}
 
 	/**
 	 * HashCode y Equals de la id de la incidencia

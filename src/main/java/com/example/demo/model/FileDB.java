@@ -9,6 +9,7 @@ import org.hibernate.annotations.GenericGenerator;
 
 @Entity
 public class FileDB {
+	
 
 	@Id
 	@GeneratedValue(generator = "files")
@@ -67,8 +68,8 @@ public class FileDB {
 		return COUNT;
 	}
 
-	public static void setCOUNT(Integer cOUNT) {
-		COUNT = cOUNT;
+	public static void setCOUNT(Integer COUNT) {
+		COUNT = COUNT;
 	}
 
 }
