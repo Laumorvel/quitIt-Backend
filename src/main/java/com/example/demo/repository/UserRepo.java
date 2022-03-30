@@ -29,6 +29,13 @@ public interface UserRepo extends JpaRepository<User, Long> {
 	@Query(value="select * from user", nativeQuery = true) 
 	public List<User> findAllUsers();
 
+	/**
+	 * Query para conseguir a un usuario a través del id de su imagen
+	 * @param fileId
+	 * @return user
+	 */
+	@Query(value="SELECT * FROM user WHERE file_id=?1", nativeQuery = true)
+	public User getUserFromFileId(String fileId);
 
 
 	

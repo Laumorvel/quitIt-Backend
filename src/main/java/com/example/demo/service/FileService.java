@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.example.demo.error.AlreadyExistingFileException;
 import com.example.demo.error.FileNotFoundException;
 import com.example.demo.model.File;
 import com.example.demo.model.User;
@@ -32,6 +33,10 @@ public class FileService {
 	 */
 	public File addFile(MultipartFile file) throws IOException {
 		String fileName = StringUtils.cleanPath(file.getOriginalFilename());
+		//Se comprueba que el usuario no haya subido ya esa imagen
+		if(fileRepo.getFileByName(fileName) != null) {
+			throw new AlreadyExistingFileException();
+		}
 		File file1 = new File(fileName, file.getContentType(), file.getBytes());
 		return fileRepo.save(file1);
 	}

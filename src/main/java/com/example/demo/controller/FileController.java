@@ -107,8 +107,7 @@ public class FileController {
 			throws IOException {
 		User user;
 		try {
-			String email = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-			user = userRepo.findByEmail(email);
+			user = userRepo.getUserFromFileId(id);
 		} catch (Exception e) {
 			throw new UserNotFoundException();
 		}
