@@ -120,16 +120,18 @@ public class CorsConfig implements WebMvcConfigurer {
 						"Authorization")
 				.exposedHeaders("Access-Control-Allow-Origin", "Access-Control-Allow-Credentials");
 				
+				//Añadir una imagen
 				registry.addMapping("/file").allowedOrigins(urlFront)
 				.allowedHeaders("GET", "POST", "OPTIONS", "PUT", "Content-Type", "X-Requested-With", "accept",
 						"Origin", "Access-Control-Request-Method", "Access-Control-Request-Headers",
 						"Authorization")
 				.exposedHeaders("Access-Control-Allow-Origin", "Access-Control-Allow-Credentials");
 				
+				//Modificar la imagen de un usuario
 				registry.addMapping("/file/{id}").allowedOrigins(urlFront)
-				.allowedHeaders("GET", "POST", "OPTIONS", "PUT", "Content-Type", "X-Requested-With", "accept",
-						"Origin", "Access-Control-Request-Method", "Access-Control-Request-Headers",
-						"Authorization")
+				.allowedMethods("GET", "POST", "OPTIONS", "PUT")
+				.allowedHeaders("Content-Type", "Authorization", "X-Requested-With", "accept", "Origin",
+						"Access-Control-Request-Method", "Access-Control-Request-Headers")
 				.exposedHeaders("Access-Control-Allow-Origin", "Access-Control-Allow-Credentials");
 				
 				//Añadirle la imagen al usuario
