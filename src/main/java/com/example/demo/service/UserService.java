@@ -27,6 +27,5 @@ public class UserService {
 		return userRepo.findAllUsers();
 	}
 	
-	
 
 }

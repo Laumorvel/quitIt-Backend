@@ -105,21 +105,21 @@ public class AuthController {
 	@ExceptionHandler(PasswordException.class)
 	public ResponseEntity<ApiError> passwordError(PasswordException ex) throws Exception {
 		ApiError e = new ApiError();
-		e.setEstado(HttpStatus.BAD_REQUEST);
+		e.setEstado(HttpStatus.UNAUTHORIZED);
 		e.setMensaje(ex.getMessage());
 		e.setFecha(LocalDateTime.now());
 
-		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e);
+		return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(e);
 	}
 
 	@ExceptionHandler(EmailPasswordException.class)
 	public ResponseEntity<ApiError> emailPasswordError(EmailPasswordException ex) throws Exception {
 		ApiError e = new ApiError();
-		e.setEstado(HttpStatus.BAD_REQUEST);
+		e.setEstado(HttpStatus.UNAUTHORIZED);
 		e.setMensaje(ex.getMessage());
 		e.setFecha(LocalDateTime.now());
 
-		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e);
+		return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(e);
 	}
 
 
