@@ -119,19 +119,26 @@ public class UserController {
 			return this.commentsCommunityService.addCommentCommunity(result, datos);
 		}
 	}
-
-	@PostMapping("/incidence")
-	public Incidence createIncidence(@RequestBody Incidence datos) {
-
-		String email = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		User result = userRepo.findByEmail(email);
-
-		if (result == null) {
-			throw new UserNotFoundException();
-		} else {
-			return this.incidenceService.createIncidence(result, datos);
+	
+	 @GetMapping("/incidence")
+	    public List<Incidence> getAllIncidences() {
+	    	return incidenceService.getAllIncidences();
 		}
+	 
+	 @PostMapping("/incidence")
+	    public Incidence createIncidence(@RequestBody Incidence datos) {
+	    	
+	    	String email = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+	        User result =  userRepo.findByEmail(email);
+	   
+	    	if(result==null) {
+				throw new UserNotFoundException();
+			}
+			else {
+				return this.incidenceService.createIncidence(result, datos);
+			}
 	}
+	    	
 
 	@PutMapping("/incidence/{idi}")
 	public Incidence editIncidence(@PathVariable Long idi, @RequestBody CommentCommunity comentario) {
@@ -152,30 +159,32 @@ public class UserController {
 		}
 	}
 
-	@GetMapping("/incidence")
-	public List<Incidence> getAllIncidences() {
-		return incidenceService.getAllIncidences();
-	}
-
-	@GetMapping("/users")
-	public List<User> getAllUsers() {
-		return userService.getAllUsers();
-	}
-
-	@GetMapping("/meetUp")
-	public List<MeetUp> getAllMeetUps() {
-		return meetUpService.getAllMeetUps();
-	}
-
-	@GetMapping("/achievement")
-	public List<Achievement> getAllAchievement() {
-		return achievementService.getAllAchievement();
-	}
-
-	@GetMapping("/penalty")
-	public List<Penalty> getAllPenalty() {
-		return penaltyService.getAllPenalty();
-	}
+	 
+	
+	 
+	 @GetMapping("/users")
+	    public List<User> getAllUsers() {
+	    	return userService.getAllUsers();
+		}
+	 
+	 
+	 @GetMapping("/meetUp")
+	    public List<MeetUp> getAllMeetUps() {
+	    	return meetUpService.getAllMeetUps(); 	
+		}
+	 
+	 @GetMapping("/achievement")
+	    public List<Achievement> getAllAchievement() {
+	    	return achievementService.getAllAchievement(); 	
+		}
+	 
+	 @GetMapping("/penalty")
+	    public List<Penalty> getAllPenalty() {
+	    	return penaltyService.getAllPenalty(); 	
+		}
+	 
+	 
+	 
 
 	@PostMapping("/mail")
 	public void sendEmail(@RequestBody Message datos) throws MessagingException {
