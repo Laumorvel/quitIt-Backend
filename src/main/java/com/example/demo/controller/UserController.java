@@ -115,6 +115,10 @@ public class UserController {
 			}
 		}
 	
+	 @GetMapping("/incidence")
+	    public List<Incidence> getAllIncidences() {
+	    	return incidenceService.getAllIncidences();
+		}
 	 
 	 @PostMapping("/incidence")
 	    public Incidence createIncidence(@RequestBody Incidence datos) {
@@ -151,10 +155,7 @@ public class UserController {
 			}
 		}
 	 
-	 @GetMapping("/incidence")
-	    public List<Incidence> getAllIncidences() {
-	    	return incidenceService.getAllIncidences();
-		}
+	
 	 
 	 @GetMapping("/users")
 	    public List<User> getAllUsers() {
