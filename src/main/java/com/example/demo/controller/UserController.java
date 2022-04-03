@@ -1,6 +1,6 @@
 package com.example.demo.controller;
 
-
+import java.time.LocalDateTime;
 import java.util.List;
 
 import javax.mail.MessagingException;
@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -17,6 +18,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.demo.error.AlreadySetAsAnSmokingDayException;
+import com.example.demo.error.ApiError;
 import com.example.demo.error.IncidenceNotExist;
 import com.example.demo.error.UserNotFoundException;
 import com.example.demo.model.Achievement;
@@ -37,83 +40,85 @@ import com.example.demo.service.UserService;
 
 @RestController
 public class UserController {
-	
-	 @Autowired private UserRepo userRepo;
-	 
-	 @Autowired private UserService userService;
-	 
-	 @Autowired private CommentsCommunityService commentsCommunityService;
-	 
-	 @Autowired private IncidenceService incidenceService;
-	 
-	 @Autowired private MeetUpService meetUpService;
-	 
-	 @Autowired private AchievementService achievementService;
-	 
-	 @Autowired private PenaltyService penaltyService;
-	 
-	 @Autowired private SmtpMailSender smtpMailSender;
-	    
-	  
-	
+
+	@Autowired
+	private UserRepo userRepo;
+
+	@Autowired
+	private UserService userService;
+
+	@Autowired
+	private CommentsCommunityService commentsCommunityService;
+
+	@Autowired
+	private IncidenceService incidenceService;
+
+	@Autowired
+	private MeetUpService meetUpService;
+
+	@Autowired
+	private AchievementService achievementService;
+
+	@Autowired
+	private PenaltyService penaltyService;
+
+	@Autowired
+	private SmtpMailSender smtpMailSender;
+
 	@GetMapping("/user")
-    public ResponseEntity<User> getUser() {
-    	
-    	String email = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-    	User result =  userRepo.findByEmail(email);
-        
-    	if(result==null) {
-    		throw new UserNotFoundException();
-    	}
-    	else {
-    		return ResponseEntity.status(HttpStatus.OK).body(result);
-    	}
-     	
+	public ResponseEntity<User> getUser() {
+
+		String email = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		User result = userRepo.findByEmail(email);
+
+		if (result == null) {
+			throw new UserNotFoundException();
+		} else {
+			return ResponseEntity.status(HttpStatus.OK).body(result);
+		}
+
 	}
-	
-	
-	 @GetMapping("/email")
-	 public User checkEmailUsers(@RequestParam(required = false) String email, @RequestParam(required = false) String username) {
-			if (username == null) {
-				return userService.getUserEmail(email);
-			} else {
-				return userService.getUsername(username);
-			}
+
+	@GetMapping("/email")
+	public User checkEmailUsers(@RequestParam(required = false) String email,
+			@RequestParam(required = false) String username) {
+		if (username == null) {
+			return userService.getUserEmail(email);
+		} else {
+			return userService.getUsername(username);
+		}
+	}
+
+	@GetMapping("/commentsCommunity")
+	public List<CommentCommunity> getComments() {
+		return commentsCommunityService.getComments();
+
+	}
+
+	@GetMapping("/commentsCommunity/{idC}")
+	public CommentCommunity getCommentById(@PathVariable Long idC) {
+		CommentCommunity comment = incidenceService.getCommentById(idC);
+
+		if (comment == null) {
+			throw new IncidenceNotExist((long) idC);
+		} else {
+			return comment;
 		}
 
+	}
 
+	@PostMapping("/commentsCommunity")
+	public CommentCommunity addCommentsCommunity(@RequestBody CommentCommunity datos) {
 
-	 @GetMapping("/commentsCommunity")
-	    public List<CommentCommunity> getComments() {
-	    	return commentsCommunityService.getComments();
-	     	
+		String email = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		User result = userRepo.findByEmail(email);
+
+		if (result == null) {
+			throw new UserNotFoundException();
+		} else {
+			return this.commentsCommunityService.addCommentCommunity(result, datos);
 		}
-	 
-	 @GetMapping("/commentsCommunity/{idC}")
-	    public CommentCommunity getCommentById(@PathVariable Long idC) {
-		 CommentCommunity comment= incidenceService.getCommentById(idC);
-			
-			if (comment == null) {
-				throw new IncidenceNotExist((long)idC);
-			} else {
-				return comment;
-			}
-	     	
-		}
-	 
-	 @PostMapping("/commentsCommunity")
-	    public CommentCommunity addCommentsCommunity(@RequestBody CommentCommunity datos) {
-	    	
-	    	String email = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-	        User result =  userRepo.findByEmail(email);
-	   
-	    	if(result==null) {
-				throw new UserNotFoundException();
-			}
-			else {
-				return this.commentsCommunityService.addCommentCommunity(result, datos);
-			}
-		}
+	}
 	
 	 @GetMapping("/incidence")
 	    public List<Incidence> getAllIncidences() {
@@ -132,28 +137,28 @@ public class UserController {
 			else {
 				return this.incidenceService.createIncidence(result, datos);
 			}
-		}
-	
-	 
-	 @PutMapping("/incidence/{idi}")
-		public Incidence editIncidence(@PathVariable Long idi, @RequestBody CommentCommunity comentario) {
-		 
-		 String email = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-	     User result =  userRepo.findByEmail(email);
-	     
-	     if(result==null) {
-				throw new UserNotFoundException();
-			}
-			else {
-				Incidence incidence= incidenceService.editIncidence(idi, comentario);
-				
-				if (incidence == null) {
-					throw new IncidenceNotExist(idi);
-				} else {
-					return incidence;
-				}
+	}
+	    	
+
+	@PutMapping("/incidence/{idi}")
+	public Incidence editIncidence(@PathVariable Long idi, @RequestBody CommentCommunity comentario) {
+
+		String email = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		User result = userRepo.findByEmail(email);
+
+		if (result == null) {
+			throw new UserNotFoundException();
+		} else {
+			Incidence incidence = incidenceService.editIncidence(idi, comentario);
+
+			if (incidence == null) {
+				throw new IncidenceNotExist(idi);
+			} else {
+				return incidence;
 			}
 		}
+	}
+
 	 
 	
 	 
@@ -180,15 +185,23 @@ public class UserController {
 	 
 	 
 	 
-	
+
 	@PostMapping("/mail")
-    public void sendEmail(@RequestBody Message datos) throws MessagingException {
-    	datos.setToUser("aalira.96@gmail.com");
-    	
+	public void sendEmail(@RequestBody Message datos) throws MessagingException {
+		datos.setToUser("aalira.96@gmail.com");
+
 		smtpMailSender.send(datos.getToUser(), datos.getSubject(), datos.getText(), datos.getFromUser());
-	} 
+	}
 	
-	
-	
-	
+	//EXCEPCIONES--------------------------------------------------------
+	@ExceptionHandler(AlreadySetAsAnSmokingDayException.class)
+	public ResponseEntity<ApiError> alreadySetAsAnSmokingDayException(AlreadySetAsAnSmokingDayException ex) throws Exception {
+		ApiError e = new ApiError();
+		e.setEstado(HttpStatus.CONFLICT);
+		e.setMensaje(ex.getMessage());
+		e.setFecha(LocalDateTime.now());
+
+		return ResponseEntity.status(HttpStatus.CONFLICT).body(e);
+	}
+
 }
