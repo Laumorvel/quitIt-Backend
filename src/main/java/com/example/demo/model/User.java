@@ -15,7 +15,6 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
-import com.example.demo.error.AlreadySetAsAnSmokingDayException;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 /**
@@ -140,6 +139,35 @@ public class User {
 	public User() {
 	}
 
+	public User(Long id, String name, String lastName, String email, String password, String rol,
+			Integer daysInARowWithoutSmoking, Integer cigarettesAvoided, Integer totalTimeWithoutSmoking,
+			List<Group> groupList, List<User> userList, List<Achievement> achievementList, List<Penalty> penalties,
+			LocalDate startDate, Integer cigarettesBeforePerDay, Double moneyPerDay, Integer smokingDays,
+			Integer cigarettesSmoked, double moneySaved, String username, File file, LocalDate lastDateSmoking) {
+		this.id = id;
+		this.name = name;
+		this.lastName = lastName;
+		this.email = email;
+		this.password = password;
+		this.rol = rol;
+		this.daysInARowWithoutSmoking = daysInARowWithoutSmoking;
+		this.cigarettesAvoided = cigarettesAvoided;
+		this.totalTimeWithoutSmoking = totalTimeWithoutSmoking;
+		this.groupList = groupList;
+		this.userList = userList;
+		this.achievementList = achievementList;
+		this.penalties = penalties;
+		this.startDate = startDate;
+		this.cigarettesBeforePerDay = cigarettesBeforePerDay;
+		this.moneyPerDay = moneyPerDay;
+		this.smokingDays = smokingDays;
+		this.cigarettesSmoked = cigarettesSmoked;
+		this.moneySaved = moneySaved;
+		this.username = username;
+		this.file = file;
+		this.lastDateSmoking = lastDateSmoking;
+	}
+
 	public User(String name, String lastName, String username, String email, String password, String rol,
 			Integer cigarettesBeforePerDay, Double moneyPerDay) {
 		this.name = name;
@@ -259,6 +287,7 @@ public class User {
 
 	/**
 	 * Suma al total los cigarros indicados
+	 * 
 	 * @param cigarettesSmoked
 	 */
 	public void setCigarettesSmoked(Integer cigarettesSmoked) {
@@ -406,8 +435,10 @@ public class User {
 	public void calculaTotalDaysInARowWithoutSmoking() {
 		if (lastDateSmoking == null) {
 			daysInARowWithoutSmoking = (int) ChronoUnit.DAYS.between(startDate, LocalDate.now());
+		} else if (lastDateSmoking.isEqual(LocalDate.now())) {
+			daysInARowWithoutSmoking = 0;
 		} else {
-			daysInARowWithoutSmoking =  (int) ChronoUnit.DAYS.between(lastDateSmoking, LocalDate.now());
+			daysInARowWithoutSmoking = (int) ChronoUnit.DAYS.between(lastDateSmoking, LocalDate.now());
 		}
 	}
 
@@ -424,8 +455,8 @@ public class User {
 	}
 
 	/**
-	 * TOTAL TIME WITHOUT SMOKING
-	 * Calcula el número total de días en los que el usuario no ha fumado
+	 * TOTAL TIME WITHOUT SMOKING Calcula el número total de días en los que el
+	 * usuario no ha fumado
 	 * 
 	 * @return dias sin fumar - Integer
 	 */
@@ -434,12 +465,11 @@ public class User {
 	}
 
 	/**
-	 * SMOKING DAYS +1 Añade un día más a los días que el usuario ha fumado
-	 * Setea el LAST DATE SMOKING
-	 * Comprueba que no se marque dos veces el mismo día
+	 * SMOKING DAYS +1 Añade un día más a los días que el usuario ha fumado Setea el
+	 * LAST DATE SMOKING Comprueba que no se marque dos veces el mismo día
 	 */
 	public void anadeDiaFumado() {
-		if(!lastDateSmoking.isEqual(LocalDate.now()) || lastDateSmoking == null) {
+		if (lastDateSmoking == null || !lastDateSmoking.isEqual(LocalDate.now())) {
 			smokingDays += 1;
 		}
 		lastDateSmoking = LocalDate.now();
@@ -455,33 +485,33 @@ public class User {
 	public void calculaDineroAhorrado() {
 		moneySaved = moneyPerDay * totalTimeWithoutSmoking;
 	}
-	
+
 	/**
-	 * Método para setear al usuario cuando marque que ha fumado.
-	 * Se le pasa el número de cigarros que ha fumado ese día
+	 * Método para setear al usuario cuando marque que ha fumado. Se le pasa el
+	 * número de cigarros que ha fumado ese día
+	 * 
 	 * @param cigarettesSmoked
 	 */
 	public void resetUserAfterSmoking(Integer cigarettesSmoked) {
-		if(lastDateSmoking != LocalDate.now()) {
-			calculaDiasDesdeComienzoApp();//Se hace el cálculo de los días naturales desde que usa la app (sin tener nada más en cuenta)
-			anadeDiaFumado();//se suma 1 al número de días que ha fumado
-			calcularTotalTimeWithoutSmoking();//calcula el tiempo total que lleva sin fumar
-			setCigarettesSmoked(cigarettesSmoked);//Indica los cigarros que ha fumado ese día y se los suma a los que llevaba
-			calculaCigarettesAvoided();//calcula los cigarros que ha evitado desde el comienzo (resta los fumados)
-			calculaTotalDaysInARowWithoutSmoking();//calcula los días seguidos que el user lleva sin fumar
-			calculaDineroAhorrado();//calcula el dinero que ha ahorrado desde el comienzo, teniendo en cuenta los días fumados
-		}else {
-			throw new AlreadySetAsAnSmokingDayException();//Indica que el usuario ya ha marcado ese día como día "fumado"
-		}
+		calculaDiasDesdeComienzoApp();// Se hace el cálculo de los días naturales desde que usa la app (sin tener
+										// nada más en cuenta)
+		anadeDiaFumado();// se suma 1 al número de días que ha fumado
+		calcularTotalTimeWithoutSmoking();// calcula el tiempo total que lleva sin fumar
+		setCigarettesSmoked(cigarettesSmoked);// Indica los cigarros que ha fumado ese día y se los suma a los que
+												// llevaba
+		setCigarettesAvoided(calculaCigarettesAvoided());// calcula los cigarros que ha evitado desde el comienzo (resta los fumados)
+		calculaTotalDaysInARowWithoutSmoking();// calcula los días seguidos que el user lleva sin fumar
+		calculaDineroAhorrado();// calcula el dinero que ha ahorrado desde el comienzo, teniendo en cuenta los
+								// días fumados
 	}
-	
+
 	/**
 	 * Método para setear al usuario cuando inicie sesión.
 	 */
 	public void setUserInitSession() {
 		calculaDiasDesdeComienzoApp();
 		calcularTotalTimeWithoutSmoking();
-		calculaCigarettesAvoided();
+		setCigarettesAvoided(calculaCigarettesAvoided());
 		calculaDineroAhorrado();
 		calculaTotalDaysInARowWithoutSmoking();
 	}

@@ -80,17 +80,33 @@ public class UserController {
 		if (result == null) {
 			throw new UserNotFoundException();
 		} else {
+			userService.setUser(result);
 			return ResponseEntity.status(HttpStatus.OK).body(result);
 		}
 
 	}
 
 	/**
-	 * Comprueba si el email o username esta enn la base de datos
-	 * @param email
-	 * @param username
-	 * @return
+
+	 * Actualiza la información del usuario una vez que este fuma de nuevo
+	 * inndicando los cigarrillos que ha fumado. Es posible actualizar este dato más
+	 * de una vez puesto que el usuario puede anota que ha fumado varias veces el
+	 * mismo día
+	 * 
+	 * @param cigarettes
+	 * @return usuario actualizado
 	 */
+	@PutMapping("/user")
+	public User updateUser(@RequestParam Integer cigarettes, @RequestBody User user1) {
+		User user = userRepo.findByEmail(user1.getEmail());
+
+		if (user == null) {
+			throw new UserNotFoundException();
+		}
+		return userService.updateUserAfertSmoking(cigarettes, user);
+	}
+
+
 	@GetMapping("/email")
 	public User checkEmailUsers(@RequestParam(required = false) String email,
 			@RequestParam(required = false) String username) {
@@ -145,6 +161,7 @@ public class UserController {
 			return this.commentsCommunityService.addCommentCommunity(result, datos);
 		}
 	}
+
 	
 	/**
 	 * Borra los comentarios de la comunidad
@@ -219,8 +236,7 @@ public class UserController {
 		}
 	}
 
-	 
-	
+ 	
 	/**
 	 * Da la lista de usuarios
 	 * @return
@@ -269,10 +285,11 @@ public class UserController {
 
 		smtpMailSender.send(datos.getToUser(), datos.getSubject(), datos.getText(), datos.getFromUser());
 	}
-	
-	//EXCEPCIONES--------------------------------------------------------
+
+	// EXCEPCIONES--------------------------------------------------------
 	@ExceptionHandler(AlreadySetAsAnSmokingDayException.class)
-	public ResponseEntity<ApiError> alreadySetAsAnSmokingDayException(AlreadySetAsAnSmokingDayException ex) throws Exception {
+	public ResponseEntity<ApiError> alreadySetAsAnSmokingDayException(AlreadySetAsAnSmokingDayException ex)
+			throws Exception {
 		ApiError e = new ApiError();
 		e.setEstado(HttpStatus.CONFLICT);
 		e.setMensaje(ex.getMessage());
