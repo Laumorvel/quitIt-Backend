@@ -72,7 +72,7 @@ public class CorsConfig implements WebMvcConfigurer {
 				.exposedHeaders("Access-Control-Allow-Origin", "Access-Control-Allow-Credentials");
 				
 				registry.addMapping("/commentsCommunity/{idC}").allowedOrigins(urlFront)
-				.allowedMethods("GET", "POST", "OPTIONS", "PUT")
+				.allowedMethods("GET", "POST", "OPTIONS", "PUT","DELETE")
 				.allowedHeaders("Content-Type", "Authorization", "X-Requested-With", "accept", "Origin",
 						"Access-Control-Request-Method", "Access-Control-Request-Headers")
 				.exposedHeaders("Access-Control-Allow-Origin", "Access-Control-Allow-Credentials");
@@ -87,7 +87,6 @@ public class CorsConfig implements WebMvcConfigurer {
 
 				registry.addMapping("/incidence/{idi}").allowedOrigins(urlFront)
 				.allowedMethods("GET", "POST", "OPTIONS", "PUT","DELETE")
-				.allowedMethods("GET", "POST", "OPTIONS", "PUT")
 				.allowedHeaders("Content-Type", "Authorization", "X-Requested-With", "accept", "Origin",
 						"Access-Control-Request-Method", "Access-Control-Request-Headers")
 				.exposedHeaders("Access-Control-Allow-Origin", "Access-Control-Allow-Credentials");

@@ -33,12 +33,24 @@ public class CommentsCommunityService {
 		comment.setText(datos.getText());
 		comment.setUser(user);
 
-		// user.getListaCitas().add(cita);
 		commentsCommutinyRepo.save(comment);
 		userRepo.save(user);
 
 		return comment;
 
+	}
+
+	public CommentCommunity delete(Long idC) {
+		if (commentsCommutinyRepo.existsById(idC)) {
+			
+			CommentCommunity c = commentsCommutinyRepo.findById(idC).get();
+			
+			commentsCommutinyRepo.deleteById(idC);
+			
+			return c;
+		} else {
+			return null;
+		}
 	}
 
 }
