@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.error.AlreadySetAsAnSmokingDayException;
 import com.example.demo.error.ApiError;
+import com.example.demo.error.CommentNotExist;
 import com.example.demo.error.IncidenceNotExist;
 import com.example.demo.error.UserNotFoundException;
 import com.example.demo.model.Achievement;
@@ -65,6 +67,10 @@ public class UserController {
 	@Autowired
 	private SmtpMailSender smtpMailSender;
 
+	/**
+	 * Devuelve el usuario
+	 * @return
+	 */
 	@GetMapping("/user")
 	public ResponseEntity<User> getUser() {
 
@@ -81,6 +87,7 @@ public class UserController {
 	}
 
 	/**
+
 	 * Actualiza la información del usuario una vez que este fuma de nuevo
 	 * inndicando los cigarrillos que ha fumado. Es posible actualizar este dato más
 	 * de una vez puesto que el usuario puede anota que ha fumado varias veces el
@@ -99,6 +106,7 @@ public class UserController {
 		return userService.updateUserAfertSmoking(cigarettes, user);
 	}
 
+
 	@GetMapping("/email")
 	public User checkEmailUsers(@RequestParam(required = false) String email,
 			@RequestParam(required = false) String username) {
@@ -109,12 +117,21 @@ public class UserController {
 		}
 	}
 
+	/**
+	 * Da la lista de comentarios de la comunidad
+	 * @return
+	 */
 	@GetMapping("/commentsCommunity")
 	public List<CommentCommunity> getComments() {
 		return commentsCommunityService.getComments();
 
 	}
 
+	/**
+	 * Muestra el comentario con la id indicada
+	 * @param idC
+	 * @return
+	 */
 	@GetMapping("/commentsCommunity/{idC}")
 	public CommentCommunity getCommentById(@PathVariable Long idC) {
 		CommentCommunity comment = incidenceService.getCommentById(idC);
@@ -127,6 +144,11 @@ public class UserController {
 
 	}
 
+	/**
+	 * Crea un comentario en el chat de la comunidad
+	 * @param datos
+	 * @return
+	 */
 	@PostMapping("/commentsCommunity")
 	public CommentCommunity addCommentsCommunity(@RequestBody CommentCommunity datos) {
 
@@ -140,24 +162,61 @@ public class UserController {
 		}
 	}
 
-	@GetMapping("/incidence")
-	public List<Incidence> getAllIncidences() {
-		return incidenceService.getAllIncidences();
-	}
-
-	@PostMapping("/incidence")
-	public Incidence createIncidence(@RequestBody Incidence datos) {
-
+	
+	/**
+	 * Borra los comentarios de la comunidad
+	 * @param idC
+	 * @return
+	 */
+	@DeleteMapping("/commentsCommunity/{idC}")
+	public ResponseEntity<?> deleteCommentsCommunity( @PathVariable Long idC) {
+		
 		String email = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		User result = userRepo.findByEmail(email);
-
+        Long id =  userRepo.findByEmail(email).getId();
+        
+		CommentCommunity result =  commentsCommunityService.delete(idC);
+		
 		if (result == null) {
-			throw new UserNotFoundException();
+			throw new CommentNotExist(id);
 		} else {
-			return this.incidenceService.createIncidence(result, datos);
+			return ResponseEntity.noContent().build();
 		}
 	}
 
+	/**
+	 * Da la lista de incidencias
+	 * @return
+	 */
+	 @GetMapping("/incidence")
+	    public List<Incidence> getAllIncidences() {
+	    	return incidenceService.getAllIncidences();
+		}
+	 
+	 /**
+	  * Crea una incidencia
+	  * @param datos
+	  * @return
+	  */
+	 @PostMapping("/incidence")
+	    public Incidence createIncidence(@RequestBody Incidence datos) {
+	    	
+	    	String email = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+	        User result =  userRepo.findByEmail(email);
+	   
+	    	if(result==null) {
+				throw new UserNotFoundException();
+			}
+			else {
+				return this.incidenceService.createIncidence(result, datos);
+			}
+	}
+	    	
+	 /**
+	  * Edita la incidencia añadiendole un comentario
+	  * @param idi
+	  * @param comentario
+	  * @return
+	  */
 	@PutMapping("/incidence/{idi}")
 	public Incidence editIncidence(@PathVariable Long idi, @RequestBody CommentCommunity comentario) {
 
@@ -177,26 +236,49 @@ public class UserController {
 		}
 	}
 
-	@GetMapping("/users")
-	public List<User> getAllUsers() {
-		return userService.getAllUsers();
-	}
-
-	@GetMapping("/meetUp")
-	public List<MeetUp> getAllMeetUps() {
-		return meetUpService.getAllMeetUps();
-	}
-
-	@GetMapping("/achievement")
-	public List<Achievement> getAllAchievement() {
-		return achievementService.getAllAchievement();
-	}
-
-	@GetMapping("/penalty")
-	public List<Penalty> getAllPenalty() {
-		return penaltyService.getAllPenalty();
-	}
-
+ 	
+	/**
+	 * Da la lista de usuarios
+	 * @return
+	 */
+	 @GetMapping("/users")
+	    public List<User> getAllUsers() {
+	    	return userService.getAllUsers();
+		}
+	 
+	/**
+	 * Da la lista de meet ups
+	 * @return
+	 */
+	 @GetMapping("/meetUp")
+	    public List<MeetUp> getAllMeetUps() {
+	    	return meetUpService.getAllMeetUps(); 	
+		}
+	 
+	/**
+	 * Da la lista de logros
+	 * @return
+	 */
+	 @GetMapping("/achievement")
+	    public List<Achievement> getAllAchievement() {
+	    	return achievementService.getAllAchievement(); 	
+		}
+	 
+	/**
+	 * Da la lista de penalizaciones
+	 * @return
+	 */
+	 @GetMapping("/penalty")
+	    public List<Penalty> getAllPenalty() {
+	    	return penaltyService.getAllPenalty(); 	
+		}
+	 
+	 
+	/**
+	  * Envia un email al correo de la empresa
+	  * @param datos
+	  * @throws MessagingException
+	  */
 	@PostMapping("/mail")
 	public void sendEmail(@RequestBody Message datos) throws MessagingException {
 		datos.setToUser("aalira.96@gmail.com");
@@ -216,4 +298,26 @@ public class UserController {
 		return ResponseEntity.status(HttpStatus.CONFLICT).body(e);
 	}
 
+	@ExceptionHandler(UserNotFoundException.class)
+	public ResponseEntity<ApiError> userNotFound(UserNotFoundException ex) throws Exception {
+		ApiError e = new ApiError();
+		e.setEstado(HttpStatus.NOT_FOUND);
+		e.setMensaje(ex.getMessage());
+		e.setFecha(LocalDateTime.now());
+
+		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e);
+	}
+	
+	@ExceptionHandler(IncidenceNotExist.class)
+	public ResponseEntity<ApiError> IncidenceNotFound(IncidenceNotExist ex) throws Exception {
+		ApiError e = new ApiError();
+		e.setEstado(HttpStatus.NOT_FOUND);
+		e.setMensaje(ex.getMessage());
+		e.setFecha(LocalDateTime.now());
+
+		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e);
+	}
+	
+	
+	
 }
