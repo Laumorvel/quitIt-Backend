@@ -52,10 +52,13 @@ public class QuititApplication {
 				"USER", 17, 9.0);
 		
 		usuarioUser1.setStartDate(fecha3);
+		usuario1.setStartDate(fecha3);
+		usuario2.setStartDate(fecha3);
 		
 		User usuarioUser2 = new User("Pepe","Lopez","pepitoloooooopez","pepe@gmail.com", passwordEncoder.encode("12345"),
 				"USER", 30, 10.30);
 		
+		usuarioUser2.setStartDate(fecha3);
 		
 		//Comentarios de la comunidad
 		CommentCommunity comentarioComunidad1 = new CommentCommunity("Buenos dias!",usuarioUser1, fecha1);
