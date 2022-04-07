@@ -35,7 +35,7 @@ public class IncidenceService {
 		incidence.setText(datos.getText());
 		incidence.setUser(user);
 	    		
-		//user.getListaCitas().add(cita);
+		
 		incidenceRepo.save(incidence);
 		userRepo.save(user);
 	

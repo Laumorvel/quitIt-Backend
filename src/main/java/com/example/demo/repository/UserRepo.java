@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.http.ResponseEntity;
 
 import com.example.demo.model.User;
 
@@ -36,6 +37,9 @@ public interface UserRepo extends JpaRepository<User, Long> {
 	 */
 	@Query(value="SELECT * FROM user WHERE file_id=?1", nativeQuery = true)
 	public User getUserFromFileId(String fileId);
+
+	@Query(value = "SELECT * FROM user WHERE username = ?1", nativeQuery = true)
+	public User findUserByUsername(String busqueda);
 
 
 	

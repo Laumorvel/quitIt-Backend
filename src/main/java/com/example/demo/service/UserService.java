@@ -3,6 +3,7 @@ package com.example.demo.service;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.model.User;
@@ -45,5 +46,10 @@ public class UserService {
 	public User updateUserAfertSmoking(Integer cigarettes, User user) {
 		user.resetUserAfterSmoking(cigarettes);
 		return userRepo.save(user);
+	}
+
+	public User findUserByUsername(String busqueda) {
+		System.out.println(busqueda);
+		return userRepo.findUserByUsername(busqueda);
 	}
 }

@@ -73,7 +73,7 @@ public class UserController {
 	 * @return
 	 */
 	@GetMapping("/user")
-	public ResponseEntity<User> getUser() {
+	public User getUser(@RequestParam (required=false) String username) {
 
 		String email = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		User result = userRepo.findByEmail(email);
@@ -81,8 +81,13 @@ public class UserController {
 		if (result == null) {
 			throw new UserNotFoundException();
 		} else {
-			userService.setUser(result);
-			return ResponseEntity.status(HttpStatus.OK).body(result);
+			if(username!=null) {
+				return userService.findUserByUsername(username);
+			}
+			else {
+				userService.setUser(result);
+				return result;
+			}
 		}
 
 	}
