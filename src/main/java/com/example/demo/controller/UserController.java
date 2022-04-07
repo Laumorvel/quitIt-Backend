@@ -31,6 +31,7 @@ import com.example.demo.model.Incidence;
 import com.example.demo.model.MeetUp;
 import com.example.demo.model.Message;
 import com.example.demo.model.Penalty;
+import com.example.demo.model.State;
 import com.example.demo.model.User;
 import com.example.demo.repository.UserRepo;
 import com.example.demo.service.AchievementService;

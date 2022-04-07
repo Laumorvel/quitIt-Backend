@@ -68,6 +68,8 @@ public class IncidenceService {
 		CommentCommunity comment = commentsCommutinyRepo.findById(idC).orElse(null);
 		return comment;
 	}
-	
+
+
+
 	
 }
