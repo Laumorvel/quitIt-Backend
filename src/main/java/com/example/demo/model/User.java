@@ -89,7 +89,7 @@ public class User {
 	/**
 	 * La fecha en la que comenzó a utilizar la app
 	 */
-	private LocalDate startDate;
+	private LocalDate startDate = LocalDate.now();
 
 	/**
 	 * Representa los cigarrillos que solía fumar al día.
@@ -483,7 +483,8 @@ public class User {
 	 * @return número de días - Integer
 	 */
 	public void calculaDineroAhorrado() {
-		moneySaved = moneyPerDay * totalTimeWithoutSmoking;
+		moneySaved = Math.round((moneyPerDay * totalTimeWithoutSmoking) * 100d) / 100d;
+
 	}
 
 	/**
@@ -499,7 +500,8 @@ public class User {
 		calcularTotalTimeWithoutSmoking();// calcula el tiempo total que lleva sin fumar
 		setCigarettesSmoked(cigarettesSmoked);// Indica los cigarros que ha fumado ese día y se los suma a los que
 												// llevaba
-		setCigarettesAvoided(calculaCigarettesAvoided());// calcula los cigarros que ha evitado desde el comienzo (resta los fumados)
+		setCigarettesAvoided(calculaCigarettesAvoided());// calcula los cigarros que ha evitado desde el comienzo (resta
+															// los fumados)
 		calculaTotalDaysInARowWithoutSmoking();// calcula los días seguidos que el user lleva sin fumar
 		calculaDineroAhorrado();// calcula el dinero que ha ahorrado desde el comienzo, teniendo en cuenta los
 								// días fumados

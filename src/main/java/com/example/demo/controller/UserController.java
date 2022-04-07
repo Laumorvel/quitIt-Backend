@@ -23,6 +23,7 @@ import com.example.demo.error.AlreadySetAsAnSmokingDayException;
 import com.example.demo.error.ApiError;
 import com.example.demo.error.CommentNotExist;
 import com.example.demo.error.IncidenceNotExist;
+import com.example.demo.error.TypeMismatchException;
 import com.example.demo.error.UserNotFoundException;
 import com.example.demo.model.Achievement;
 import com.example.demo.model.CommentCommunity;
@@ -70,6 +71,7 @@ public class UserController {
 
 	/**
 	 * Devuelve el usuario
+	 * 
 	 * @return
 	 */
 	@GetMapping("/user")
@@ -93,25 +95,36 @@ public class UserController {
 	}
 
 	/**
-
+	 * 
 	 * Actualiza la información del usuario una vez que este fuma de nuevo
 	 * inndicando los cigarrillos que ha fumado. Es posible actualizar este dato más
 	 * de una vez puesto que el usuario puede anota que ha fumado varias veces el
 	 * mismo día
 	 * 
+	 * En caso de incluir dinero, se modificarán los datos iniciales del usuario
+	 * 
+	 * En caso de incluir reset, se resetearán los datos del usuario
+	 * 
 	 * @param cigarettes
 	 * @return usuario actualizado
 	 */
 	@PutMapping("/user")
-	public User updateUser(@RequestParam Integer cigarettes, @RequestBody User user1) {
+	public User updateUser(@RequestParam(required = false) Integer cigarettes , @RequestBody User user1,
+			@RequestParam(required = false) Double money, @RequestParam(required = false) Boolean reset) {
 		User user = userRepo.findByEmail(user1.getEmail());
 
 		if (user == null) {
 			throw new UserNotFoundException();
 		}
-		return userService.updateUserAfertSmoking(cigarettes, user);
-	}
 
+		if (money != null) {
+			return userService.modificaDatosIniciales(cigarettes, user, money);
+		} else if (reset != null) {
+			return userService.resetUser(user);
+		} else {
+			return userService.updateUserAfertSmoking(cigarettes, user);
+		}
+	}
 
 	@GetMapping("/email")
 	public User checkEmailUsers(@RequestParam(required = false) String email,
@@ -125,6 +138,7 @@ public class UserController {
 
 	/**
 	 * Da la lista de comentarios de la comunidad
+	 * 
 	 * @return
 	 */
 	@GetMapping("/commentsCommunity")
@@ -135,6 +149,7 @@ public class UserController {
 
 	/**
 	 * Muestra el comentario con la id indicada
+	 * 
 	 * @param idC
 	 * @return
 	 */
@@ -152,6 +167,7 @@ public class UserController {
 
 	/**
 	 * Crea un comentario en el chat de la comunidad
+	 * 
 	 * @param datos
 	 * @return
 	 */
@@ -168,20 +184,20 @@ public class UserController {
 		}
 	}
 
-	
 	/**
 	 * Borra los comentarios de la comunidad
+	 * 
 	 * @param idC
 	 * @return
 	 */
 	@DeleteMapping("/commentsCommunity/{idC}")
-	public ResponseEntity<?> deleteCommentsCommunity( @PathVariable Long idC) {
-		
+	public ResponseEntity<?> deleteCommentsCommunity(@PathVariable Long idC) {
+
 		String email = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        Long id =  userRepo.findByEmail(email).getId();
-        
-		CommentCommunity result =  commentsCommunityService.delete(idC);
-		
+		Long id = userRepo.findByEmail(email).getId();
+
+		CommentCommunity result = commentsCommunityService.delete(idC);
+
 		if (result == null) {
 			throw new CommentNotExist(id);
 		} else {
@@ -191,38 +207,40 @@ public class UserController {
 
 	/**
 	 * Da la lista de incidencias
+	 * 
 	 * @return
 	 */
-	 @GetMapping("/incidence")
-	    public List<Incidence> getAllIncidences() {
-	    	return incidenceService.getAllIncidences();
-		}
-	 
-	 /**
-	  * Crea una incidencia
-	  * @param datos
-	  * @return
-	  */
-	 @PostMapping("/incidence")
-	    public Incidence createIncidence(@RequestBody Incidence datos) {
-	    	
-	    	String email = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-	        User result =  userRepo.findByEmail(email);
-	   
-	    	if(result==null) {
-				throw new UserNotFoundException();
-			}
-			else {
-				return this.incidenceService.createIncidence(result, datos);
-			}
+	@GetMapping("/incidence")
+	public List<Incidence> getAllIncidences() {
+		return incidenceService.getAllIncidences();
 	}
-	    	
-	 /**
-	  * Edita la incidencia añadiendole un comentario
-	  * @param idi
-	  * @param comentario
-	  * @return
-	  */
+
+	/**
+	 * Crea una incidencia
+	 * 
+	 * @param datos
+	 * @return
+	 */
+	@PostMapping("/incidence")
+	public Incidence createIncidence(@RequestBody Incidence datos) {
+
+		String email = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		User result = userRepo.findByEmail(email);
+
+		if (result == null) {
+			throw new UserNotFoundException();
+		} else {
+			return this.incidenceService.createIncidence(result, datos);
+		}
+	}
+
+	/**
+	 * Edita la incidencia añadiendole un comentario
+	 * 
+	 * @param idi
+	 * @param comentario
+	 * @return
+	 */
 	@PutMapping("/incidence/{idi}")
 	public Incidence editIncidence(@PathVariable Long idi, @RequestBody CommentCommunity comentario) {
 
@@ -242,49 +260,52 @@ public class UserController {
 		}
 	}
 
- 	
 	/**
 	 * Da la lista de usuarios
+	 * 
 	 * @return
 	 */
-	 @GetMapping("/users")
-	    public List<User> getAllUsers() {
-	    	return userService.getAllUsers();
-		}
-	 
+	@GetMapping("/users")
+	public List<User> getAllUsers() {
+		return userService.getAllUsers();
+	}
+
 	/**
 	 * Da la lista de meet ups
+	 * 
 	 * @return
 	 */
-	 @GetMapping("/meetUp")
-	    public List<MeetUp> getAllMeetUps() {
-	    	return meetUpService.getAllMeetUps(); 	
-		}
-	 
+	@GetMapping("/meetUp")
+	public List<MeetUp> getAllMeetUps() {
+		return meetUpService.getAllMeetUps();
+	}
+
 	/**
 	 * Da la lista de logros
+	 * 
 	 * @return
 	 */
-	 @GetMapping("/achievement")
-	    public List<Achievement> getAllAchievement() {
-	    	return achievementService.getAllAchievement(); 	
-		}
-	 
+	@GetMapping("/achievement")
+	public List<Achievement> getAllAchievement() {
+		return achievementService.getAllAchievement();
+	}
+
 	/**
 	 * Da la lista de penalizaciones
+	 * 
 	 * @return
 	 */
-	 @GetMapping("/penalty")
-	    public List<Penalty> getAllPenalty() {
-	    	return penaltyService.getAllPenalty(); 	
-		}
-	 
-	 
+	@GetMapping("/penalty")
+	public List<Penalty> getAllPenalty() {
+		return penaltyService.getAllPenalty();
+	}
+
 	/**
-	  * Envia un email al correo de la empresa
-	  * @param datos
-	  * @throws MessagingException
-	  */
+	 * Envia un email al correo de la empresa
+	 * 
+	 * @param datos
+	 * @throws MessagingException
+	 */
 	@PostMapping("/mail")
 	public void sendEmail(@RequestBody Message datos) throws MessagingException {
 		datos.setToUser("aalira.96@gmail.com");
@@ -313,7 +334,7 @@ public class UserController {
 
 		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e);
 	}
-	
+
 	@ExceptionHandler(IncidenceNotExist.class)
 	public ResponseEntity<ApiError> IncidenceNotFound(IncidenceNotExist ex) throws Exception {
 		ApiError e = new ApiError();
@@ -323,7 +344,15 @@ public class UserController {
 
 		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e);
 	}
-	
-	
-	
+
+	@ExceptionHandler(TypeMismatchException.class)
+	public ResponseEntity<ApiError> IncidenceNotFound(TypeMismatchException ex) throws Exception {
+		ApiError e = new ApiError();
+		e.setEstado(HttpStatus.CONFLICT);
+		e.setMensaje(ex.getMessage());
+		e.setFecha(LocalDateTime.now());
+
+		return ResponseEntity.status(HttpStatus.CONFLICT).body(e);
+	}
+
 }
