@@ -27,6 +27,10 @@ public interface UserRepo extends JpaRepository<User, Long> {
 	public User findByUsername(String username);
 
 	
+	/**
+	 * Query que nos consigue todos los usuarios que tenemos registrados en la base de datos
+	 * @return
+	 */
 	@Query(value="select * from user", nativeQuery = true) 
 	public List<User> findAllUsers();
 
@@ -38,6 +42,11 @@ public interface UserRepo extends JpaRepository<User, Long> {
 	@Query(value="SELECT * FROM user WHERE file_id=?1", nativeQuery = true)
 	public User getUserFromFileId(String fileId);
 
+	/**
+	 * Query para conseguir a un usuario a través de su username
+	 * @param busqueda
+	 * @return
+	 */
 	@Query(value = "SELECT * FROM user WHERE username = ?1", nativeQuery = true)
 	public User findUserByUsername(String busqueda);
 

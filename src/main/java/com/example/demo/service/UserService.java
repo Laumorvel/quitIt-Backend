@@ -20,10 +20,20 @@ public class UserService {
 	@Autowired
 	UserRepo userRepo;
 
+	/**
+	 * Busca un usuario por email
+	 * @param email
+	 * @return
+	 */
 	public User getUserEmail(String email) {
 		return userRepo.findByEmail(email);
 	}
 
+	/**
+	 * Busca un usuario por su username
+	 * @param username
+	 * @return
+	 */
 	public User getUsername(String username) {
 		return userRepo.findByUsername(username);
 	}

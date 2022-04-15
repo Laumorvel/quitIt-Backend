@@ -13,6 +13,10 @@ public class AchievementService {
 
 	@Autowired AchievementRepo achievementRepo;
 
+	/**
+	 * Devuelve una lista de todos los logros existentes
+	 * @return
+	 */
 	public List<Achievement> getAllAchievement() {
 		return achievementRepo.findAllAchievement();
 	}

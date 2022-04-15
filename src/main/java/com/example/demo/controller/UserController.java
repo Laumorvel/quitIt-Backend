@@ -126,6 +126,12 @@ public class UserController {
 		}
 	}
 	
+	
+	/**
+	 * Borra un usuario por su id
+	 * @param idDelete
+	 * @return
+	 */
 	@DeleteMapping("/user/{idDelete}")
 	public User deleteUser(@PathVariable Long idDelete) {
 		
@@ -140,9 +146,12 @@ public class UserController {
 		}
 	}
 	
-	
-	
-
+	/**
+	 * Comprueba si el email o el username del usuario a esta registrado en la base de datos
+	 * @param email
+	 * @param username
+	 * @return
+	 */
 	@GetMapping("/email")
 	public User checkEmailUsers(@RequestParam(required = false) String email,
 			@RequestParam(required = false) String username) {
@@ -344,6 +353,8 @@ public class UserController {
 	}
 
 	// EXCEPCIONES--------------------------------------------------------
+	
+
 	@ExceptionHandler(AlreadySetAsAnSmokingDayException.class)
 	public ResponseEntity<ApiError> alreadySetAsAnSmokingDayException(AlreadySetAsAnSmokingDayException ex)
 			throws Exception {
@@ -355,6 +366,12 @@ public class UserController {
 		return ResponseEntity.status(HttpStatus.CONFLICT).body(e);
 	}
 
+	/**
+	 * Excepción que muestra que el usuario no existe
+	 * @param ex
+	 * @return
+	 * @throws Exception
+	 */
 	@ExceptionHandler(UserNotFoundException.class)
 	public ResponseEntity<ApiError> userNotFound(UserNotFoundException ex) throws Exception {
 		ApiError e = new ApiError();
@@ -365,6 +382,12 @@ public class UserController {
 		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e);
 	}
 
+	/**
+	 * Excepción que muestra que la incidencia no existe
+	 * @param ex
+	 * @return
+	 * @throws Exception
+	 */
 	@ExceptionHandler(IncidenceNotExist.class)
 	public ResponseEntity<ApiError> IncidenceNotFound(IncidenceNotExist ex) throws Exception {
 		ApiError e = new ApiError();
@@ -375,6 +398,7 @@ public class UserController {
 		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e);
 	}
 
+	
 	@ExceptionHandler(TypeMismatchException.class)
 	public ResponseEntity<ApiError> IncidenceNotFound(TypeMismatchException ex) throws Exception {
 		ApiError e = new ApiError();

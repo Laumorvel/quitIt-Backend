@@ -21,15 +21,28 @@ public class File {
 	@Lob
 	private byte[] data;
 
+	/**
+	 * Constructor vacio
+	 */
 	public File() {
 	}
 
+	/**
+	 * Constructor con todos los atributos
+	 * @param name
+	 * @param type
+	 * @param data
+	 */
 	public File(String name, String type, byte[] data) {
 		this.name = name;
 		this.type = type;
 		this.data = data;
 	}
 
+	/**
+	 * Getter y setters del archivo
+	 * @return
+	 */
 	public String getId() {
 		return id;
 	}
