@@ -76,11 +76,6 @@ public class UserService {
 	}
 
 
-	public User findUserByUsername(String busqueda) {
-		System.out.println(busqueda);
-		return userRepo.findUserByUsername(busqueda);
-	}
-
 	/**
 	 * Modifica los datos iniciales del usuario (cigarrillos diarios previos y
 	 * dinero que gastaba)

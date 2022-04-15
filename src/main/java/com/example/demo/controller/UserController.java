@@ -84,7 +84,7 @@ public class UserController {
 			throw new UserNotFoundException();
 		} else {
 			if(username!=null) {
-				return userService.findUserByUsername(username);
+				return userService.getUsername(username);
 			}
 			else {
 				userService.setUser(result);

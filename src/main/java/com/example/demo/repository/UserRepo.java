@@ -17,13 +17,21 @@ import com.example.demo.model.User;
  */
 public interface UserRepo extends JpaRepository<User, Long> {
   
+	
 	/**
 	 * METODO QUE NOS ENCUENTRA EL EMAIL DEL USUARIO
 	 * @param email
 	 * @return
 	 */
 	public User findByEmail(String email);
-
+	
+	
+	/**
+	 * Query para conseguir a un usuario a través de su username
+	 * @param busqueda
+	 * @return
+	 */
+	@Query(value = "SELECT * FROM user WHERE username = ?1", nativeQuery = true)
 	public User findByUsername(String username);
 
 	
@@ -34,6 +42,7 @@ public interface UserRepo extends JpaRepository<User, Long> {
 	@Query(value="select * from user", nativeQuery = true) 
 	public List<User> findAllUsers();
 
+	
 	/**
 	 * Query para conseguir a un usuario a través del id de su imagen
 	 * @param fileId
@@ -41,14 +50,6 @@ public interface UserRepo extends JpaRepository<User, Long> {
 	 */
 	@Query(value="SELECT * FROM user WHERE file_id=?1", nativeQuery = true)
 	public User getUserFromFileId(String fileId);
-
-	/**
-	 * Query para conseguir a un usuario a través de su username
-	 * @param busqueda
-	 * @return
-	 */
-	@Query(value = "SELECT * FROM user WHERE username = ?1", nativeQuery = true)
-	public User findUserByUsername(String busqueda);
 
 
 	
