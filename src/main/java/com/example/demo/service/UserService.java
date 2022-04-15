@@ -1,12 +1,16 @@
 package com.example.demo.service;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import com.example.demo.model.Achievement;
+import com.example.demo.model.OrdenarPorNumero;
 import com.example.demo.model.User;
 import com.example.demo.repository.UserRepo;
 
@@ -24,8 +28,19 @@ public class UserService {
 		return userRepo.findByUsername(username);
 	}
 
+	/**
+	 * Muestra todos los usuarios ordenados para el ranking
+	 * @return
+	 */
 	public List<User> getAllUsers() {
-		return userRepo.findAllUsers();
+		List<User> listaUsuarios = userRepo.findAllUsers();
+		List<User> listaUsuariosOrdenada = new ArrayList<>();
+		Collections.sort(listaUsuarios, new OrdenarPorNumero());
+		for (User e : listaUsuarios) {
+			listaUsuariosOrdenada.add(e);
+		}
+		
+		return  listaUsuariosOrdenada;
 	}
 
 	/**
@@ -91,4 +106,34 @@ public class UserService {
 		user.setStartDate(LocalDate.now());
 		return userRepo.save(user);
 	}
+
+	/**
+	 * Borra todos los datos del usuario en cascada
+	 * @param result
+	 * @return
+	 */
+	public User borrarUsuario(Long result) {
+		if (userRepo.existsById(result)) {
+						
+			
+			User user = userRepo.findById(result).orElse(null);
+			User usuarioParaImprimir = userRepo.findById(result).orElse(null);
+			
+			user.setAchievementList(null);
+			user.setGroupList(null);
+			user.setFile(null);
+			user.setPenalties(null);
+			user.setUserList(null);
+			
+			
+			userRepo.delete(user);
+			
+			return usuarioParaImprimir;
+		} else {
+			return null;
+		}
+	}
+	
+	
+	
 }

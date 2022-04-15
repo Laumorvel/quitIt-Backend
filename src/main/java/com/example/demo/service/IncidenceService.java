@@ -70,6 +70,33 @@ public class IncidenceService {
 	}
 
 
+	public Incidence changeState(String estado, Incidence incidence) {
+		if (incidenceRepo.existsById(incidence.getId())) {
+			
+			Incidence incidence2 = incidenceRepo.findById(incidence.getId()).orElse(null);
+			
+			if(estado.equals("RESULT")) {
+				incidence2.setState(State.RESULT);
+			}
+			if(estado.equals("IN_PROCESS")) {
+				incidence2.setState(State.IN_PROCESS);
+			}
+			if(estado.equals("PENDING")) {
+				incidence2.setState(State.PENDING);
+			}
+		
+			return incidenceRepo.save(incidence);
+		} else {
+			return null;
+		}
+	}
+
+
+	public Incidence findById(Long idi) {
+		return incidenceRepo.findById(idi).orElse(null);
+	}
+
+
 
 	
 }

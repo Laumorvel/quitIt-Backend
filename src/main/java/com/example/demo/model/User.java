@@ -382,6 +382,8 @@ public class User {
 		this.lastDateSmoking = lastDateSmoking;
 	}
 
+	
+	
 	/**
 	 * HashCode y Equals de la id del usuario
 	 */

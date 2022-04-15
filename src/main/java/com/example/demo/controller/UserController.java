@@ -31,8 +31,8 @@ import com.example.demo.model.Incidence;
 import com.example.demo.model.MeetUp;
 import com.example.demo.model.Message;
 import com.example.demo.model.Penalty;
-import com.example.demo.model.State;
 import com.example.demo.model.User;
+import com.example.demo.repository.IncidenceRepo;
 import com.example.demo.repository.UserRepo;
 import com.example.demo.service.AchievementService;
 import com.example.demo.service.CommentsCommunityService;
@@ -125,6 +125,23 @@ public class UserController {
 			return userService.updateUserAfertSmoking(cigarettes, user);
 		}
 	}
+	
+	@DeleteMapping("/user/{idDelete}")
+	public User deleteUser(@PathVariable Long idDelete) {
+		
+		String email = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Long result =  userRepo.findByEmail(email).getId();
+        
+		
+		if (result == null) {
+			throw new UserNotFoundException();
+		} else {
+			return userService.borrarUsuario(idDelete);
+		}
+	}
+	
+	
+	
 
 	@GetMapping("/email")
 	public User checkEmailUsers(@RequestParam(required = false) String email,
@@ -242,7 +259,7 @@ public class UserController {
 	 * @return
 	 */
 	@PutMapping("/incidence/{idi}")
-	public Incidence editIncidence(@PathVariable Long idi, @RequestBody CommentCommunity comentario) {
+	public Incidence editIncidence(@PathVariable Long idi, @RequestBody (required=false) CommentCommunity comentario, @RequestParam (required=false) String state) {
 
 		String email = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		User result = userRepo.findByEmail(email);
@@ -250,13 +267,23 @@ public class UserController {
 		if (result == null) {
 			throw new UserNotFoundException();
 		} else {
-			Incidence incidence = incidenceService.editIncidence(idi, comentario);
-
-			if (incidence == null) {
-				throw new IncidenceNotExist(idi);
-			} else {
-				return incidence;
+			Incidence incidence = incidenceService.findById(idi);
+			if(state!=null) {
+				if (incidence == null) {
+					throw new IncidenceNotExist(idi);
+				} else {
+					return incidenceService.changeState(state, incidence);
+				}
 			}
+			else {
+				if (incidence == null) {
+					throw new IncidenceNotExist(idi);
+				} else {
+					
+					return incidenceService.editIncidence(idi, comentario);
+				}
+			}
+			
 		}
 	}
 
@@ -266,7 +293,10 @@ public class UserController {
 	 * @return
 	 */
 	@GetMapping("/users")
-	public List<User> getAllUsers() {
+	public List<User> getAllUsersRanking() {
+		String email = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		User result = userRepo.findByEmail(email);
+		userService.setUser(result);
 		return userService.getAllUsers();
 	}
 
