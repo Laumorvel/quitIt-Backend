@@ -32,7 +32,6 @@ import com.example.demo.model.MeetUp;
 import com.example.demo.model.Message;
 import com.example.demo.model.Penalty;
 import com.example.demo.model.User;
-import com.example.demo.repository.IncidenceRepo;
 import com.example.demo.repository.UserRepo;
 import com.example.demo.service.AchievementService;
 import com.example.demo.service.CommentsCommunityService;
@@ -326,7 +325,14 @@ public class UserController {
 	 */
 	@GetMapping("/achievement")
 	public List<Achievement> getAllAchievement() {
-		return achievementService.getAllAchievement();
+		User user;
+		try {
+			String email = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+			user = userRepo.findByEmail(email); 
+		}catch (Exception e) {
+			throw new UserNotFoundException();
+		}
+		return achievementService.getAllAchievement(user);
 	}
 
 	/**

@@ -72,14 +72,27 @@ public class QuititApplication {
 									fecha2,"100 Montaditos frente al rectorado");
 				
 		//Logros
-		Achievement logro1 = new Achievement("Un día sin fumar","Un día sin fumar");
-		Achievement logro2 = new Achievement("Cinco días sin fumar","Cinco días sin fumar");
-		Achievement logro3 = new Achievement("Diez días sin fumar","Diez días sin fumar");
-		Achievement logro4 = new Achievement("Veinticiendo días sin fumar","Veinticiendo días sin fumar");
-		Achievement logro5 = new Achievement("Cincuenta días sin fumar","Cincuenta días sin fumar");
-		Achievement logro6 = new Achievement("Cien días sin fumar","Cien días sin fumar");
-		Achievement logro7 = new Achievement("Doscientos días sin fumar","Doscientos días sin fumar");
-		Achievement logro8 = new Achievement("Ultimo logro para que sea par???","Doscientos días sin fumar");
+		Achievement logro1 = new Achievement("First cross on the calendar","No smoking for one day");
+		Achievement logro2 = new Achievement("Step by step","No smoking for 2 days");
+		Achievement logro3 = new Achievement("To infiniy and beyond","5 cigarettes non-smoked", "exito.png");
+		Achievement logro4 = new Achievement("Superpowers","You saved 20€", "growth.png");
+		Achievement logro5 = new Achievement("Home is where my plants are","No smoking for 5 days","high-quality.png");
+		Achievement logro6 = new Achievement("Saturday night fever","10 cigarettes non-smoked", "imagination.png");
+		Achievement logro7 = new Achievement("Following the road","No smoking for one week", "motivation.png");
+		Achievement logro8 = new Achievement("Clothes off","15 cigarettes non-smoked", "premium.png");
+		Achievement logro9 = new Achievement("Less paper","No smoking for 10 days", "prime.png");
+		Achievement logro10 = new Achievement("Jump around","20 ciagrettes non-smoked", "struggle.png");
+		Achievement logro11 = new Achievement("Crush the calendar","No smoking for 2 weeks", "taekwondo.png");
+		Achievement logro12 = new Achievement("Piggy bank","You saved 100€", "piggybank.png");
+		Achievement logro13 = new Achievement("Ballet on the city","50 cigarettes non-smoked", "victoria.png");
+		Achievement logro14 = new Achievement("First podium","100 cigarettes non-smoked", "success.png");
+		Achievement logro15 = new Achievement("The mad vocalist","100 cigarettes non-smoked in a row", "karaoke.png");
+		Achievement logro16 = new Achievement("A sky full of posibilities","200 cigarettes non-smoked in a row", "stars.png");
+		Achievement logro17 = new Achievement("Filthy rich","You saved 300€", "rich.png");
+		Achievement logro18 = new Achievement("Reinforcing your foundations","500 cigarettes non-smoked", "brickwall.png");
+		Achievement logro19 = new Achievement("To the Moon and back","300 cigarettes non-smoked in a row", "startup.png");
+		Achievement logro20 = new Achievement("Being your own vaccine","500€ saved", "vaccinated.png");
+		
 		
 		
 		
@@ -101,7 +114,7 @@ public class QuititApplication {
 
 			meetUpRepo.saveAll(Arrays.asList(meetUp1));
 			
-			achievementRepo.saveAll(Arrays.asList(logro1, logro2, logro3, logro4, logro5, logro6, logro7, logro8));
+			achievementRepo.saveAll(Arrays.asList(logro1, logro2, logro3, logro4, logro5, logro6, logro7, logro8, logro9, logro10, logro11, logro12, logro13, logro14, logro15, logro16, logro17, logro18, logro19, logro20));
 			
 			penaltyRepo.saveAll(Arrays.asList(penalty1, penalty2, penalty3, penalty4, penalty5, penalty6, penalty7, penalty8));
 
