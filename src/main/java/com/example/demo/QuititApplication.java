@@ -68,30 +68,29 @@ public class QuititApplication {
 		
 		
 		//MeetUps
-		MeetUp meetUp1 = new MeetUp("Quedada para cervecita","Vamos a echar unas cervecitas al sol el sabado por el centro de Sevilla, apuntante!",
-									fecha2,"100 Montaditos frente al rectorado");
+		MeetUp meetUp1 = new MeetUp("Set for beer","Let's take some beer to the sun on Saturday through downtown Seville, prompt!",
+									fecha2,"100 Montaditos Against Rectorate");
 				
 		//Logros
-		Achievement logro1 = new Achievement("Un día sin fumar","Un día sin fumar");
-		Achievement logro2 = new Achievement("Cinco días sin fumar","Cinco días sin fumar");
-		Achievement logro3 = new Achievement("Diez días sin fumar","Diez días sin fumar");
-		Achievement logro4 = new Achievement("Veinticiendo días sin fumar","Veinticiendo días sin fumar");
-		Achievement logro5 = new Achievement("Cincuenta días sin fumar","Cincuenta días sin fumar");
-		Achievement logro6 = new Achievement("Cien días sin fumar","Cien días sin fumar");
-		Achievement logro7 = new Achievement("Doscientos días sin fumar","Doscientos días sin fumar");
-		Achievement logro8 = new Achievement("Ultimo logro para que sea par???","Doscientos días sin fumar");
-		
+		Achievement logro1 = new Achievement("Un día sin fumar","A day without smoking");
+		Achievement logro2 = new Achievement("Cinco días sin fumar","Five days without smoking");
+		Achievement logro3 = new Achievement("Diez días sin fumar","Ten days without smoking");
+		Achievement logro4 = new Achievement("Veinticiendo días sin fumar","Twenty-two days without smoking");
+		Achievement logro5 = new Achievement("Cincuenta días sin fumar","Fifty days without smoking");
+		Achievement logro6 = new Achievement("Cien días sin fumar","One hundred days without smoking");
+		Achievement logro7 = new Achievement("Doscientos días sin fumar","Two hundred days without smoking");
+		Achievement logro8 = new Achievement("Ultimo logro para que sea par???","Five hundred days without smoking");
 		
 		
 		//Penalizaciones
-		Penalty penalty1 = new Penalty("Rompes la racha de un día sin fumar","Un día sin fumar");
-		Penalty penalty2 = new Penalty("Rompes la racha de cinco días sin fumar","Cinco días sin fumar");
-		Penalty penalty3 = new Penalty("Rompes la racha de diez días sin fumar","Diez días sin fumar");
-		Penalty penalty4 = new Penalty("Rompes la racha de veinticiendo días sin fumar","Veinticiendo días sin fumar");
-		Penalty penalty5 = new Penalty("Rompes la racha de cincuenta días sin fumar","Cincuenta días sin fumar");
-		Penalty penalty6 = new Penalty("Rompes la racha de cien días sin fumar","Cien días sin fumar");
-		Penalty penalty7 = new Penalty("Rompes la racha de doscientos días sin fumar","Doscientos días sin fumar");
-		Penalty penalty8 = new Penalty("Ultimo logro para que sea par???","Doscientos días sin fumar");
+		Penalty penalty1 = new Penalty("Rompes la racha de un día sin fumar","Break the one-day streak without smoking");
+		Penalty penalty2 = new Penalty("Rompes la racha de cinco días sin fumar","Break the five-day streak without smoking");
+		Penalty penalty3 = new Penalty("Rompes la racha de diez días sin fumar","Break the ten-day streak without smoking");
+		Penalty penalty4 = new Penalty("Rompes la racha de veinticiendo días sin fumar","Break the rack of twenty-five days without smoking");
+		Penalty penalty5 = new Penalty("Rompes la racha de cincuenta días sin fumar","Break the streak of fifty days without smoking");
+		Penalty penalty6 = new Penalty("Rompes la racha de cien días sin fumar","Break the one hundred days without smoking");
+		Penalty penalty7 = new Penalty("Rompes la racha de doscientos días sin fumar","Break the two hundred days without smoking");
+		Penalty penalty8 = new Penalty("Ultimo logro para que sea par???","Break the five hundred days without smoking");
 				
 		return (args) -> {
 
