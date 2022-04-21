@@ -60,6 +60,7 @@ public class QuititApplication {
 
 		usuarioUser2.setStartDate(fecha3);
 
+
 		// Comentarios de la comunidad
 		CommentCommunity comentarioComunidad1 = new CommentCommunity("Buenos dias!", usuarioUser1, fecha1);
 
@@ -105,6 +106,7 @@ public class QuititApplication {
 		Penalty penalty6 = new Penalty("Rompes la racha de cien días sin fumar", "Cien días sin fumar");
 		Penalty penalty7 = new Penalty("Rompes la racha de doscientos días sin fumar", "Doscientos días sin fumar");
 		Penalty penalty8 = new Penalty("Ultimo logro para que sea par???", "Doscientos días sin fumar");
+
 
 		return (args) -> {
 

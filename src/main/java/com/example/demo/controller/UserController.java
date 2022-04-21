@@ -86,8 +86,8 @@ public class UserController {
 				return userService.getUsername(username);
 			}
 			else {
-				userService.setUser(result);
-				return result;
+				
+				return userService.setUser(result);
 			}
 		}
 

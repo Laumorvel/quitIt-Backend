@@ -32,6 +32,10 @@ public class UserService {
 	 * @param username
 	 * @return
 	 */
+	public User getUsernameComplete(String username) {
+		return userRepo.findByUsernameComplete(username);
+	}
+	
 	public User getUsername(String username) {
 		return userRepo.findByUsername(username);
 	}
