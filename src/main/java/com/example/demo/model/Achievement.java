@@ -23,7 +23,8 @@ public class Achievement {
 	private String name;
 	private String text;
 	private String img;
-	private String porcentaje;
+	private Integer objective;
+	private String type;// money, cigarettes, daysInARow, days
 
 	/**
 	 * Constructor vacio.
@@ -48,19 +49,12 @@ public class Achievement {
 		this.img = img;
 	}
 
-	public Achievement(String name, String text, String img, String porcentaje) {
+	public Achievement(String name, String text, String img, Integer objective, String type) {
 		this.name = name;
 		this.text = text;
 		this.img = img;
-		this.porcentaje = porcentaje;
-	}
-
-	public String getPorcentaje() {
-		return porcentaje;
-	}
-
-	public void setPorcentaje(String porcentaje) {
-		this.porcentaje = porcentaje;
+		this.objective = objective;
+		this.type = type;
 	}
 
 	/**
@@ -98,6 +92,22 @@ public class Achievement {
 
 	public void setImg(String img) {
 		this.img = img;
+	}
+
+	public Integer getObjective() {
+		return objective;
+	}
+
+	public void setObjective(Integer objective) {
+		this.objective = objective;
+	}
+
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
 	}
 
 	/**
