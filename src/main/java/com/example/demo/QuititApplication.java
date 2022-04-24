@@ -60,7 +60,6 @@ public class QuititApplication {
 
 		usuarioUser2.setStartDate(fecha3);
 
-
 		// Comentarios de la comunidad
 		CommentCommunity comentarioComunidad1 = new CommentCommunity("Buenos dias!", usuarioUser1, fecha1);
 
@@ -72,41 +71,67 @@ public class QuititApplication {
 				"100 Montaditos frente al rectorado");
 
 		// Logros
-		Achievement logro1 = new Achievement("First cross on the calendar", "No smoking for one day", "certified.png", 1, "days");
+		Achievement logro1 = new Achievement("First cross on the calendar", "No smoking for one day", "certified.png",
+				1, "days");
 		Achievement logro2 = new Achievement("Step by step", "No smoking for 2 days", "4497660.png", 2, "days");
-		Achievement logro3 = new Achievement("To infinity and beyond", "5 cigarettes non-smoked", "exito.png", 5, "cigarettes");
+		Achievement logro3 = new Achievement("To infinity and beyond", "5 cigarettes non-smoked", "exito.png", 5,
+				"cigarettes");
 		Achievement logro4 = new Achievement("Superpowers", "You saved 20€", "growth.png", 20, "money");
-		Achievement logro5 = new Achievement("Home is where my plants are", "No smoking for 5 days",
-				"high-quality.png", 5 ,"days");
-		Achievement logro6 = new Achievement("Saturday night fever", "10 cigarettes non-smoked", "imagination.png", 10, "cigarettes");
-		Achievement logro7 = new Achievement("Following the road", "No smoking for one week", "motivation.png", 7, "days");
-		Achievement logro8 = new Achievement("Clothes off", "15 cigarettes non-smoked", "premium.png", 15, "cigarettes");
+		Achievement logro5 = new Achievement("Home is where my plants are", "No smoking for 5 days", "high-quality.png",
+				5, "days");
+		Achievement logro6 = new Achievement("Saturday night fever", "10 cigarettes non-smoked", "imagination.png", 10,
+				"cigarettes");
+		Achievement logro7 = new Achievement("Following the road", "No smoking for one week", "motivation.png", 7,
+				"days");
+		Achievement logro8 = new Achievement("Clothes off", "15 cigarettes non-smoked", "premium.png", 15,
+				"cigarettes");
 		Achievement logro9 = new Achievement("Less paper", "No smoking for 10 days", "prime.png", 10, "days");
-		Achievement logro10 = new Achievement("Jump around", "20 cigarettes non-smoked", "struggle.png", 20, "cigarettes");
-		Achievement logro11 = new Achievement("Crush the calendar", "No smoking for 2 weeks", "taekwondo.png", 14, "days");
+		Achievement logro10 = new Achievement("Jump around", "20 cigarettes non-smoked", "struggle.png", 20,
+				"cigarettes");
+		Achievement logro11 = new Achievement("Crush the calendar", "No smoking for 2 weeks", "taekwondo.png", 14,
+				"days");
 		Achievement logro12 = new Achievement("Piggy bank", "You saved 100€", "piggybank.png", 100, "money");
-		Achievement logro13 = new Achievement("Ballet on the city", "50 cigarettes non-smoked", "victoria.png", 50, "cigarettes");
+		Achievement logro13 = new Achievement("Ballet on the city", "50 cigarettes non-smoked", "victoria.png", 50,
+				"cigarettes");
 		Achievement logro14 = new Achievement("First podium", "No smoking for 100 days", "success.png", 100, "days");
-		Achievement logro15 = new Achievement("The mad vocalist", "No smoking for 100 days in a row", "karaoke.png", 100, "daysInARow");
+		Achievement logro15 = new Achievement("The mad vocalist", "No smoking for 100 days in a row", "karaoke.png",
+				100, "daysInARow");
 		Achievement logro16 = new Achievement("A sky full of posibilities", "No smoking for 200 days in a row",
 				"stars.png", 200, "daysInARow");
 		Achievement logro17 = new Achievement("Filthy rich", "You saved 300€", "rich.png", 300, "money");
 		Achievement logro18 = new Achievement("Reinforcing your foundations", "500 cigarettes non-smoked",
 				"brickwall.png", 500, "cigarettes");
-		Achievement logro19 = new Achievement("To the Moon and back", "No smoking for 300 days in a row",
-				"startup.png", 300, "daysInARow");
+		Achievement logro19 = new Achievement("To the Moon and back", "No smoking for 300 days in a row", "startup.png",
+				300, "daysInARow");
 		Achievement logro20 = new Achievement("Being your own vaccine", "500€ saved", "vaccinated.png", 500, "money");
 
 		// Penalizaciones
-		Penalty penalty1 = new Penalty("Rompes la racha de un día sin fumar", "Un día sin fumar");
-		Penalty penalty2 = new Penalty("Rompes la racha de cinco días sin fumar", "Cinco días sin fumar");
-		Penalty penalty3 = new Penalty("Rompes la racha de diez días sin fumar", "Diez días sin fumar");
-		Penalty penalty4 = new Penalty("Rompes la racha de veinticiendo días sin fumar", "Veinticiendo días sin fumar");
-		Penalty penalty5 = new Penalty("Rompes la racha de cincuenta días sin fumar", "Cincuenta días sin fumar");
-		Penalty penalty6 = new Penalty("Rompes la racha de cien días sin fumar", "Cien días sin fumar");
-		Penalty penalty7 = new Penalty("Rompes la racha de doscientos días sin fumar", "Doscientos días sin fumar");
-		Penalty penalty8 = new Penalty("Ultimo logro para que sea par???", "Doscientos días sin fumar");
-
+		Penalty penalty1 = new Penalty("You lost your mind for a sec", "One smoking day", "alzheimer.png", 1, "days");
+		Penalty penalty2 = new Penalty("You messed things up", "7 smoking days", "broken-heart.png", 7, "days");
+		Penalty penalty3 = new Penalty("Don't leave your path", "1 cigarette smoked", "self-confidence.png", 1,
+				"cigarette");
+		Penalty penalty4 = new Penalty("Feel the force again", "7 cigarettes smoked", "judgment.png", 7, "cigarette");
+		Penalty penalty5 = new Penalty("What are you doing?", "14 smoking days", "anxiety.png", 14, "days");
+		Penalty penalty6 = new Penalty("You crossed the line", "14 cigarettes smoked", "decreased-concentration.png",
+				14, "cigarette");
+		Penalty penalty7 = new Penalty("Don't give up yet", "30 smoking days", "giveup.png", 30, "days");
+		Penalty penalty8 = new Penalty("Pull over and come back", "30 cigarettes smoked", "stop-sign.png", 30,
+				"cigarette");
+		Penalty penalty9 = new Penalty("Where are you going?", "40 cigarettes smoked", "question.png", 40, "cigarette");
+		Penalty penalty10 = new Penalty("Quit it now!", "40 smoking days", "alzheimer.png", 40, "day");
+		Penalty penalty11 = new Penalty("Dude...", "50 smoking days", "alzheimer.png", 50, "day");
+		Penalty penalty12 = new Penalty("Quit it now!", "40 cigarettes smoked", "alzheimer.png", 50, "cigarette");
+		Penalty penalty13 = new Penalty("Are you proud?", "60 smoking days", "alzheimer.png", 60, "day");
+		Penalty penalty14 = new Penalty("Save your words for the judge", "60 cigarettes smoked", "alzheimer.png", 60,
+				"cigarette");
+		Penalty penalty15 = new Penalty("Fight!", "70 smoking days", "atlas.png", 70, "day");
+		Penalty penalty16 = new Penalty("This is war!", "80 cigarettes smoked", "alzheimer.png", 80, "cigarette");
+		Penalty penalty17 = new Penalty("Try again ...", "80  smoking days", "alzheimer.png", 80, "days");
+		Penalty penalty18 = new Penalty("Come on...", "90 cigarettes smoked", "alzheimer.png", 90, "cigarette");
+		Penalty penalty19 = new Penalty("What if you ready try it this time?", "90  smoking days", "alzheimer.png", 90,
+				"days");
+		Penalty penalty20 = new Penalty("You're letting me down", "100 cigarettes smoked", "alzheimer.png", 100,
+				"cigarette");
 
 		return (args) -> {
 
@@ -120,8 +145,9 @@ public class QuititApplication {
 					Arrays.asList(logro1, logro2, logro3, logro4, logro5, logro6, logro7, logro8, logro9, logro10,
 							logro11, logro12, logro13, logro14, logro15, logro16, logro17, logro18, logro19, logro20));
 
-			penaltyRepo.saveAll(
-					Arrays.asList(penalty1, penalty2, penalty3, penalty4, penalty5, penalty6, penalty7, penalty8));
+			penaltyRepo.saveAll(Arrays.asList(penalty1, penalty2, penalty3, penalty4, penalty5, penalty6, penalty7,
+					penalty8, penalty9, penalty10, penalty11, penalty12, penalty13, penalty14, penalty15, penalty16,
+					penalty17, penalty18, penalty19, penalty20));
 
 		};
 	}
