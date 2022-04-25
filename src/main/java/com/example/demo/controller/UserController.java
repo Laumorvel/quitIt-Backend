@@ -23,6 +23,7 @@ import com.example.demo.error.AlreadySetAsAnSmokingDayException;
 import com.example.demo.error.ApiError;
 import com.example.demo.error.CommentNotExist;
 import com.example.demo.error.IncidenceNotExist;
+import com.example.demo.error.NonExistentAchievementException;
 import com.example.demo.error.TypeMismatchException;
 import com.example.demo.error.UserNotFoundException;
 import com.example.demo.model.Achievement;
@@ -74,7 +75,7 @@ public class UserController {
 	 * @return
 	 */
 	@GetMapping("/user")
-	public User getUser(@RequestParam (required=false) String username) {
+	public User getUser(@RequestParam(required = false) String username) {
 
 		String email = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		User result = userRepo.findByEmail(email);
@@ -82,11 +83,10 @@ public class UserController {
 		if (result == null) {
 			throw new UserNotFoundException();
 		} else {
-			if(username!=null) {
+			if (username != null) {
 				return userService.getUsername(username);
-			}
-			else {
-				
+			} else {
+
 				return userService.setUser(result);
 			}
 		}
@@ -108,7 +108,7 @@ public class UserController {
 	 * @return usuario actualizado
 	 */
 	@PutMapping("/user")
-	public User updateUser(@RequestParam(required = false) Integer cigarettes , @RequestBody User user1,
+	public User updateUser(@RequestParam(required = false) Integer cigarettes, @RequestBody User user1,
 			@RequestParam(required = false) Double money, @RequestParam(required = false) Boolean reset) {
 		User user = userRepo.findByEmail(user1.getEmail());
 
@@ -124,29 +124,30 @@ public class UserController {
 			return userService.updateUserAfertSmoking(cigarettes, user);
 		}
 	}
-	
-	
+
 	/**
 	 * Borra un usuario por su id
+	 * 
 	 * @param idDelete
 	 * @return
 	 */
 	@DeleteMapping("/user/{idDelete}")
 	public User deleteUser(@PathVariable Long idDelete) {
-		
+
 		String email = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        Long result =  userRepo.findByEmail(email).getId();
-        
-		
+		Long result = userRepo.findByEmail(email).getId();
+
 		if (result == null) {
 			throw new UserNotFoundException();
 		} else {
 			return userService.borrarUsuario(idDelete);
 		}
 	}
-	
+
 	/**
-	 * Comprueba si el email o el username del usuario a esta registrado en la base de datos
+	 * Comprueba si el email o el username del usuario a esta registrado en la base
+	 * de datos
+	 * 
 	 * @param email
 	 * @param username
 	 * @return
@@ -267,7 +268,8 @@ public class UserController {
 	 * @return
 	 */
 	@PutMapping("/incidence/{idi}")
-	public Incidence editIncidence(@PathVariable Long idi, @RequestBody (required=false) CommentCommunity comentario, @RequestParam (required=false) String state) {
+	public Incidence editIncidence(@PathVariable Long idi, @RequestBody(required = false) CommentCommunity comentario,
+			@RequestParam(required = false) String state) {
 
 		String email = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		User result = userRepo.findByEmail(email);
@@ -276,22 +278,21 @@ public class UserController {
 			throw new UserNotFoundException();
 		} else {
 			Incidence incidence = incidenceService.findById(idi);
-			if(state!=null) {
+			if (state != null) {
 				if (incidence == null) {
 					throw new IncidenceNotExist(idi);
 				} else {
 					return incidenceService.changeState(state, incidence);
 				}
-			}
-			else {
+			} else {
 				if (incidence == null) {
 					throw new IncidenceNotExist(idi);
 				} else {
-					
+
 					return incidenceService.editIncidence(idi, comentario);
 				}
 			}
-			
+
 		}
 	}
 
@@ -321,24 +322,86 @@ public class UserController {
 	/**
 	 * Da la lista de logros
 	 * 
-	 * @return
+	 * @return todos los achievements
 	 */
 	@GetMapping("/achievement")
 	public List<Achievement> getAllAchievement() {
+		return achievementService.getAllAchievement();
+	}
+
+	/**
+	 * Consigue la lista de logros de un usuario
+	 * 
+	 * @return logros
+	 */
+	@GetMapping("/user/achievement")
+	public List<Achievement> getUserAchievements() {
 		User user;
 		try {
 			String email = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-			user = userRepo.findByEmail(email); 
-		}catch (Exception e) {
+			user = userRepo.findByEmail(email);
+			return achievementService.getUserAchievements(user);
+		} catch (Exception e) {
 			throw new UserNotFoundException();
 		}
-		return achievementService.getAllAchievement(user);
+	}
+
+	/**
+	 * Consigue un logro concreto
+	 * 
+	 * @param id
+	 * @return un logro
+	 */
+	@GetMapping("/achievement/{id}")
+	public Achievement getAchievement(@PathVariable Long id) {
+		return achievementService.getAchievement(id);
+	}
+
+	/**
+	 * Modifica los logros de un usuario
+	 * 
+	 * @param id
+	 * @return usuario con la lista de logros modificada
+	 */
+	@PutMapping("/user/achievements")
+	public User modifyAchivementsFromUser(@RequestBody List<Achievement> achievements) {
+		User user;
+		try {
+			String email = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+			user = userRepo.findByEmail(email);
+			return achievementService.modifyAchivementsFromUser(achievements, user);
+		} catch (Exception e) {
+			throw new UserNotFoundException();
+		}
+	}
+
+	/**
+	 * Modifica un logro concreto
+	 * 
+	 * @param achievement
+	 * @param id
+	 * @return logro modificado
+	 */
+	@PutMapping("/achievement/{id}")
+	public Achievement modifyAchievement(@RequestBody Achievement achievement, @PathVariable Long id) {
+		return modifyAchievement(achievement, id);
+	}
+
+	/**
+	 * Añade un nuevo logro
+	 * 
+	 * @param achievement
+	 * @return logro añadido
+	 */
+	@PostMapping("/achievement")
+	public Achievement addAchievement(@RequestBody Achievement achievement) {
+		return achievementService.addNewAchievement(achievement);
 	}
 
 	/**
 	 * Da la lista de penalizaciones
 	 * 
-	 * @return
+	 * @return penalizaciones
 	 */
 	@GetMapping("/penalty")
 	public List<Penalty> getAllPenalty() {
@@ -359,7 +422,6 @@ public class UserController {
 	}
 
 	// EXCEPCIONES--------------------------------------------------------
-	
 
 	@ExceptionHandler(AlreadySetAsAnSmokingDayException.class)
 	public ResponseEntity<ApiError> alreadySetAsAnSmokingDayException(AlreadySetAsAnSmokingDayException ex)
@@ -374,6 +436,7 @@ public class UserController {
 
 	/**
 	 * Excepción que muestra que el usuario no existe
+	 * 
 	 * @param ex
 	 * @return
 	 * @throws Exception
@@ -390,6 +453,7 @@ public class UserController {
 
 	/**
 	 * Excepción que muestra que la incidencia no existe
+	 * 
 	 * @param ex
 	 * @return
 	 * @throws Exception
@@ -404,7 +468,6 @@ public class UserController {
 		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e);
 	}
 
-	
 	@ExceptionHandler(TypeMismatchException.class)
 	public ResponseEntity<ApiError> IncidenceNotFound(TypeMismatchException ex) throws Exception {
 		ApiError e = new ApiError();
@@ -413,6 +476,25 @@ public class UserController {
 		e.setFecha(LocalDateTime.now());
 
 		return ResponseEntity.status(HttpStatus.CONFLICT).body(e);
+	}
+
+	/**
+	 * Maneja la traza de la excepción que se produce cuando no existe el logro que
+	 * se quiere consultar
+	 * 
+	 * @param ex
+	 * @return traza controlada de la excepción
+	 * @throws Exception
+	 */
+	@ExceptionHandler(NonExistentAchievementException.class)
+	public ResponseEntity<ApiError> NonExistentAchievementException(NonExistentAchievementException ex)
+			throws Exception {
+		ApiError e = new ApiError();
+		e.setEstado(HttpStatus.NOT_FOUND);
+		e.setMensaje(ex.getMessage());
+		e.setFecha(LocalDateTime.now());
+
+		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e);
 	}
 
 }
