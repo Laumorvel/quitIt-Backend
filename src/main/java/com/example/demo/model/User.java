@@ -519,5 +519,10 @@ public class User {
 		calculaDineroAhorrado();
 		calculaTotalDaysInARowWithoutSmoking();
 	}
+	
+	
+	public void addFriend (User userRecibido) {
+		this.userList.add(userRecibido);
+	}
 
 }

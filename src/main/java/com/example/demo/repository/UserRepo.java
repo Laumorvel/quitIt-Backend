@@ -58,6 +58,9 @@ public interface UserRepo extends JpaRepository<User, Long> {
 	@Query(value = "SELECT * FROM user WHERE username = ?1", nativeQuery = true)
 	public User findByUsernameComplete(String username);
 
+	@Query(value = "SELECT * FROM user_user_list WHERE user_id = ?1", nativeQuery = true)
+	public List<User> searchFriends(String string);
+
 
 	
 }
