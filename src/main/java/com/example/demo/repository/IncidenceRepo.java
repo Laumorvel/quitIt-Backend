@@ -10,6 +10,10 @@ import com.example.demo.model.Incidence;
 
 public interface IncidenceRepo extends JpaRepository<Incidence, Long>{
 
+	/**
+	 * Query que devuelve una lista de todos las incidencias de la base de datos
+	 * @return
+	 */
 	@Query(value="SELECT * FROM incidence", nativeQuery = true)
 	List<Incidence>getAllIncidences();
 }

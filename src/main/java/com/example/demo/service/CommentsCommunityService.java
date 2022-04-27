@@ -20,10 +20,20 @@ public class CommentsCommunityService {
 	@Autowired
 	UserRepo userRepo;
 
+	/**
+	 * Devuelve una lista con todos los comentarios de la comunidad
+	 * @return
+	 */
 	public List<CommentCommunity> getComments() {
 		return commentsCommutinyRepo.findAll();
 	}
 
+	/**
+	 * Crea un nuevo comentario en el chat comunitario
+	 * @param result
+	 * @param datos
+	 * @return
+	 */
 	public CommentCommunity addCommentCommunity(User result, CommentCommunity datos) {
 		User user = userRepo.findById(result.getId()).orElse(null);// ya tienes al usuario
 
@@ -40,6 +50,11 @@ public class CommentsCommunityService {
 
 	}
 
+	/**
+	 * Borra un comentario del chat de la comunidad
+	 * @param idC
+	 * @return
+	 */
 	public CommentCommunity delete(Long idC) {
 		if (commentsCommutinyRepo.existsById(idC)) {
 			

@@ -15,6 +15,14 @@ public class SmtpMailSender {
 	@Autowired
 	private JavaMailSender javaMailSender;
 	
+	/**
+	 * Envia emails al correo que le indiquemos con el texto, asunto y el email del destinatario.
+	 * @param to
+	 * @param subject
+	 * @param body
+	 * @param from
+	 * @throws MessagingException
+	 */
 	public void send(String to, String subject, String body, String from) throws MessagingException {
 	
 		MimeMessage message = javaMailSender.createMimeMessage();

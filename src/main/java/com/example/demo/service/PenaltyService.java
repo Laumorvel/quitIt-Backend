@@ -13,6 +13,10 @@ public class PenaltyService {
 	
 	@Autowired PenaltyRepo penaltyRepo;
 
+	/**
+	 * Devuelve una lista con todas las penalizaciones existentes
+	 * @return
+	 */
 	public List<Penalty> getAllPenalty() {
 		return penaltyRepo.findAllPenalty();
 	}

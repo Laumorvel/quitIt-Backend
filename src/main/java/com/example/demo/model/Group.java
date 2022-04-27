@@ -55,7 +55,9 @@ public class Group {
 		this.name = name;
 	}
 	
-	
+	/**
+	 * Hascode y qeuals de la id del grupo
+	 */
 	@Override
 	public int hashCode() {
 		return Objects.hash(id);
@@ -74,7 +76,9 @@ public class Group {
 	}
 	
 	
-	
+	/**
+	 * ToString con todos los atributos del grupo
+	 */
 	@Override
 	public String toString() {
 		return "Group [id=" + id + ", name=" + name + "]";

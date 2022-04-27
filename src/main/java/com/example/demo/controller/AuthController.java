@@ -38,7 +38,13 @@ public class AuthController {
     
     
     
-
+    /**
+     * Registro de usuarios, siempre se crearan con el rol de usuario y nos devolvera un token para que pueda acceder a la aplicación
+     * @param user
+     * @param body
+     * @return
+     * @throws Exception
+     */
     @PostMapping("/auth/register")
     public Map<String, Object> registerHandler(@RequestBody User user, User body) throws Exception{
     	
@@ -57,6 +63,11 @@ public class AuthController {
     }
 
 
+    /**
+     * Inicio de sesión de los usuarios, distingue si el email o la contraseña son incorrectos. Tambien devuelve un token si la petición es correcta
+     * @param body
+     * @return
+     */
     @PostMapping("/auth/login")
     public Map<String, Object> loginHandler(@RequestBody LoginCredentials body){
         try {
@@ -102,6 +113,12 @@ public class AuthController {
 	
 	//-EXCEPCIONES----------------------------------------------------------------------------------------
 
+	/**
+	 * Excepción para contraseña incorrecta
+	 * @param ex
+	 * @return
+	 * @throws Exception
+	 */
 	@ExceptionHandler(PasswordException.class)
 	public ResponseEntity<ApiError> passwordError(PasswordException ex) throws Exception {
 		ApiError e = new ApiError();
@@ -112,6 +129,12 @@ public class AuthController {
 		return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(e);
 	}
 
+	/**
+	 * Excepción para email incorrecto
+	 * @param ex
+	 * @return
+	 * @throws Exception
+	 */
 	@ExceptionHandler(EmailPasswordException.class)
 	public ResponseEntity<ApiError> emailPasswordError(EmailPasswordException ex) throws Exception {
 		ApiError e = new ApiError();
