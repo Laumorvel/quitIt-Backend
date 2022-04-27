@@ -14,6 +14,10 @@ public class MeetUpService {
 	
 	@Autowired MeetUpRepo meetUpRepo;
 
+	/**
+	 * Devuelve una lista con todos los meet ups
+	 * @return
+	 */
 	public List<MeetUp> getAllMeetUps() {
 		return meetUpRepo.findAllMeetUps();
 	}

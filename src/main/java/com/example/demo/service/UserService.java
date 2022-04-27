@@ -6,10 +6,8 @@ import java.util.Collections;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import com.example.demo.model.Achievement;
 import com.example.demo.model.OrdenarPorNumero;
 import com.example.demo.model.User;
 import com.example.demo.repository.UserRepo;
@@ -20,10 +18,24 @@ public class UserService {
 	@Autowired
 	UserRepo userRepo;
 
+	/**
+	 * Busca un usuario por email
+	 * @param email
+	 * @return
+	 */
 	public User getUserEmail(String email) {
 		return userRepo.findByEmail(email);
 	}
 
+	/**
+	 * Busca un usuario por su username
+	 * @param username
+	 * @return
+	 */
+	public User getUsernameComplete(String username) {
+		return userRepo.findByUsernameComplete(username);
+	}
+	
 	public User getUsername(String username) {
 		return userRepo.findByUsername(username);
 	}
@@ -65,11 +77,6 @@ public class UserService {
 		return userRepo.save(user);
 	}
 
-
-	public User findUserByUsername(String busqueda) {
-		System.out.println(busqueda);
-		return userRepo.findUserByUsername(busqueda);
-	}
 
 	/**
 	 * Modifica los datos iniciales del usuario (cigarrillos diarios previos y

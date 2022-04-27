@@ -24,9 +24,17 @@ public class IncidenceService {
 	@Autowired UserRepo userRepo;
 	
 
+	/**
+	 * Crea una incidencia.
+	 * Añade el asunto y el texto que indique el usuario.
+	 * Tambien se guarda el usuario que ha realizado la incidencia.
+	 * El estado de una incidencia al crearse siempre sera "PENDING"	
+	 * @param result
+	 * @param datos
+	 * @return
+	 */
 	public Incidence createIncidence(User result, Incidence datos) {
 		User  user = userRepo.findById(result.getId()).orElse(null);
-		
 		
 		Incidence incidence = new Incidence();
 		
@@ -44,6 +52,12 @@ public class IncidenceService {
 	}
 
 
+	/**
+	 * Añade a la incidencia anterior el comentario al que hace referencia
+	 * @param i
+	 * @param comentario
+	 * @return
+	 */
 	public Incidence editIncidence(Long i, CommentCommunity comentario) {
 		if (incidenceRepo.existsById(i)) {
 			
@@ -59,17 +73,32 @@ public class IncidenceService {
 	}
 
 
+	/**
+	 * Muestra una lista de incidencias
+	 * @return
+	 */
 	public List<Incidence> getAllIncidences() {
 		return incidenceRepo.findAll();
 	}
 
 
+	/**
+	 * Busca un comentario por id y lo devuelve
+	 * @param idC
+	 * @return
+	 */
 	public CommentCommunity getCommentById(Long idC) {
 		CommentCommunity comment = commentsCommutinyRepo.findById(idC).orElse(null);
 		return comment;
 	}
 
 
+	/**
+	 * Canmbia el estado de una incidencia que identificamos por su id
+	 * @param estado
+	 * @param incidence
+	 * @return
+	 */
 	public Incidence changeState(String estado, Incidence incidence) {
 		if (incidenceRepo.existsById(incidence.getId())) {
 			
@@ -91,7 +120,11 @@ public class IncidenceService {
 		}
 	}
 
-
+	/**
+	 * Devuelve una incidencia por id
+	 * @param idi
+	 * @return
+	 */
 	public Incidence findById(Long idi) {
 		return incidenceRepo.findById(idi).orElse(null);
 	}

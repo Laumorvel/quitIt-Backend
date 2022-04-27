@@ -44,6 +44,10 @@ public class CommentCommunity {
 		this.date = date;
 	}
 	
+	/**
+	 * Constructor con el texto
+	 * @param text
+	 */
 	public CommentCommunity(String text) {
 		this.text = text;
 	}

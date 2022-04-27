@@ -3,6 +3,10 @@ package com.example.demo.model;
 import java.util.Comparator;
 
 public class OrdenarPorNumero implements Comparator<User>{
+	
+	/**
+	 * Comparador de los dias que lleva el usuario sin fumar, ordenandola de forma descendencte según los dias que llevan sin fumar
+	 */
 	@Override
 	public int compare(User o1, User o2) {
 		int resultado;

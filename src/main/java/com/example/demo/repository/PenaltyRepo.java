@@ -10,6 +10,10 @@ import com.example.demo.model.Penalty;
 public interface PenaltyRepo extends JpaRepository<Penalty, Long>{
 
 
+	/**
+	 * Query que devuelve una lista de todos las penalizaciones de la base de datos
+	 * @return
+	 */
 	@Query(value="select * from penalty", nativeQuery = true) 
 	List<Penalty> findAllPenalty();
 

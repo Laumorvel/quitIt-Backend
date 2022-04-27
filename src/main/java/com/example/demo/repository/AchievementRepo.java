@@ -11,6 +11,10 @@ import com.example.demo.model.User;
 public interface AchievementRepo extends JpaRepository<Achievement, Long>{
 
 
+	/**
+	 * Query que devuelve una lista de todos los logros de la base de datos
+	 * @return
+	 */
 	@Query(value="select * from achievement", nativeQuery = true) 
 	List<Achievement> findAllAchievement();
 

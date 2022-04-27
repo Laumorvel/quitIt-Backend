@@ -44,15 +44,6 @@ public class Message {
 	 * 
 	 * @return
 	 */
-
-	/**
-	 * HashCode y Equals de la id
-	 */
-	@Override
-	public int hashCode() {
-		return Objects.hash(id);
-	}
-
 	public Long getId() {
 		return id;
 	}
@@ -93,6 +84,14 @@ public class Message {
 		this.fromUser = fromUser;
 	}
 
+	/**
+	 * HashCode y Equals de la id
+	 */
+	@Override
+	public int hashCode() {
+		return Objects.hash(id);
+	}
+	
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -104,16 +103,16 @@ public class Message {
 		Message other = (Message) obj;
 		return Objects.equals(id, other.id);
 	}
-
+	
+	/**
+	 * ToString con todos los atributos
+	 */
 	@Override
 	public String toString() {
 		return "Message [id=" + id + ", toUser=" + toUser + ", subject=" + subject + ", text=" + text + ", fromUser="
 				+ fromUser + "]";
 	}
 
-	/**
-	 * ToString con todos los atributos
-	 */
 
 }
 

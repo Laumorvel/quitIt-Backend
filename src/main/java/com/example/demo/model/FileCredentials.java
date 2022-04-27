@@ -11,9 +11,16 @@ public class FileCredentials {
 
 	private String fileName;
 
+	/**
+	 * Constructor vacio
+	 */
 	public FileCredentials() {
 	}
 
+	/**
+	 * Getters y setters del nombre del archivo
+	 * @return
+	 */
 	public String getFileName() {
 		return fileName;
 	}
