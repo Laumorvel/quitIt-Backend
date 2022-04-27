@@ -141,6 +141,10 @@ public class UserService {
 		}
 	}
 	
+	public List<User> findUsers(){
+		return userRepo.findUsers();
+	}
+	
 	
 	
 }
