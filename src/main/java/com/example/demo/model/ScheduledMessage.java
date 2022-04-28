@@ -2,14 +2,36 @@ package com.example.demo.model;
 
 import java.util.Objects;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+
+@Entity
 public class ScheduledMessage {
+	// string_in_string = "Shepherd {} is on duty.".format(shepherd)
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
 	
+	@Column(nullable = false)
 	private String text;
 	
-	public ScheduledMessage() {}
+	@Column(nullable = false)
+	private Boolean sent;
+
+	public ScheduledMessage() {
+	}
 
 	public ScheduledMessage(String text) {
 		this.text = text;
+	}
+
+	public ScheduledMessage(String text, Boolean sent) {
+		this.text = text;
+		this.sent = sent;
 	}
 
 	public String getText() {
@@ -18,6 +40,14 @@ public class ScheduledMessage {
 
 	public void setText(String text) {
 		this.text = text;
+	}
+
+	public Boolean getSent() {
+		return sent;
+	}
+
+	public void setSent(Boolean sent) {
+		this.sent = sent;
 	}
 
 	@Override
@@ -41,6 +71,5 @@ public class ScheduledMessage {
 		ScheduledMessage other = (ScheduledMessage) obj;
 		return Objects.equals(text, other.text);
 	}
-	
-	
+
 }

@@ -16,11 +16,13 @@ import com.example.demo.model.Achievement;
 import com.example.demo.model.CommentCommunity;
 import com.example.demo.model.MeetUp;
 import com.example.demo.model.Penalty;
+import com.example.demo.model.ScheduledMessage;
 import com.example.demo.model.User;
 import com.example.demo.repository.AchievementRepo;
 import com.example.demo.repository.CommentsCommunityRepo;
 import com.example.demo.repository.MeetUpRepo;
 import com.example.demo.repository.PenaltyRepo;
+import com.example.demo.repository.ScheduledMessageRepository;
 import com.example.demo.repository.UserRepo;
 
 @SpringBootApplication
@@ -40,7 +42,7 @@ public class QuititApplication {
 
 	@Bean
 	CommandLineRunner initData(UserRepo repositorioUsers, CommentsCommunityRepo commentsCommunityRepo,
-			MeetUpRepo meetUpRepo, AchievementRepo achievementRepo, PenaltyRepo penaltyRepo) {
+			MeetUpRepo meetUpRepo, AchievementRepo achievementRepo, PenaltyRepo penaltyRepo, ScheduledMessageRepository scheduledMessageRepo) {
 
 		// Usuarios administradores
 		User usuario1 = new User("Adela", "Lira", "adelalira", "adela@gmail.com", passwordEncoder.encode("12345"),
@@ -134,6 +136,24 @@ public class QuititApplication {
 				"days");
 		Penalty penalty20 = new Penalty("You're letting me down", "100 cigarettes smoked", "alzheimer.png", 100,
 				"cigarette");
+		
+		//SCHEDULED MESSAGES
+		ScheduledMessage sm1 = new ScheduledMessage("GREAT JOB! You haven't smoked for {} days",true);
+		ScheduledMessage sm2 = new ScheduledMessage("You got this! You haven't smoked for {} days in a row",false);
+		ScheduledMessage sm3 = new ScheduledMessage("Good luck today! I know you’ll do great. You've avoided {} cigarettes",false);
+		ScheduledMessage sm4 = new ScheduledMessage("Sending major good vibes your way. You've earned {}€!",false);
+		ScheduledMessage sm5 = new ScheduledMessage("I know this won’t be easy, but I also know you’ve got what it takes to get through it. You haven't smoked for {} days in a row",false);
+		ScheduledMessage sm6 = new ScheduledMessage("Time to go kick cancer’s ass!",false);
+		ScheduledMessage sm7 = new ScheduledMessage("Sending you good thoughts—and hoping you believe in yourself just as much as we believe in you. You have avoided {} cigarettes",false);
+		ScheduledMessage sm8 = new ScheduledMessage("We hope you feel your inner strength building day by day. You have earned {}€",false);
+		ScheduledMessage sm9 = new ScheduledMessage("This is tough, but you’re tougher. You haven't smoked for {} days",false);
+		ScheduledMessage sm10 = new ScheduledMessage("We're proud of you for walking this road, for doing what’s right for you. You have avoided {} cigarettes!",false);
+		ScheduledMessage sm11 = new ScheduledMessage("You’re making a big change, and that’s a really big deal. You haven't smoked for {} days in a row",false);
+		ScheduledMessage sm12 = new ScheduledMessage("Even when you might not feel it, you’ve got the strength to get through. You haven't smoked for {} days",false);
+		ScheduledMessage sm13 = new ScheduledMessage("Take everything one day at a time. You've avoided {} cigarettes. That's awesome!",false);
+		ScheduledMessage sm14 = new ScheduledMessage("It takes serious courage to get on this path and stay on it. Good on you. You've already earned {}€!", false);
+		ScheduledMessage sm15 = new ScheduledMessage("Awesome! You've earned {}€",false);
+		ScheduledMessage sm16 = new ScheduledMessage("Keep on keeping on! You haven'r smoked for {} days",false);
 
 		return (args) -> {
 
@@ -150,6 +170,13 @@ public class QuititApplication {
 			penaltyRepo.saveAll(Arrays.asList(penalty1, penalty2, penalty3, penalty4, penalty5, penalty6, penalty7,
 					penalty8, penalty9, penalty10, penalty11, penalty12, penalty13, penalty14, penalty15, penalty16,
 					penalty17, penalty18, penalty19, penalty20));
+					
+					
+			scheduledMessageRepo.saveAll(
+					Arrays.asList(sm1, sm2, sm3, sm4, sm5, sm6, sm7, sm8, sm9, sm10, sm11, sm12, sm13, sm14, sm15, sm16)
+					);
+			
+			
 
 		};
 	}

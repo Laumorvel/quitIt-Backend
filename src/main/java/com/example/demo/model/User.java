@@ -136,7 +136,7 @@ public class User {
 	/**
 	 * Indica si el usuario tiene mensajes de la app
 	 */
-	private String message;
+	private Boolean message = false;
 
 	/**
 	 * Constructor vacío.
@@ -190,7 +190,7 @@ public class User {
 			List<Group> groupList, List<User> userList, List<Achievement> achievementList, List<Penalty> penalties,
 			LocalDate startDate, Integer cigarettesBeforePerDay, Double moneyPerDay, Integer smokingDays,
 			Integer cigarettesSmoked, double moneySaved, String username, File file, LocalDate lastDateSmoking,
-			String message) {
+			Boolean message) {
 		this.name = name;
 		this.lastName = lastName;
 		this.email = email;
@@ -228,11 +228,11 @@ public class User {
 		this.id = id;
 	}
 
-	public String getMessage() {
+	public Boolean getMessage() {
 		return message;
 	}
 
-	public void setMessage(String message) {
+	public void setMessage(Boolean message) {
 		this.message = message;
 	}
 

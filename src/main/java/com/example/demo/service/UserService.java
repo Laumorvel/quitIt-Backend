@@ -145,6 +145,12 @@ public class UserService {
 		return userRepo.findUsers();
 	}
 	
-	
+	/**
+	 * Consigue la propiedad message del usuario para poder indicar que se le ha mandado un mensaje
+	 * @return propiedad message (boolean)
+	 */
+	public List<Boolean> getPropertyMessage(){
+		return userRepo.getPropertyMessage();
+	}
 	
 }
