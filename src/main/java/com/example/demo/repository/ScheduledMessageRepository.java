@@ -14,6 +14,10 @@ public interface ScheduledMessageRepository extends JpaRepository<ScheduledMessa
 	@Query(value="SELECT id FROM scheduled_message WHERE sent = true", nativeQuery = true)
 	Long getLastMessageSentId();
 	
+	/**
+	 * Consigue todos los mensajes del repositorio
+	 * @return mensajes
+	 */
 	@Query(value="SELECT * FROM scheduled_message WHERE sent = true", nativeQuery = true)
 	ScheduledMessage getLastMessageSent();
 

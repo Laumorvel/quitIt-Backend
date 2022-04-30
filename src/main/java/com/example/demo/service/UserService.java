@@ -20,6 +20,7 @@ public class UserService {
 
 	/**
 	 * Busca un usuario por email
+	 * 
 	 * @param email
 	 * @return
 	 */
@@ -29,19 +30,21 @@ public class UserService {
 
 	/**
 	 * Busca un usuario por su username
+	 * 
 	 * @param username
 	 * @return
 	 */
 	public User getUsernameComplete(String username) {
 		return userRepo.findByUsernameComplete(username);
 	}
-	
+
 	public User getUsername(String username) {
 		return userRepo.findByUsername(username);
 	}
 
 	/**
 	 * Muestra todos los usuarios ordenados para el ranking
+	 * 
 	 * @return
 	 */
 	public List<User> getAllUsers() {
@@ -51,8 +54,8 @@ public class UserService {
 		for (User e : listaUsuarios) {
 			listaUsuariosOrdenada.add(e);
 		}
-		
-		return  listaUsuariosOrdenada;
+
+		return listaUsuariosOrdenada;
 	}
 
 	/**
@@ -76,7 +79,6 @@ public class UserService {
 		user.resetUserAfterSmoking(cigarettes);
 		return userRepo.save(user);
 	}
-
 
 	/**
 	 * Modifica los datos iniciales del usuario (cigarrillos diarios previos y
@@ -116,41 +118,42 @@ public class UserService {
 
 	/**
 	 * Borra todos los datos del usuario en cascada
+	 * 
 	 * @param result
 	 * @return
 	 */
 	public User borrarUsuario(Long result) {
 		if (userRepo.existsById(result)) {
-						
-			
+
 			User user = userRepo.findById(result).orElse(null);
 			User usuarioParaImprimir = userRepo.findById(result).orElse(null);
-			
+
 			user.setAchievementList(null);
 			user.setGroupList(null);
 			user.setFile(null);
 			user.setPenalties(null);
 			user.setUserList(null);
-			
-			
+
 			userRepo.delete(user);
-			
+
 			return usuarioParaImprimir;
 		} else {
 			return null;
 		}
 	}
-	
-	public List<User> findUsers(){
+
+	public List<User> findUsers() {
 		return userRepo.findUsers();
 	}
-	
+
 	/**
-	 * Consigue la propiedad message del usuario para poder indicar que se le ha mandado un mensaje
-	 * @return propiedad message (boolean)
+	 * Consigue la propiedad message del usuario para poder indicar que se le ha
+	 * mandado un mensaje y el usuario ya lo ha leído (que será cuando se marque a
+	 * false). Se guardan los cambios en la bb.dd.
 	 */
-	public List<Boolean> getPropertyMessage(){
-		return userRepo.getPropertyMessage();
+	public User setPropertyMessageToFalse(User user) {
+		userRepo.findById(user.getId()).get().setMessage(false);
+		return userRepo.save(user);
 	}
-	
+
 }
