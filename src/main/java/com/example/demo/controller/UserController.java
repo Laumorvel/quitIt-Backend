@@ -92,6 +92,20 @@ public class UserController {
 		}
 
 	}
+	
+	@PostMapping("/user")
+	public User addfriend(@RequestBody(required = false) User userRecibido) {
+
+		String email = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		User result = userRepo.findByEmail(email);
+
+		if (result == null) {
+			throw new UserNotFoundException();
+		} else {
+			return this.userService.addfriend(result, userRecibido);
+		}
+	}
+	
 
 	/**
 	 * 
@@ -236,6 +250,24 @@ public class UserController {
 			return ResponseEntity.noContent().build();
 		}
 	}
+	
+	/**
+	 * Da la lista de amigos de un usuario
+	 * 
+	 * @return
+	 */
+	@GetMapping("/friend")
+	public List<User> getAllfriend() {
+		String email = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		User result = userRepo.findByEmail(email);
+
+		if (result == null) {
+			throw new UserNotFoundException();
+		} else {
+			return userService.getAllFriends(result);
+		}
+		
+	}
 
 	/**
 	 * Da la lista de incidencias
@@ -274,9 +306,7 @@ public class UserController {
 	 * @return
 	 */
 	@PutMapping("/incidence/{idi}")
-	public Incidence editIncidence(@PathVariable Long idi, @RequestBody(required = false) CommentCommunity comentario,
-			@RequestParam(required = false) String state) {
-
+	public Incidence editIncidence(@PathVariable Long idi, @RequestBody (required=false) CommentCommunity comentario, @RequestParam (required=false) String state, @RequestParam (required=false) String envioVacio) {
 		String email = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		User result = userRepo.findByEmail(email);
 
