@@ -4,11 +4,13 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.Scheduled;
 
 import com.example.demo.model.User;
 import com.example.demo.repository.UserRepo;
 
+@Configuration
 public class MessageSchedulingService {
 	
 	public static final List<String> TELL_OFF_MESSAGES = Arrays.asList(
@@ -36,14 +38,14 @@ public class MessageSchedulingService {
 	 * Los mensajes se mandarán dependiendo del avance del usuario de la semana
 	 * anterior.
 	 */
-	// @Scheduled(fixedRate = 10000)
-	@Scheduled(cron = "0 0 0 * * MON")
+	@Scheduled(fixedRate = 5000)//cada 5 s. Se multiplica por 1000 para pasarlo a milisegundos
+	//@Scheduled(cron = "0 0 0 * * MON")
 	public void sendMessage() {
 		//LocalDate lastWeek = LocalDate.now().minus(7, ChronoUnit.DAYS);
 		List<User> users = userService.findUsers();
 
 		for (User user : users) {
-			user.setMessage(true);//En el front tengo que hacer petición para setearla a false cuando el user lea el mensaje
+			user.setMessage(true);
 			userRepo.save(user);
 		}
 	}

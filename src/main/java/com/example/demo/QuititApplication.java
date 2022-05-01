@@ -138,22 +138,22 @@ public class QuititApplication {
 				"cigarette");
 		
 		//SCHEDULED MESSAGES
-		ScheduledMessage sm1 = new ScheduledMessage("GREAT JOB! You haven't smoked for {} days",true);
-		ScheduledMessage sm2 = new ScheduledMessage("You got this! You haven't smoked for {} days in a row",false);
-		ScheduledMessage sm3 = new ScheduledMessage("Good luck today! I know you’ll do great. You've avoided {} cigarettes",false);
-		ScheduledMessage sm4 = new ScheduledMessage("Sending major good vibes your way. You've earned {}€!",false);
-		ScheduledMessage sm5 = new ScheduledMessage("I know this won’t be easy, but I also know you’ve got what it takes to get through it. You haven't smoked for {} days in a row",false);
+		ScheduledMessage sm1 = new ScheduledMessage("GREAT JOB! You haven't smoked for DAYS days",true);
+		ScheduledMessage sm2 = new ScheduledMessage("You got this! You haven't smoked for DAYSINAROW days in a row",false);
+		ScheduledMessage sm3 = new ScheduledMessage("Good luck today! I know you’ll do great. You've avoided CIGARETTES cigarettes",false);
+		ScheduledMessage sm4 = new ScheduledMessage("Sending major good vibes your way. You've earned MONEY€!",false);
+		ScheduledMessage sm5 = new ScheduledMessage("I know this won’t be easy, but I also know you’ve got what it takes to get through it. You haven't smoked for DAYSINAROW days in a row",false);
 		ScheduledMessage sm6 = new ScheduledMessage("Time to go kick cancer’s ass!",false);
-		ScheduledMessage sm7 = new ScheduledMessage("Sending you good thoughts—and hoping you believe in yourself just as much as we believe in you. You have avoided {} cigarettes",false);
-		ScheduledMessage sm8 = new ScheduledMessage("We hope you feel your inner strength building day by day. You have earned {}€",false);
-		ScheduledMessage sm9 = new ScheduledMessage("This is tough, but you’re tougher. You haven't smoked for {} days",false);
-		ScheduledMessage sm10 = new ScheduledMessage("We're proud of you for walking this road, for doing what’s right for you. You have avoided {} cigarettes!",false);
-		ScheduledMessage sm11 = new ScheduledMessage("You’re making a big change, and that’s a really big deal. You haven't smoked for {} days in a row",false);
-		ScheduledMessage sm12 = new ScheduledMessage("Even when you might not feel it, you’ve got the strength to get through. You haven't smoked for {} days",false);
-		ScheduledMessage sm13 = new ScheduledMessage("Take everything one day at a time. You've avoided {} cigarettes. That's awesome!",false);
-		ScheduledMessage sm14 = new ScheduledMessage("It takes serious courage to get on this path and stay on it. Good on you. You've already earned {}€!", false);
-		ScheduledMessage sm15 = new ScheduledMessage("Awesome! You've earned {}€",false);
-		ScheduledMessage sm16 = new ScheduledMessage("Keep on keeping on! You haven'r smoked for {} days",false);
+		ScheduledMessage sm7 = new ScheduledMessage("Sending you good thoughts—and hoping you believe in yourself just as much as we believe in you. You have avoided CIGARETTES cigarettes",false);
+		ScheduledMessage sm8 = new ScheduledMessage("We hope you feel your inner strength building day by day. You have earned MONEY€",false);
+		ScheduledMessage sm9 = new ScheduledMessage("This is tough, but you’re tougher. You haven't smoked for DAYS days",false);
+		ScheduledMessage sm10 = new ScheduledMessage("We're proud of you for walking this road, for doing what’s right for you. You have avoided CIGARETTES cigarettes!",false);
+		ScheduledMessage sm11 = new ScheduledMessage("You’re making a big change, and that’s a really big deal. You haven't smoked for DAYSINAROW days in a row",false);
+		ScheduledMessage sm12 = new ScheduledMessage("Even when you might not feel it, you’ve got the strength to get through. You haven't smoked for DAYS days",false);
+		ScheduledMessage sm13 = new ScheduledMessage("Take everything one day at a time. You've avoided CIGARETTES cigarettes. That's awesome!",false);
+		ScheduledMessage sm14 = new ScheduledMessage("It takes serious courage to get on this path and stay on it. Good on you. You've already earned MONEY€!", false);
+		ScheduledMessage sm15 = new ScheduledMessage("Awesome! You've earned MONEY€",false);
+		ScheduledMessage sm16 = new ScheduledMessage("Keep on keeping on! You haven'r smoked for DAYS days",false);
 
 		return (args) -> {
 
