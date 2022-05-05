@@ -113,7 +113,7 @@ public class UserController {
 	@PutMapping("/user")
 	public User updateUser(@RequestParam(required = false) Integer cigarettes, @RequestBody User user1,
 			@RequestParam(required = false) Double money, @RequestParam(required = false) Boolean reset,
-			@RequestParam(required = false) Boolean message) {
+			@RequestParam(required = false) Boolean message, @RequestParam(required = false) String urlImage) {
 		User user = userRepo.findByEmail(user1.getEmail());
 
 		if (user == null) {
@@ -126,8 +126,10 @@ public class UserController {
 			return userService.resetUser(user);
 		} else if (cigarettes != null) {
 			return userService.updateUserAfertSmoking(cigarettes, user);
-		} else {
+		} else if(message != null){
 			return userService.setPropertyMessageToFalse(user);
+		}else {
+			return userService.setUrlImage(user, urlImage);
 		}
 	}
 

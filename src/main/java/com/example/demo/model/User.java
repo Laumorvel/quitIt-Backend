@@ -127,6 +127,8 @@ public class User {
 	@OneToOne
 	private File file;
 
+	private String imageUrl;
+
 	/**
 	 * Indica la última fecha en la que el usuario marcó que fumó Se sustituye cada
 	 * vez que el usuario marca que se ha fumado
@@ -215,6 +217,37 @@ public class User {
 		this.message = message;
 	}
 
+	public User(String name, String lastName, String email, String password, String rol,
+			Integer daysInARowWithoutSmoking, Integer cigarettesAvoided, Integer totalTimeWithoutSmoking,
+			List<Group> groupList, List<User> userList, List<Achievement> achievementList, List<Penalty> penalties,
+			LocalDate startDate, Integer cigarettesBeforePerDay, Double moneyPerDay, Integer smokingDays,
+			Integer cigarettesSmoked, double moneySaved, String username, File file, String imageUrl,
+			LocalDate lastDateSmoking, Boolean message) {
+		this.name = name;
+		this.lastName = lastName;
+		this.email = email;
+		this.password = password;
+		this.rol = rol;
+		this.daysInARowWithoutSmoking = daysInARowWithoutSmoking;
+		this.cigarettesAvoided = cigarettesAvoided;
+		this.totalTimeWithoutSmoking = totalTimeWithoutSmoking;
+		this.groupList = groupList;
+		this.userList = userList;
+		this.achievementList = achievementList;
+		this.penalties = penalties;
+		this.startDate = startDate;
+		this.cigarettesBeforePerDay = cigarettesBeforePerDay;
+		this.moneyPerDay = moneyPerDay;
+		this.smokingDays = smokingDays;
+		this.cigarettesSmoked = cigarettesSmoked;
+		this.moneySaved = moneySaved;
+		this.username = username;
+		this.file = file;
+		this.imageUrl = imageUrl;
+		this.lastDateSmoking = lastDateSmoking;
+		this.message = message;
+	}
+
 	/**
 	 * Getters y setter de user
 	 * 
@@ -226,6 +259,14 @@ public class User {
 
 	public void setId(Long id) {
 		this.id = id;
+	}
+
+	public String getImageUrl() {
+		return imageUrl;
+	}
+
+	public void setImageUrl(String imageUrl) {
+		this.imageUrl = imageUrl;
 	}
 
 	public Boolean getMessage() {

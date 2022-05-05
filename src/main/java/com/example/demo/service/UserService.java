@@ -155,5 +155,16 @@ public class UserService {
 		userRepo.findById(user.getId()).get().setMessage(false);
 		return userRepo.save(user);
 	}
+	
+	/**
+	 * Establece la url de la imagen de perfil del usuario
+	 * @param user
+	 * @param url
+	 * @return usuario con el campo de su imagen editado
+	 */
+	public User setUrlImage(User user, String url) {
+		user.setImageUrl(url);
+		return userRepo.save(user);
+	}
 
 }
