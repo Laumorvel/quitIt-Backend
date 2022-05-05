@@ -142,6 +142,7 @@ public class UserService {
 		}
 	}
 
+
 	public List<User> findUsers() {
 		return userRepo.findUsers();
 	}
@@ -166,5 +167,30 @@ public class UserService {
 		user.setImageUrl(url);
 		return userRepo.save(user);
 	}
+
+
+	public User addfriend(User result, User userRecibido) {
+		if (userRepo.existsById(result.getId())) {
+			User user = userRepo.findById(result.getId()).orElse(null);
+			
+			user.addFriend(userRecibido);
+			
+			return userRepo.save(user);
+		} else {
+			return null;
+		}
+	}
+
+	public List<User> getAllFriends(User result) {
+		if (userRepo.existsById(result.getId())) {
+			User user = userRepo.findById(result.getId()).orElse(null);
+			return userRepo.searchFriends(result.getUsername());
+		} else {
+			return null;
+		}
+	}
+	
+	
+	
 
 }

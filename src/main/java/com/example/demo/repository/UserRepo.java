@@ -66,6 +66,12 @@ public interface UserRepo extends JpaRepository<User, Long> {
 	 */
 	@Query(value = "SELECT * FROM user", nativeQuery = true)
 	public List<User> findUsers();
+
+	@Query(value = "SELECT * FROM user_user_list WHERE user_id = ?1", nativeQuery = true)
+	public List<User> searchFriends(String string);
+
+
+
 	
 	/**
 	 * Consigue la propiedad message que indica si se le ha enviado un mensaje al usuario
