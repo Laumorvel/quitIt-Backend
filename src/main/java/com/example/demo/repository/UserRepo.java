@@ -31,7 +31,7 @@ public interface UserRepo extends JpaRepository<User, Long> {
 	 * @return
 	 */
 	@Query(value = "SELECT * FROM user WHERE username LIKE %:username%", nativeQuery = true)
-	public User findByUsername(String username);
+	public List<User> findByUsername(String username);
 
 	
 	/**
@@ -58,8 +58,8 @@ public interface UserRepo extends JpaRepository<User, Long> {
 	@Query(value = "SELECT * FROM user WHERE username = ?1", nativeQuery = true)
 	public User findByUsernameComplete(String username);
 
-	@Query(value = "SELECT * FROM user_user_list WHERE user_id = ?1", nativeQuery = true)
-	public List<User> searchFriends(String string);
+	@Query(value = "SELECT user_list_id FROM user_user_list WHERE user_id = ?1", nativeQuery = true)
+	public List<Long> searchFriends(Long long1);
 
 
 	

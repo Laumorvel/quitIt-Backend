@@ -8,6 +8,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.example.demo.model.Group;
 import com.example.demo.model.OrdenarPorNumero;
 import com.example.demo.model.User;
 import com.example.demo.repository.UserRepo;
@@ -36,7 +37,7 @@ public class UserService {
 		return userRepo.findByUsernameComplete(username);
 	}
 	
-	public User getUsername(String username) {
+	public List<User> getUsername(String username) {
 		return userRepo.findByUsername(username);
 	}
 
@@ -46,6 +47,11 @@ public class UserService {
 	 */
 	public List<User> getAllUsers() {
 		List<User> listaUsuarios = userRepo.findAllUsers();
+		
+		for (int i = 0; i < listaUsuarios.size(); i++) {
+			listaUsuarios.get(i).setUserInitSession();
+		}
+		
 		List<User> listaUsuariosOrdenada = new ArrayList<>();
 		Collections.sort(listaUsuarios, new OrdenarPorNumero());
 		for (User e : listaUsuarios) {
@@ -131,6 +137,7 @@ public class UserService {
 			user.setFile(null);
 			user.setPenalties(null);
 			user.setUserList(null);
+			user.setGroupList(null);
 			
 			
 			userRepo.delete(user);
@@ -144,10 +151,15 @@ public class UserService {
 	public User addfriend(User result, User userRecibido) {
 		if (userRepo.existsById(result.getId())) {
 			User user = userRepo.findById(result.getId()).orElse(null);
+			User user2 = userRepo.findById(userRecibido.getId()).orElse(null);
 			
-			user.addFriend(userRecibido);
+			user.addFriend(user2);
+			user2.addFriend(user);
 			
-			return userRepo.save(user);
+			userRepo.save(user2);
+			userRepo.save(user);
+			
+			return userRecibido;
 		} else {
 			return null;
 		}
@@ -156,7 +168,16 @@ public class UserService {
 	public List<User> getAllFriends(User result) {
 		if (userRepo.existsById(result.getId())) {
 			User user = userRepo.findById(result.getId()).orElse(null);
-			return userRepo.searchFriends(result.getUsername());
+			List<Long> idFriendList = userRepo.searchFriends(result.getId());
+			List<User> friendList = new ArrayList<>();
+			for (int i = 0; i < idFriendList.size(); i++) {
+				User userEncontrado = userRepo.findById(idFriendList.get(i)).orElse(null);
+				if(userEncontrado!=null) {
+					friendList.add(userEncontrado);
+				}
+			}
+			return friendList;
+			
 		} else {
 			return null;
 		}

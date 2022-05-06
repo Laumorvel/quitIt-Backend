@@ -75,7 +75,7 @@ public class UserController {
 	 * @return
 	 */
 	@GetMapping("/user")
-	public User getUser(@RequestParam(required = false) String username) {
+	public User getUser() {
 
 		String email = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		User result = userRepo.findByEmail(email);
@@ -83,12 +83,7 @@ public class UserController {
 		if (result == null) {
 			throw new UserNotFoundException();
 		} else {
-			if (username != null) {
-				return userService.getUsername(username);
-			} else {
-
-				return userService.setUser(result);
-			}
+			return userService.setUser(result);
 		}
 
 	}
@@ -102,7 +97,12 @@ public class UserController {
 		if (result == null) {
 			throw new UserNotFoundException();
 		} else {
-			return this.userService.addfriend(result, userRecibido);
+			if(userRecibido!=null) {
+				return this.userService.addfriend(result, userRecibido);
+			}
+			else {
+				throw new UserNotFoundException();
+			}
 		}
 	}
 	
@@ -172,7 +172,7 @@ public class UserController {
 		if (username == null) {
 			return userService.getUserEmail(email);
 		} else {
-			return userService.getUsername(username);
+			return userService.getUsernameComplete(username);
 		}
 	}
 
@@ -202,7 +202,6 @@ public class UserController {
 		} else {
 			return comment;
 		}
-
 	}
 
 	/**
@@ -231,18 +230,25 @@ public class UserController {
 	 * @return
 	 */
 	@DeleteMapping("/commentsCommunity/{idC}")
-	public ResponseEntity<?> deleteCommentsCommunity(@PathVariable Long idC) {
+	public CommentCommunity deleteCommentsCommunity(@PathVariable Long idC) {
 
 		String email = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		Long id = userRepo.findByEmail(email).getId();
-
-		CommentCommunity result = commentsCommunityService.delete(idC);
-
-		if (result == null) {
-			throw new CommentNotExist(id);
-		} else {
-			return ResponseEntity.noContent().build();
+		
+		if(id==null) {
+			throw new UserNotFoundException();
 		}
+		else {
+			CommentCommunity result = commentsCommunityService.delete(idC);
+
+			if (result == null) {
+				throw new CommentNotExist(id);
+			} else {
+				return result;
+			}
+		}
+
+		
 	}
 	
 	/**
@@ -332,11 +338,26 @@ public class UserController {
 	 * @return
 	 */
 	@GetMapping("/users")
-	public List<User> getAllUsersRanking() {
+	public List<User> getAllUsersRanking(@RequestParam(required = false) String username) {
 		String email = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		User result = userRepo.findByEmail(email);
-		userService.setUser(result);
-		return userService.getAllUsers();
+		
+		if(result==null) {
+			throw new UserNotFoundException();
+		}
+		else {
+			if (username != null) {
+				return  userService.getUsername(username);
+			} 
+			else {
+				userService.setUser(result);
+				return userService.getAllUsers();
+			}
+		}
+		
+		
+		
+		
 	}
 
 	/**
