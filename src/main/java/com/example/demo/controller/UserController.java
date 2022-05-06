@@ -355,8 +355,7 @@ public class UserController {
 		}
 		else {
 			if (username != null) {
-				User userEnviado = userRepo.findByUsernameComplete(username);
-				return  userService.getAllFriends(userEnviado);
+				return  userService.getUsername(username);
 			} 
 			else {
 				userService.setUser(result);
