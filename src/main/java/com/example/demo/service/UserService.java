@@ -39,7 +39,7 @@ public class UserService {
 		return userRepo.findByUsernameComplete(username);
 	}
 
-	public User getUsername(String username) {
+	public List<User> getUsername(String username) {
 		return userRepo.findByUsername(username);
 	}
 
