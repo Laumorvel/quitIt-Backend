@@ -118,12 +118,16 @@ public class UserController {
 	 * 
 	 * En caso de incluir reset, se resetearán los datos del usuario
 	 * 
+	 * En caso de incluir message, se seteará la propiedad message de los usuarios a
+	 * false para indicar que se les ha mandado un mensaje
+	 * 
 	 * @param cigarettes
 	 * @return usuario actualizado
 	 */
 	@PutMapping("/user")
 	public User updateUser(@RequestParam(required = false) Integer cigarettes, @RequestBody User user1,
-			@RequestParam(required = false) Double money, @RequestParam(required = false) Boolean reset) {
+			@RequestParam(required = false) Double money, @RequestParam(required = false) Boolean reset,
+			@RequestParam(required = false) Boolean message, @RequestParam(required = false) String urlImage) {
 		User user = userRepo.findByEmail(user1.getEmail());
 
 		if (user == null) {
@@ -134,8 +138,12 @@ public class UserController {
 			return userService.modificaDatosIniciales(cigarettes, user, money);
 		} else if (reset != null) {
 			return userService.resetUser(user);
-		} else {
+		} else if (cigarettes != null) {
 			return userService.updateUserAfertSmoking(cigarettes, user);
+		} else if(message != null){
+			return userService.setPropertyMessageToFalse(user);
+		}else {
+			return userService.setUrlImage(user, urlImage);
 		}
 	}
 
@@ -347,7 +355,8 @@ public class UserController {
 		}
 		else {
 			if (username != null) {
-				return  userService.getUsername(username);
+				User userEnviado = userRepo.findByUsernameComplete(username);
+				return  userService.getAllFriends(userEnviado);
 			} 
 			else {
 				userService.setUser(result);

@@ -21,6 +21,7 @@ public class UserService {
 
 	/**
 	 * Busca un usuario por email
+	 * 
 	 * @param email
 	 * @return
 	 */
@@ -30,19 +31,21 @@ public class UserService {
 
 	/**
 	 * Busca un usuario por su username
+	 * 
 	 * @param username
 	 * @return
 	 */
 	public User getUsernameComplete(String username) {
 		return userRepo.findByUsernameComplete(username);
 	}
-	
-	public List<User> getUsername(String username) {
+
+	public User getUsername(String username) {
 		return userRepo.findByUsername(username);
 	}
 
 	/**
 	 * Muestra todos los usuarios ordenados para el ranking
+	 * 
 	 * @return
 	 */
 	public List<User> getAllUsers() {
@@ -57,8 +60,8 @@ public class UserService {
 		for (User e : listaUsuarios) {
 			listaUsuariosOrdenada.add(e);
 		}
-		
-		return  listaUsuariosOrdenada;
+
+		return listaUsuariosOrdenada;
 	}
 
 	/**
@@ -82,7 +85,6 @@ public class UserService {
 		user.resetUserAfterSmoking(cigarettes);
 		return userRepo.save(user);
 	}
-
 
 	/**
 	 * Modifica los datos iniciales del usuario (cigarrillos diarios previos y
@@ -122,31 +124,57 @@ public class UserService {
 
 	/**
 	 * Borra todos los datos del usuario en cascada
+	 * 
 	 * @param result
 	 * @return
 	 */
 	public User borrarUsuario(Long result) {
 		if (userRepo.existsById(result)) {
-						
-			
+
 			User user = userRepo.findById(result).orElse(null);
 			User usuarioParaImprimir = userRepo.findById(result).orElse(null);
-			
+
 			user.setAchievementList(null);
 			user.setGroupList(null);
 			user.setFile(null);
 			user.setPenalties(null);
 			user.setUserList(null);
 			user.setGroupList(null);
-			
-			
+
 			userRepo.delete(user);
-			
+
 			return usuarioParaImprimir;
 		} else {
 			return null;
 		}
 	}
+
+
+	public List<User> findUsers() {
+		return userRepo.findUsers();
+	}
+
+	/**
+	 * Consigue la propiedad message del usuario para poder indicar que se le ha
+	 * mandado un mensaje y el usuario ya lo ha leído (que será cuando se marque a
+	 * false). Se guardan los cambios en la bb.dd.
+	 */
+	public User setPropertyMessageToFalse(User user) {
+		userRepo.findById(user.getId()).get().setMessage(false);
+		return userRepo.save(user);
+	}
+	
+	/**
+	 * Establece la url de la imagen de perfil del usuario
+	 * @param user
+	 * @param url
+	 * @return usuario con el campo de su imagen editado
+	 */
+	public User setUrlImage(User user, String url) {
+		user.setImageUrl(url);
+		return userRepo.save(user);
+	}
+
 
 	public User addfriend(User result, User userRecibido) {
 		if (userRepo.existsById(result.getId())) {
@@ -185,4 +213,5 @@ public class UserService {
 	
 	
 	
+
 }
