@@ -58,8 +58,8 @@ public class QuititApplication {
 		User usuarioUser2 = new User("Pepe", "Lopez", "pepitoloooooopez", "pepe@gmail.com",
 				passwordEncoder.encode("12345"), "USER", 30, 10.30);
 
-		usuario1.setStartDate(fecha3);
-		usuario2.setStartDate(fecha3);
+		usuario1.setStartDate(fecha1);
+		usuario2.setStartDate(fecha1);
 		usuarioUser1.setStartDate(fecha3);
 
 		usuarioUser2.setStartDate(fecha3);
