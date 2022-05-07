@@ -24,13 +24,23 @@ public interface UserRepo extends JpaRepository<User, Long> {
 	public User findByEmail(String email);
 
 	/**
-	 * Query para conseguir a un usuario a través de una cadena de string recibida
+	 * Query para conseguir a un usuario a través de una cadena de string recibida.
+	 * No incluye al propio usuario en el resultado
 	 * 
 	 * @param busqueda
 	 * @return
 	 */
-	@Query(value = "SELECT * FROM user WHERE username LIKE %:username%", nativeQuery = true)
-	public List<User> findByUsername(String username);
+	@Query(value = "SELECT * FROM user WHERE username LIKE %:username% AND id != :idUser ", nativeQuery = true)
+	public List<User> findByUsername(String username, Long idUser);
+	
+	/**
+	 * Encuentra los id de los usuarios que sean amigos de un usuario en concreto
+	 * @param idUser
+	 * @param idFriend
+	 * @return id del ususario ya amigo
+	 */
+	@Query(value= "SELECT friends_id FROM user_friends WHERE user_id = ?1 AND friends_id = ?2", nativeQuery = true)
+	public Long findUsersToAddFriends(Long idUser, Long idFriend);
 
 	/**
 	 * Query que nos consigue todos los usuarios que tenemos registrados en la base
@@ -64,7 +74,7 @@ public interface UserRepo extends JpaRepository<User, Long> {
 	 * @param long1
 	 * @return
 	 */
-	@Query(value = "SELECT user_list_id FROM user_user_list WHERE user_id = ?1", nativeQuery = true)
+	@Query(value = "SELECT friends_id FROM user_friends WHERE user_id = ?1", nativeQuery = true)
 	public List<Long> searchFriends(Long long1);
 
 	/**
