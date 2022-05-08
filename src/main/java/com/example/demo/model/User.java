@@ -12,7 +12,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
-import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -75,8 +74,8 @@ public class User {
 	private List<Group> groupList = new ArrayList<>();
 
 	@JsonIgnore
-	@OneToMany
-	private List<User> userList = new ArrayList<>();
+	@ManyToMany
+	private List<User> friends = new ArrayList<>();
 
 	@JsonIgnore
 	@ManyToMany
@@ -148,7 +147,7 @@ public class User {
 
 	public User(Long id, String name, String lastName, String email, String password, String rol,
 			Integer daysInARowWithoutSmoking, Integer cigarettesAvoided, Integer totalTimeWithoutSmoking,
-			List<Group> groupList, List<User> userList, List<Achievement> achievementList, List<Penalty> penalties,
+			List<Group> groupList, List<User> friends, List<Achievement> achievementList, List<Penalty> penalties,
 			LocalDate startDate, Integer cigarettesBeforePerDay, Double moneyPerDay, Integer smokingDays,
 			Integer cigarettesSmoked, double moneySaved, String username, File file, LocalDate lastDateSmoking) {
 		this.id = id;
@@ -161,7 +160,7 @@ public class User {
 		this.cigarettesAvoided = cigarettesAvoided;
 		this.totalTimeWithoutSmoking = totalTimeWithoutSmoking;
 		this.groupList = groupList;
-		this.userList = userList;
+		this.friends = friends;
 		this.achievementList = achievementList;
 		this.penalties = penalties;
 		this.startDate = startDate;
@@ -189,7 +188,7 @@ public class User {
 
 	public User(String name, String lastName, String email, String password, String rol,
 			Integer daysInARowWithoutSmoking, Integer cigarettesAvoided, Integer totalTimeWithoutSmoking,
-			List<Group> groupList, List<User> userList, List<Achievement> achievementList, List<Penalty> penalties,
+			List<Group> groupList, List<User> friends, List<Achievement> achievementList, List<Penalty> penalties,
 			LocalDate startDate, Integer cigarettesBeforePerDay, Double moneyPerDay, Integer smokingDays,
 			Integer cigarettesSmoked, double moneySaved, String username, File file, LocalDate lastDateSmoking,
 			Boolean message) {
@@ -202,7 +201,7 @@ public class User {
 		this.cigarettesAvoided = cigarettesAvoided;
 		this.totalTimeWithoutSmoking = totalTimeWithoutSmoking;
 		this.groupList = groupList;
-		this.userList = userList;
+		this.friends = friends;
 		this.achievementList = achievementList;
 		this.penalties = penalties;
 		this.startDate = startDate;
@@ -219,7 +218,7 @@ public class User {
 
 	public User(String name, String lastName, String email, String password, String rol,
 			Integer daysInARowWithoutSmoking, Integer cigarettesAvoided, Integer totalTimeWithoutSmoking,
-			List<Group> groupList, List<User> userList, List<Achievement> achievementList, List<Penalty> penalties,
+			List<Group> groupList, List<User> friends, List<Achievement> achievementList, List<Penalty> penalties,
 			LocalDate startDate, Integer cigarettesBeforePerDay, Double moneyPerDay, Integer smokingDays,
 			Integer cigarettesSmoked, double moneySaved, String username, File file, String imageUrl,
 			LocalDate lastDateSmoking, Boolean message) {
@@ -232,7 +231,7 @@ public class User {
 		this.cigarettesAvoided = cigarettesAvoided;
 		this.totalTimeWithoutSmoking = totalTimeWithoutSmoking;
 		this.groupList = groupList;
-		this.userList = userList;
+		this.friends = friends;
 		this.achievementList = achievementList;
 		this.penalties = penalties;
 		this.startDate = startDate;
@@ -402,12 +401,12 @@ public class User {
 		this.groupList = groupList;
 	}
 
-	public List<User> getUserList() {
-		return userList;
+	public List<User> getFriends() {
+		return friends;
 	}
 
-	public void setUserList(List<User> userList) {
-		this.userList = userList;
+	public void setFriends(List<User> friends) {
+		this.friends = friends;
 	}
 
 	public LocalDate getStartDate() {
@@ -491,7 +490,7 @@ public class User {
 		return "User [id=" + id + ", name=" + name + ", lastName=" + lastName + ", email=" + email + ", password="
 				+ password + ", rol=" + rol + ", daysInARowWithoutSmoking=" + daysInARowWithoutSmoking
 				+ ", cigarettesAvoided=" + cigarettesAvoided + ", totalTimeWithoutSmoking=" + totalTimeWithoutSmoking
-				+ ", groupList=" + groupList + ", userList=" + userList + ", achievementList=" + achievementList
+				+ ", groupList=" + groupList + ", friends=" + friends + ", achievementList=" + achievementList
 				+ ", penalties=" + penalties + ", startDate=" + startDate + ", cigarettesBeforePerDay="
 				+ cigarettesBeforePerDay + ", moneyPerDay=" + moneyPerDay + ", smokingDays=" + smokingDays
 				+ ", cigarettesSmoked=" + cigarettesSmoked + ", moneySaved=" + moneySaved + "]";
@@ -604,7 +603,7 @@ public class User {
 	
 	
 	public void addFriend (User userRecibido) {
-		this.userList.add(userRecibido);
+		this.friends.add(userRecibido);
 	}
 
 }

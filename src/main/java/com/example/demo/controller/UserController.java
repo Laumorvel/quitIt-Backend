@@ -21,24 +21,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.error.AlreadySetAsAnSmokingDayException;
 import com.example.demo.error.ApiError;
-import com.example.demo.error.CommentNotExist;
-import com.example.demo.error.IncidenceNotExist;
-import com.example.demo.error.NonExistentAchievementException;
-import com.example.demo.error.TypeMismatchException;
 import com.example.demo.error.UserNotFoundException;
-import com.example.demo.model.Achievement;
-import com.example.demo.model.CommentCommunity;
-import com.example.demo.model.Incidence;
-import com.example.demo.model.MeetUp;
 import com.example.demo.model.Message;
-import com.example.demo.model.Penalty;
 import com.example.demo.model.User;
 import com.example.demo.repository.UserRepo;
-import com.example.demo.service.AchievementService;
-import com.example.demo.service.CommentsCommunityService;
-import com.example.demo.service.IncidenceService;
-import com.example.demo.service.MeetUpService;
-import com.example.demo.service.PenaltyService;
 import com.example.demo.service.SmtpMailSender;
 import com.example.demo.service.UserService;
 
@@ -50,21 +36,6 @@ public class UserController {
 
 	@Autowired
 	private UserService userService;
-
-	@Autowired
-	private CommentsCommunityService commentsCommunityService;
-
-	@Autowired
-	private IncidenceService incidenceService;
-
-	@Autowired
-	private MeetUpService meetUpService;
-
-	@Autowired
-	private AchievementService achievementService;
-
-	@Autowired
-	private PenaltyService penaltyService;
 
 	@Autowired
 	private SmtpMailSender smtpMailSender;
@@ -87,9 +58,10 @@ public class UserController {
 		}
 
 	}
+
 	
 	/**
-	 * Añadir usuario a tu lista de amigos
+	 * Añadir usuario a tu lista de amigos.
 	 * @param userRecibido
 	 * @return
 	 */
@@ -102,15 +74,13 @@ public class UserController {
 		if (result == null) {
 			throw new UserNotFoundException();
 		} else {
-			if(userRecibido!=null) {
+			if (userRecibido != null) {
 				return this.userService.addfriend(result, userRecibido);
-			}
-			else {
+			} else {
 				throw new UserNotFoundException();
 			}
 		}
 	}
-	
 
 	/**
 	 * 
@@ -145,9 +115,9 @@ public class UserController {
 			return userService.resetUser(user);
 		} else if (cigarettes != null) {
 			return userService.updateUserAfertSmoking(cigarettes, user);
-		} else if(message != null){
+		} else if (message != null) {
 			return userService.setPropertyMessageToFalse(user);
-		}else {
+		} else {
 			return userService.setUrlImage(user, urlImage);
 		}
 	}
@@ -190,162 +160,6 @@ public class UserController {
 	}
 
 	/**
-	 * Da la lista de comentarios de la comunidad
-	 * 
-	 * @return
-	 */
-	@GetMapping("/commentsCommunity")
-	public List<CommentCommunity> getComments() {
-		return commentsCommunityService.getComments();
-
-	}
-
-	/**
-	 * Muestra el comentario con la id indicada
-	 * 
-	 * @param idC
-	 * @return
-	 */
-	@GetMapping("/commentsCommunity/{idC}")
-	public CommentCommunity getCommentById(@PathVariable Long idC) {
-		CommentCommunity comment = incidenceService.getCommentById(idC);
-
-		if (comment == null) {
-			throw new IncidenceNotExist((long) idC);
-		} else {
-			return comment;
-		}
-	}
-
-	/**
-	 * Crea un comentario en el chat de la comunidad
-	 * 
-	 * @param datos
-	 * @return
-	 */
-	@PostMapping("/commentsCommunity")
-	public CommentCommunity addCommentsCommunity(@RequestBody CommentCommunity datos) {
-
-		String email = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		User result = userRepo.findByEmail(email);
-
-		if (result == null) {
-			throw new UserNotFoundException();
-		} else {
-			return this.commentsCommunityService.addCommentCommunity(result, datos);
-		}
-	}
-
-	/**
-	 * Borra los comentarios de la comunidad
-	 * 
-	 * @param idC
-	 * @return
-	 */
-	@DeleteMapping("/commentsCommunity/{idC}")
-	public CommentCommunity deleteCommentsCommunity(@PathVariable Long idC) {
-
-		String email = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		Long id = userRepo.findByEmail(email).getId();
-		
-		if(id==null) {
-			throw new UserNotFoundException();
-		}
-		else {
-			CommentCommunity result = commentsCommunityService.delete(idC);
-
-			if (result == null) {
-				throw new CommentNotExist(id);
-			} else {
-				return result;
-			}
-		}
-
-		
-	}
-	
-	/**
-	 * Da la lista de amigos de un usuario
-	 * 
-	 * @return
-	 */
-	@GetMapping("/friend")
-	public List<User> getAllfriend() {
-		String email = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		User result = userRepo.findByEmail(email);
-
-		if (result == null) {
-			throw new UserNotFoundException();
-		} else {
-			return userService.getAllFriends(result);
-		}
-		
-	}
-
-	/**
-	 * Da la lista de incidencias
-	 * 
-	 * @return
-	 */
-	@GetMapping("/incidence")
-	public List<Incidence> getAllIncidences() {
-		return incidenceService.getAllIncidences();
-	}
-
-	/**
-	 * Crea una incidencia
-	 * 
-	 * @param datos
-	 * @return
-	 */
-	@PostMapping("/incidence")
-	public Incidence createIncidence(@RequestBody Incidence datos) {
-
-		String email = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		User result = userRepo.findByEmail(email);
-
-		if (result == null) {
-			throw new UserNotFoundException();
-		} else {
-			return this.incidenceService.createIncidence(result, datos);
-		}
-	}
-
-	/**
-	 * Edita la incidencia añadiendole un comentario
-	 * 
-	 * @param idi
-	 * @param comentario
-	 * @return
-	 */
-	@PutMapping("/incidence/{idi}")
-	public Incidence editIncidence(@PathVariable Long idi, @RequestBody (required=false) CommentCommunity comentario, @RequestParam (required=false) String state, @RequestParam (required=false) String envioVacio) {
-		String email = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		User result = userRepo.findByEmail(email);
-
-		if (result == null) {
-			throw new UserNotFoundException();
-		} else {
-			Incidence incidence = incidenceService.findById(idi);
-			if (state != null) {
-				if (incidence == null) {
-					throw new IncidenceNotExist(idi);
-				} else {
-					return incidenceService.changeState(state, incidence);
-				}
-			} else {
-				if (incidence == null) {
-					throw new IncidenceNotExist(idi);
-				} else {
-
-					return incidenceService.editIncidence(idi, comentario);
-				}
-			}
-
-		}
-	}
-
-	/**
 	 * Da la lista de usuarios
 	 * 
 	 * @return
@@ -354,122 +168,17 @@ public class UserController {
 	public List<User> getAllUsersRanking(@RequestParam(required = false) String username) {
 		String email = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		User result = userRepo.findByEmail(email);
-		
-		if(result==null) {
+
+		if (result == null) {
 			throw new UserNotFoundException();
-		}
-		else {
+		} else {
 			if (username != null) {
-				return  userService.getUsername(username);
-			} 
-			else {
-				userService.setUser(result);
+				return userService.getUsername(username, result.getId());
+			} else {
 				return userService.getAllUsers();
 			}
 		}
-		
-		
-		
-		
-	}
 
-	/**
-	 * Da la lista de meet ups
-	 * 
-	 * @return
-	 */
-	@GetMapping("/meetUp")
-	public List<MeetUp> getAllMeetUps() {
-		return meetUpService.getAllMeetUps();
-	}
-
-	/**
-	 * Da la lista de logros
-	 * 
-	 * @return todos los achievements
-	 */
-	@GetMapping("/achievement")
-	public List<Achievement> getAllAchievement() {
-		return achievementService.getAllAchievement();
-	}
-
-	/**
-	 * Consigue la lista de logros de un usuario
-	 * 
-	 * @return logros
-	 */
-	@GetMapping("/user/achievement")
-	public List<Achievement> getUserAchievements() {
-		User user;
-		try {
-			String email = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-			user = userRepo.findByEmail(email);
-			return achievementService.getUserAchievements(user);
-		} catch (Exception e) {
-			throw new UserNotFoundException();
-		}
-	}
-
-	/**
-	 * Consigue un logro concreto
-	 * 
-	 * @param id
-	 * @return un logro
-	 */
-	@GetMapping("/achievement/{id}")
-	public Achievement getAchievement(@PathVariable Long id) {
-		return achievementService.getAchievement(id);
-	}
-
-	/**
-	 * Modifica los logros de un usuario
-	 * 
-	 * @param id
-	 * @return usuario con la lista de logros modificada
-	 */
-	@PutMapping("/user/achievements")
-	public User modifyAchivementsFromUser(@RequestBody List<Achievement> achievements) {
-		User user;
-		try {
-			String email = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-			user = userRepo.findByEmail(email);
-			return achievementService.modifyAchivementsFromUser(achievements, user);
-		} catch (Exception e) {
-			throw new UserNotFoundException();
-		}
-	}
-
-	/**
-	 * Modifica un logro concreto
-	 * 
-	 * @param achievement
-	 * @param id
-	 * @return logro modificado
-	 */
-	@PutMapping("/achievement/{id}")
-	public Achievement modifyAchievement(@RequestBody Achievement achievement, @PathVariable Long id) {
-		return modifyAchievement(achievement, id);
-	}
-
-	/**
-	 * Añade un nuevo logro
-	 * 
-	 * @param achievement
-	 * @return logro añadido
-	 */
-	@PostMapping("/achievement")
-	public Achievement addAchievement(@RequestBody Achievement achievement) {
-		return achievementService.addNewAchievement(achievement);
-	}
-
-	/**
-	 * Da la lista de penalizaciones
-	 * 
-	 * @return penalizaciones
-	 */
-	@GetMapping("/penalty")
-	public List<Penalty> getAllPenalty() {
-		return penaltyService.getAllPenalty();
 	}
 
 	/**
@@ -515,50 +224,7 @@ public class UserController {
 		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e);
 	}
 
-	/**
-	 * Excepción que muestra que la incidencia no existe
-	 * 
-	 * @param ex
-	 * @return
-	 * @throws Exception
-	 */
-	@ExceptionHandler(IncidenceNotExist.class)
-	public ResponseEntity<ApiError> IncidenceNotFound(IncidenceNotExist ex) throws Exception {
-		ApiError e = new ApiError();
-		e.setEstado(HttpStatus.NOT_FOUND);
-		e.setMensaje(ex.getMessage());
-		e.setFecha(LocalDateTime.now());
+	
 
-		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e);
-	}
-
-	@ExceptionHandler(TypeMismatchException.class)
-	public ResponseEntity<ApiError> IncidenceNotFound(TypeMismatchException ex) throws Exception {
-		ApiError e = new ApiError();
-		e.setEstado(HttpStatus.CONFLICT);
-		e.setMensaje(ex.getMessage());
-		e.setFecha(LocalDateTime.now());
-
-		return ResponseEntity.status(HttpStatus.CONFLICT).body(e);
-	}
-
-	/**
-	 * Maneja la traza de la excepción que se produce cuando no existe el logro que
-	 * se quiere consultar
-	 * 
-	 * @param ex
-	 * @return traza controlada de la excepción
-	 * @throws Exception
-	 */
-	@ExceptionHandler(NonExistentAchievementException.class)
-	public ResponseEntity<ApiError> NonExistentAchievementException(NonExistentAchievementException ex)
-			throws Exception {
-		ApiError e = new ApiError();
-		e.setEstado(HttpStatus.NOT_FOUND);
-		e.setMensaje(ex.getMessage());
-		e.setFecha(LocalDateTime.now());
-
-		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e);
-	}
-
+	
 }
