@@ -154,12 +154,17 @@ public class UserController {
 	}
 
 	/**
-	 * Da la lista de usuarios
+	 * Comprueba que los usuarios coincidan con el nombre introducido. Si es el
+	 * username, los usuarios devueltos serán los que el usuario puede agregar como
+	 * amigos (no son sus amigos aún y coinciden en username). Si es el friend, los
+	 * usuarios devueltos serán aquellos que coinciden en username y ya son amigos
+	 * del usuario.
 	 * 
-	 * @return
+	 * @return lista de usuariios
 	 */
 	@GetMapping("/users")
-	public List<User> getAllUsersRanking(@RequestParam(required = false) String username) {
+	public List<User> getAllUsersRanking(@RequestParam(required = false) String username,
+			@RequestParam(required = false) String friend) {
 		String email = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		User result = userRepo.findByEmail(email);
 
@@ -168,6 +173,8 @@ public class UserController {
 		} else {
 			if (username != null) {
 				return userService.getUsername(username, result.getId());
+			} else if (friend != null) {
+				return userService.getFriendUsername(friend, result.getId());
 			} else {
 				return userService.getAllUsers();
 			}
@@ -218,7 +225,4 @@ public class UserController {
 		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e);
 	}
 
-	
-
-	
 }

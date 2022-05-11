@@ -1,5 +1,6 @@
 package com.example.demo.model;
 
+import java.util.List;
 import java.util.Objects;
 
 import javax.persistence.Column;
@@ -7,6 +8,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 
 @Entity(name = "grupo")
 public class Group {
@@ -16,6 +18,8 @@ public class Group {
 	private Long id;
 	@Column(nullable = false)
 	private String name;
+	@ManyToMany
+	private List<GroupMember> groupMembers;
 
 
 	/**
@@ -31,6 +35,11 @@ public class Group {
 	 */
 	public Group(String name) {
 		this.name = name;
+	}
+	
+	public Group(String name, List<GroupMember> groupMembers) {
+		this.name = name;
+		this.groupMembers = groupMembers;
 	}
 
 	/**
@@ -55,6 +64,14 @@ public class Group {
 		this.name = name;
 	}
 	
+	public List<GroupMember> getGroupMembers() {
+		return groupMembers;
+	}
+
+	public void setGroupMembers(List<GroupMember> groupMembers) {
+		this.groupMembers = groupMembers;
+	}
+
 	/**
 	 * Hascode y qeuals de la id del grupo
 	 */

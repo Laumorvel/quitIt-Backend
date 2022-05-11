@@ -55,6 +55,16 @@ public class UserService {
 		}
 		return usuariosCoincidentes;
 	}
+	
+	/**
+	 * Encuentra a los amigos del usuario que realiza la búsqueda por el nombre de usuario introducido
+	 * @param username
+	 * @param idUser
+	 * @return lista de usuarios
+	 */
+	public List<User> getFriendUsername(String username, Long idUser) {
+		return userRepo.findFriendsByUsername(username, idUser);
+	}
 
 	/**
 	 * Muestra todos los usuarios ordenados para el ranking

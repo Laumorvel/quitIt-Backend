@@ -19,8 +19,6 @@ public class GroupMember {
 	private User user;
 	@Column(nullable = false)
 	private String cargo;
-	@ManyToOne
-	private Group group;
 
 	public GroupMember() {
 	}
@@ -28,21 +26,6 @@ public class GroupMember {
 	public GroupMember(User user, String cargo) {
 		this.user = user;
 		this.cargo = cargo;
-	}
-
-	public GroupMember(User user, String cargo, Group group) {
-		super();
-		this.user = user;
-		this.cargo = cargo;
-		this.group = group;
-	}
-
-	public Group getGroup() {
-		return group;
-	}
-
-	public void setGroup(Group group) {
-		this.group = group;
 	}
 
 	public Long getId() {
