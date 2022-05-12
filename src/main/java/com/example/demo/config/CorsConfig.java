@@ -208,6 +208,32 @@ public class CorsConfig implements WebMvcConfigurer {
 				.allowedHeaders("Content-Type", "Authorization", "X-Requested-With", "accept", "Origin",
 						"Access-Control-Request-Method", "Access-Control-Request-Headers")
 				.exposedHeaders("Access-Control-Allow-Origin", "Access-Control-Allow-Credentials");
+				
+				
+				/**
+				 * Crea un nuevo meet up
+				 */
+				registry.addMapping("/meetUp").allowedOrigins(urlFront)
+				.allowedMethods("GET", "POST", "OPTIONS", "PUT","DELETE")
+				.allowedHeaders("Content-Type", "Authorization", "X-Requested-With", "accept", "Origin",
+						"Access-Control-Request-Method", "Access-Control-Request-Headers")
+				.exposedHeaders("Access-Control-Allow-Origin", "Access-Control-Allow-Credentials");
+				
+				
+				
+				/**
+				 * Modifica el estado de la elección de la asistencia del meet up que indiquemos
+				 */
+				registry.addMapping("/meetUp/{id}").allowedOrigins(urlFront)
+				.allowedMethods("GET", "POST", "OPTIONS", "PUT","DELETE")
+				.allowedHeaders("Content-Type", "Authorization", "X-Requested-With", "accept", "Origin",
+						"Access-Control-Request-Method", "Access-Control-Request-Headers")
+				.exposedHeaders("Access-Control-Allow-Origin", "Access-Control-Allow-Credentials");
+				
+				
+				
+				
+				
 			};
 
 		};

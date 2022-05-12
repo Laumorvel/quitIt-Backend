@@ -59,6 +59,12 @@ public class UserController {
 
 	}
 
+	
+	/**
+	 * Añadir usuario a tu lista de amigos.
+	 * @param userRecibido
+	 * @return
+	 */
 	@PostMapping("/user")
 	public User addfriend(@RequestBody(required = false) User userRecibido) {
 

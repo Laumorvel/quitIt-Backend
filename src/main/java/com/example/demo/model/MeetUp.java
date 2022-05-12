@@ -23,6 +23,8 @@ public class MeetUp {
 	private String description;
 	private LocalDateTime date;
 	private String place;
+	private String type;
+	private String choice;
 	@JsonIgnore
 	@ManyToMany
 	private List<User> assistantsList = new ArrayList<>();
@@ -40,13 +42,21 @@ public class MeetUp {
 	 * @param date
 	 * @param place
 	 */
-	public MeetUp(String title, String description, LocalDateTime date, String place) {
+	public MeetUp(String title, String description, LocalDateTime date, String place, String type) {
 		this.title = title;
 		this.description = description;
 		this.date = date;
 		this.place = place;
+		this.type = type;
 	}
 	
+	
+	
+	public MeetUp(String choice) {
+		super();
+		this.choice = choice;
+	}
+
 	/**
 	 * Constructor con todos los atributos
 	 * @param title
@@ -106,6 +116,23 @@ public class MeetUp {
 		this.assistantsList = assistantsList;
 	}
 	
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
+	}
+
+	public String getChoice() {
+		return choice;
+	}
+
+	public void setChoice(String choice) {
+		this.choice = choice;
+	}
+
+	
 	/**
 	 * HashCode y Equals con la id del meetUp
 	 */
@@ -134,6 +161,11 @@ public class MeetUp {
 				+ place + ", assistantsList=" + assistantsList + "]";
 	}
 	
+	
+	public void addAttendace (User userRecibido) {
+		this.assistantsList.add(userRecibido);
+	}
+
 	
 	
 }
