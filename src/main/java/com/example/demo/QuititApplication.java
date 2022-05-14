@@ -36,7 +36,7 @@ public class QuititApplication {
 		SpringApplication.run(QuititApplication.class, args);
 	}
 
-	LocalDate fecha1 = LocalDate.parse("2022-06-20");
+	LocalDate fecha1 = LocalDate.parse("2022-04-20");
 	LocalDateTime fecha2 = LocalDateTime.parse("2022-06-24T18:30:00");
 	LocalDate fecha3 = LocalDate.parse("2022-02-20");
 

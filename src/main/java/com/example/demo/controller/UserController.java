@@ -59,9 +59,9 @@ public class UserController {
 
 	}
 
-	
 	/**
 	 * Añadir usuario a tu lista de amigos.
+	 * 
 	 * @param userRecibido
 	 * @return
 	 */
@@ -164,13 +164,14 @@ public class UserController {
 	 * username, los usuarios devueltos serán los que el usuario puede agregar como
 	 * amigos (no son sus amigos aún y coinciden en username). Si es el friend, los
 	 * usuarios devueltos serán aquellos que coinciden en username y ya son amigos
-	 * del usuario.
+	 * del usuario. En caso de tener groupMembers, estos serán los que conforman el
+	 * grupo que se está creando, para que no se agregue dos veces al mismo amigo.
 	 * 
 	 * @return lista de usuariios
 	 */
 	@GetMapping("/users")
 	public List<User> getAllUsersRanking(@RequestParam(required = false) String username,
-			@RequestParam(required = false) String friend) {
+			@RequestParam(required = false) String friend, @RequestParam(required = false) List<User> groupMembers) {
 		String email = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		User result = userRepo.findByEmail(email);
 
@@ -180,7 +181,7 @@ public class UserController {
 			if (username != null) {
 				return userService.getUsername(username, result.getId());
 			} else if (friend != null) {
-				return userService.getFriendUsername(friend, result.getId());
+				return userService.getFriendUsername(friend, result.getId(), groupMembers);
 			} else {
 				return userService.getAllUsers();
 			}
