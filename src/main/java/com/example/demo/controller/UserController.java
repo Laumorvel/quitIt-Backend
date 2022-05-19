@@ -171,7 +171,7 @@ public class UserController {
 	 */
 	@GetMapping("/users")
 	public List<User> getAllUsersRanking(@RequestParam(required = false) String username,
-			@RequestParam(required = false) String friend, @RequestParam(required = false) List<User> groupMembers) {
+			@RequestParam(required = false) String friend, @RequestBody(required = false) List<User> groupMembers) {
 		String email = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		User result = userRepo.findByEmail(email);
 
@@ -187,6 +187,17 @@ public class UserController {
 			}
 		}
 
+	}
+	
+	@PostMapping("/users")
+	public List<User> getUsersWithMembers(@RequestParam(required= false) String friend, @RequestBody(required = false) List<User> groupMembers){
+		String email = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		User result = userRepo.findByEmail(email);
+		if (result == null) {
+			throw new UserNotFoundException();
+		} else {
+			return userService.getFriendUsername(friend, result.getId(), groupMembers);
+		}
 	}
 
 	/**
