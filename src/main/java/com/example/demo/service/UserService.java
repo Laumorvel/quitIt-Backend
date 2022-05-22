@@ -171,11 +171,8 @@ public class UserService {
 			User usuarioParaImprimir = userRepo.findById(result).orElse(null);
 
 			user.setAchievementList(null);
-			user.setGroupList(null);
-			user.setFile(null);
 			user.setPenalties(null);
 			user.setFriends(null);
-			user.setGroupList(null);
 
 			userRepo.delete(user);
 

@@ -1,6 +1,7 @@
 package com.example.demo.controller;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -21,6 +22,7 @@ import com.example.demo.error.MemberAlreadyExistingException;
 import com.example.demo.error.MemberNotAddedException;
 import com.example.demo.error.MemberNotAdminException;
 import com.example.demo.error.ModifyingSelfGroupMemberException;
+import com.example.demo.error.RepeatedMembersFoundException;
 import com.example.demo.error.UserNotFoundException;
 import com.example.demo.model.Group;
 import com.example.demo.model.GroupMember;
@@ -55,7 +57,7 @@ public class GroupController {
 	}
 
 	/**
-	 * Consigue el grupo su id
+	 * Consigue el grupo con una id concreta
 	 * 
 	 * @param id
 	 * @return grupo concreto
@@ -64,6 +66,15 @@ public class GroupController {
 	public Group getGroup(@PathVariable Long id) {
 		checkUser();
 		return groupService.getGroup(id);
+	}
+	
+	/**
+	 * Consigue todos los grupos de un usuario
+	 * @return lista de grupos
+	 */
+	@GetMapping("/groups")
+	public List<Group> getgroupsFromUser(){
+		return groupService.getGroupsFromUser(checkUser());
 	}
 
 	/**
@@ -192,6 +203,39 @@ public class GroupController {
 		e.setFecha(LocalDateTime.now());
 
 		return ResponseEntity.status(HttpStatus.CONFLICT).body(e);
+	}
+	
+	/**
+	 * Ocurre cuando varios miemnbros se repiten al intentar crear un grupo
+	 * @param ex
+	 * @return excepción con traza controlada - conflict
+	 * @throws Exception
+	 */
+	@ExceptionHandler(RepeatedMembersFoundException.class)
+	public ResponseEntity<ApiError> RepeatedMembersFoundException(RepeatedMembersFoundException ex) throws Exception {
+		ApiError e = new ApiError();
+		e.setEstado(HttpStatus.CONFLICT);
+		e.setMensaje(ex.getMessage());
+		e.setFecha(LocalDateTime.now());
+
+		return ResponseEntity.status(HttpStatus.CONFLICT).body(e);
+	}
+	
+	/**
+	 * Excepción que muestra que el usuario no existe
+	 * 
+	 * @param ex
+	 * @return
+	 * @throws Exception
+	 */
+	@ExceptionHandler(UserNotFoundException.class)
+	public ResponseEntity<ApiError> userNotFound(UserNotFoundException ex) throws Exception {
+		ApiError e = new ApiError();
+		e.setEstado(HttpStatus.NOT_FOUND);
+		e.setMensaje(ex.getMessage());
+		e.setFecha(LocalDateTime.now());
+
+		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e);
 	}
 
 }

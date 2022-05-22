@@ -267,6 +267,15 @@ public class CorsConfig implements WebMvcConfigurer {
 						"Access-Control-Request-Method", "Access-Control-Request-Headers")
 				.exposedHeaders("Access-Control-Allow-Origin", "Access-Control-Allow-Credentials");
 				
+				/**
+				 * Consigue los grupos de un usuario
+				 */
+				registry.addMapping("/groups").allowedOrigins(urlFront)
+				.allowedMethods("GET", "POST", "OPTIONS", "PUT","DELETE")
+				.allowedHeaders("Content-Type", "Authorization", "X-Requested-With", "accept", "Origin",
+						"Access-Control-Request-Method", "Access-Control-Request-Headers")
+				.exposedHeaders("Access-Control-Allow-Origin", "Access-Control-Allow-Credentials");
+				
 			};
 
 		};

@@ -12,7 +12,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
-import javax.persistence.OneToOne;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -71,10 +70,6 @@ public class User {
 
 	@JsonIgnore
 	@ManyToMany
-	private List<Group> groupList = new ArrayList<>();
-
-	@JsonIgnore
-	@ManyToMany
 	private List<User> friends = new ArrayList<>();
 
 	@JsonIgnore
@@ -123,8 +118,6 @@ public class User {
 	@Column(nullable = false)
 	private String username;
 
-	@OneToOne
-	private File file;
 
 	private String imageUrl;
 
@@ -145,34 +138,6 @@ public class User {
 	public User() {
 	}
 
-	public User(Long id, String name, String lastName, String email, String password, String rol,
-			Integer daysInARowWithoutSmoking, Integer cigarettesAvoided, Integer totalTimeWithoutSmoking,
-			List<Group> groupList, List<User> friends, List<Achievement> achievementList, List<Penalty> penalties,
-			LocalDate startDate, Integer cigarettesBeforePerDay, Double moneyPerDay, Integer smokingDays,
-			Integer cigarettesSmoked, double moneySaved, String username, File file, LocalDate lastDateSmoking) {
-		this.id = id;
-		this.name = name;
-		this.lastName = lastName;
-		this.email = email;
-		this.password = password;
-		this.rol = rol;
-		this.daysInARowWithoutSmoking = daysInARowWithoutSmoking;
-		this.cigarettesAvoided = cigarettesAvoided;
-		this.totalTimeWithoutSmoking = totalTimeWithoutSmoking;
-		this.groupList = groupList;
-		this.friends = friends;
-		this.achievementList = achievementList;
-		this.penalties = penalties;
-		this.startDate = startDate;
-		this.cigarettesBeforePerDay = cigarettesBeforePerDay;
-		this.moneyPerDay = moneyPerDay;
-		this.smokingDays = smokingDays;
-		this.cigarettesSmoked = cigarettesSmoked;
-		this.moneySaved = moneySaved;
-		this.username = username;
-		this.file = file;
-		this.lastDateSmoking = lastDateSmoking;
-	}
 
 	public User(String name, String lastName, String username, String email, String password, String rol,
 			Integer cigarettesBeforePerDay, Double moneyPerDay) {
@@ -186,41 +151,12 @@ public class User {
 		this.moneyPerDay = moneyPerDay;
 	}
 
-	public User(String name, String lastName, String email, String password, String rol,
-			Integer daysInARowWithoutSmoking, Integer cigarettesAvoided, Integer totalTimeWithoutSmoking,
-			List<Group> groupList, List<User> friends, List<Achievement> achievementList, List<Penalty> penalties,
-			LocalDate startDate, Integer cigarettesBeforePerDay, Double moneyPerDay, Integer smokingDays,
-			Integer cigarettesSmoked, double moneySaved, String username, File file, LocalDate lastDateSmoking,
-			Boolean message) {
-		this.name = name;
-		this.lastName = lastName;
-		this.email = email;
-		this.password = password;
-		this.rol = rol;
-		this.daysInARowWithoutSmoking = daysInARowWithoutSmoking;
-		this.cigarettesAvoided = cigarettesAvoided;
-		this.totalTimeWithoutSmoking = totalTimeWithoutSmoking;
-		this.groupList = groupList;
-		this.friends = friends;
-		this.achievementList = achievementList;
-		this.penalties = penalties;
-		this.startDate = startDate;
-		this.cigarettesBeforePerDay = cigarettesBeforePerDay;
-		this.moneyPerDay = moneyPerDay;
-		this.smokingDays = smokingDays;
-		this.cigarettesSmoked = cigarettesSmoked;
-		this.moneySaved = moneySaved;
-		this.username = username;
-		this.file = file;
-		this.lastDateSmoking = lastDateSmoking;
-		this.message = message;
-	}
 
 	public User(String name, String lastName, String email, String password, String rol,
 			Integer daysInARowWithoutSmoking, Integer cigarettesAvoided, Integer totalTimeWithoutSmoking,
-			List<Group> groupList, List<User> friends, List<Achievement> achievementList, List<Penalty> penalties,
+			List<User> friends, List<Achievement> achievementList, List<Penalty> penalties,
 			LocalDate startDate, Integer cigarettesBeforePerDay, Double moneyPerDay, Integer smokingDays,
-			Integer cigarettesSmoked, double moneySaved, String username, File file, String imageUrl,
+			Integer cigarettesSmoked, double moneySaved, String username, String imageUrl,
 			LocalDate lastDateSmoking, Boolean message) {
 		this.name = name;
 		this.lastName = lastName;
@@ -230,7 +166,6 @@ public class User {
 		this.daysInARowWithoutSmoking = daysInARowWithoutSmoking;
 		this.cigarettesAvoided = cigarettesAvoided;
 		this.totalTimeWithoutSmoking = totalTimeWithoutSmoking;
-		this.groupList = groupList;
 		this.friends = friends;
 		this.achievementList = achievementList;
 		this.penalties = penalties;
@@ -241,11 +176,11 @@ public class User {
 		this.cigarettesSmoked = cigarettesSmoked;
 		this.moneySaved = moneySaved;
 		this.username = username;
-		this.file = file;
 		this.imageUrl = imageUrl;
 		this.lastDateSmoking = lastDateSmoking;
 		this.message = message;
 	}
+
 
 	/**
 	 * Getters y setter de user
@@ -393,14 +328,6 @@ public class User {
 		this.totalTimeWithoutSmoking = timeWithoutSmoking;
 	}
 
-	public List<Group> getGroupList() {
-		return groupList;
-	}
-
-	public void setGroupList(List<Group> groupList) {
-		this.groupList = groupList;
-	}
-
 	public List<User> getFriends() {
 		return friends;
 	}
@@ -449,13 +376,6 @@ public class User {
 		this.username = username;
 	}
 
-	public File getFile() {
-		return file;
-	}
-
-	public void setFile(File file) {
-		this.file = file;
-	}
 
 	public LocalDate getLastDateSmoking() {
 		return lastDateSmoking;
@@ -490,7 +410,7 @@ public class User {
 		return "User [id=" + id + ", name=" + name + ", lastName=" + lastName + ", email=" + email + ", password="
 				+ password + ", rol=" + rol + ", daysInARowWithoutSmoking=" + daysInARowWithoutSmoking
 				+ ", cigarettesAvoided=" + cigarettesAvoided + ", totalTimeWithoutSmoking=" + totalTimeWithoutSmoking
-				+ ", groupList=" + groupList + ", friends=" + friends + ", achievementList=" + achievementList
+			    + ", friends=" + friends + ", achievementList=" + achievementList
 				+ ", penalties=" + penalties + ", startDate=" + startDate + ", cigarettesBeforePerDay="
 				+ cigarettesBeforePerDay + ", moneyPerDay=" + moneyPerDay + ", smokingDays=" + smokingDays
 				+ ", cigarettesSmoked=" + cigarettesSmoked + ", moneySaved=" + moneySaved + "]";
@@ -600,9 +520,8 @@ public class User {
 		calculaDineroAhorrado();
 		calculaTotalDaysInARowWithoutSmoking();
 	}
-	
-	
-	public void addFriend (User userRecibido) {
+
+	public void addFriend(User userRecibido) {
 		this.friends.add(userRecibido);
 	}
 

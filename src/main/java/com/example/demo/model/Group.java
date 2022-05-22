@@ -1,5 +1,6 @@
 package com.example.demo.model;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -8,7 +9,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 
 @Entity(name = "grupo")
 public class Group {
@@ -18,8 +19,8 @@ public class Group {
 	private Long id;
 	@Column(nullable = false)
 	private String name;
-	@ManyToMany
-	private List<GroupMember> groupMembers;
+	@OneToMany
+	private List<GroupMember> groupMembers = new ArrayList<>();
 
 
 	/**

@@ -1,6 +1,5 @@
 package com.example.demo.service;
 
-import java.util.List;
 import java.util.Objects;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,7 +7,6 @@ import org.springframework.stereotype.Service;
 
 import com.example.demo.error.GroupNotFoundException;
 import com.example.demo.error.MemberNotAddedException;
-import com.example.demo.error.MemberNotAdminException;
 import com.example.demo.error.NoChangeOfRoleException;
 import com.example.demo.model.Group;
 import com.example.demo.model.GroupMember;
@@ -39,9 +37,9 @@ public class GroupMemberService {
 	 * @param idGroup
 	 * @return miembros de un grupo
 	 */
-	public List<GroupMember> getMembersOfAGroup(Long idGroup){
-		return groupMemberRepo.findMembersOfAGroup(idGroup);
-	}
+//	public List<GroupMember> getMembersOfAGroup(Long idGroup){
+//		return groupMemberRepo.findMembersOfAGroup(idGroup);
+//	}
 	
 	/**
 	 * Modifica el cargo de un miembro.
@@ -63,9 +61,7 @@ public class GroupMemberService {
 			throw new GroupNotFoundException();
 		}
 		//Comprueba que el usuario sea admin para hacer modificaciones
-		if(groupMemberRepo.findCargo(user.getId()) == null || !groupMemberRepo.findCargo(user.getId()).equals("ADMIN")){
-			throw new MemberNotAdminException();
-		}
+	
 		//Comprueba que el miembro exista
 		if(groupMemberRepo.findById(idMember).get() == null) {
 			throw new MemberNotAddedException();
