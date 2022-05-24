@@ -89,28 +89,7 @@ public class GroupService {
 		groupRepo.deleteById(id);
 	}
 
-	/**
-	 * Añade un nuevo miembro al equipo. Comprueba que no sea ya parte del equipo
-	 * 
-	 * @param member
-	 * @param id
-	 * @return grupo con nuevo miembro
-	 */
-	public Group addNewMember(GroupMember member, Long id) {
-		Group g;
-		try {
-			g = groupRepo.getById(id);
-		} catch (GroupNotFoundException e) {
-			throw new GroupNotFoundException();
-		}
-		for (GroupMember m : g.getGroupMembers()) {
-			if (Objects.equals(m.getId(), member.getId())) {
-				throw new MemberAlreadyExistingException();
-			}
-		}
-		g.getGroupMembers().add(member);
-		return groupRepo.save(g);
-	}
+
 
 	/**
 	 * Comprueba si el miembro del grupo es administrador o no.
