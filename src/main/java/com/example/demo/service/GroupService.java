@@ -1,15 +1,13 @@
 package com.example.demo.service;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Objects;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.example.demo.error.GroupNotFoundException;
-import com.example.demo.error.MemberAlreadyExistingException;
 import com.example.demo.error.RepeatedMembersFoundException;
 import com.example.demo.model.Group;
 import com.example.demo.model.GroupMember;
@@ -86,6 +84,12 @@ public class GroupService {
 	 * @param id
 	 */
 	public void deleteGroup(Long id) {
+		Group g = groupRepo.getById(id);
+		List<GroupMember> members = g.getGroupMembers();
+		List<GroupMember> members2 = new ArrayList<>(members);
+		g.getGroupMembers().removeAll(members);
+		groupRepo.save(g);
+		groupMemberRepo.deleteAll(members2);
 		groupRepo.deleteById(id);
 	}
 

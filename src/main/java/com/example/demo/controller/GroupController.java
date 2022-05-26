@@ -94,8 +94,8 @@ public class GroupController {
 	 * 
 	 * @param id
 	 */
-	@DeleteMapping("/group/{id}/delete")
-	public void deleteGroup(@RequestParam Long id) {
+	@DeleteMapping("/group/{id}")
+	public void deleteGroup(@PathVariable Long id) {
 		checkUser();
 		groupService.deleteGroup(id);
 	}

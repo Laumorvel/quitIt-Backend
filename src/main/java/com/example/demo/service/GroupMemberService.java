@@ -164,14 +164,18 @@ public class GroupMemberService {
 					if (!memberChanger.getCargo().equals("ADMIN")) {
 						throw new ActionOnlyAllowedForAdminsException();
 					} else {
+						g.getGroupMembers().remove(g.getGroupMembers().indexOf(gm));
+						groupRepo.save(g);
 						groupMemberRepo.delete(gm);
+						break;
 					}
 				}
+
 			}
-			if (!found) {
-				throw new MemberNotAddedException();
-			}
+				if (!found) {
+					throw new MemberNotAddedException();
+				}
 		}
 	}
-
+	
 }
