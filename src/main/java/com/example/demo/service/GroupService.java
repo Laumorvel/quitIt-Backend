@@ -1,15 +1,13 @@
 package com.example.demo.service;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Objects;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.example.demo.error.GroupNotFoundException;
-import com.example.demo.error.MemberAlreadyExistingException;
 import com.example.demo.error.RepeatedMembersFoundException;
 import com.example.demo.model.Group;
 import com.example.demo.model.GroupMember;
@@ -86,31 +84,16 @@ public class GroupService {
 	 * @param id
 	 */
 	public void deleteGroup(Long id) {
+		Group g = groupRepo.getById(id);
+		List<GroupMember> members = g.getGroupMembers();
+		List<GroupMember> members2 = new ArrayList<>(members);
+		g.getGroupMembers().removeAll(members);
+		groupRepo.save(g);
+		groupMemberRepo.deleteAll(members2);
 		groupRepo.deleteById(id);
 	}
 
-	/**
-	 * Añade un nuevo miembro al equipo. Comprueba que no sea ya parte del equipo
-	 * 
-	 * @param member
-	 * @param id
-	 * @return grupo con nuevo miembro
-	 */
-	public Group addNewMember(GroupMember member, Long id) {
-		Group g;
-		try {
-			g = groupRepo.getById(id);
-		} catch (GroupNotFoundException e) {
-			throw new GroupNotFoundException();
-		}
-		for (GroupMember m : g.getGroupMembers()) {
-			if (Objects.equals(m.getId(), member.getId())) {
-				throw new MemberAlreadyExistingException();
-			}
-		}
-		g.getGroupMembers().add(member);
-		return groupRepo.save(g);
-	}
+
 
 	/**
 	 * Comprueba si el miembro del grupo es administrador o no.

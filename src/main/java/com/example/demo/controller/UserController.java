@@ -56,7 +56,6 @@ public class UserController {
 		} else {
 			return userService.setUser(result);
 		}
-
 	}
 
 	/**

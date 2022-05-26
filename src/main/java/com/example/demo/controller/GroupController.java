@@ -25,7 +25,6 @@ import com.example.demo.error.ModifyingSelfGroupMemberException;
 import com.example.demo.error.RepeatedMembersFoundException;
 import com.example.demo.error.UserNotFoundException;
 import com.example.demo.model.Group;
-import com.example.demo.model.GroupMember;
 import com.example.demo.model.User;
 import com.example.demo.repository.GroupRepository;
 import com.example.demo.repository.UserRepo;
@@ -77,6 +76,7 @@ public class GroupController {
 		return groupService.getGroupsFromUser(checkUser());
 	}
 
+
 	/**
 	 * Crea un nuevo grupo
 	 * 
@@ -94,24 +94,13 @@ public class GroupController {
 	 * 
 	 * @param id
 	 */
-	@DeleteMapping("/group/{id}/delete")
-	public void deleteGroup(@RequestParam Long id) {
+	@DeleteMapping("/group/{id}")
+	public void deleteGroup(@PathVariable Long id) {
 		checkUser();
 		groupService.deleteGroup(id);
 	}
 
-	/**
-	 * Añade un nuevo miembro a un grupo ya creado
-	 * 
-	 * @param member
-	 * @param id
-	 * @return grupo con nuevo miembro
-	 */
-	@PostMapping("/group/{id}/member")
-	public Group addNewMember(@RequestBody GroupMember member, @RequestParam Long id) {
-		checkUser();
-		return groupService.addNewMember(member, id);
-	}
+
 
 	// EXCEPCIONES--------------------------------------------------------
 
