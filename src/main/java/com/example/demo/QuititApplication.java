@@ -39,10 +39,15 @@ public class QuititApplication {
 	LocalDate fecha1 = LocalDate.parse("2022-04-20");
 	LocalDateTime fecha2 = LocalDateTime.parse("2022-06-24T18:30:00");
 	LocalDate fecha3 = LocalDate.parse("2022-02-20");
+	LocalDate fecha4 = LocalDate.parse("2022-04-20");
+	LocalDate fecha5 = LocalDate.parse("2022-03-20");
+	LocalDate fecha6 = LocalDate.parse("2022-01-20");
+	LocalDate fecha7 = LocalDate.parse("2022-05-20");
 
 	@Bean
 	CommandLineRunner initData(UserRepo repositorioUsers, CommentsCommunityRepo commentsCommunityRepo,
-			MeetUpRepo meetUpRepo, AchievementRepo achievementRepo, PenaltyRepo penaltyRepo, ScheduledMessageRepository scheduledMessageRepo) {
+			MeetUpRepo meetUpRepo, AchievementRepo achievementRepo, PenaltyRepo penaltyRepo,
+			ScheduledMessageRepository scheduledMessageRepo) {
 
 		// Usuarios administradores
 		User usuario1 = new User("Adela", "Lira", "adelalira", "adela@gmail.com", passwordEncoder.encode("12345"),
@@ -58,15 +63,38 @@ public class QuititApplication {
 		User usuarioUser2 = new User("Pepe", "Lopez", "pepitoloooooopez", "pepe@gmail.com",
 				passwordEncoder.encode("12345"), "USER", 30, 10.30);
 
+		User usuarioUser3 = new User("Pepi", "Montero", "pepimontero", "pepi@gmail.com",
+				passwordEncoder.encode("12345"), "USER", 10, 5.0);
+
+		User usuarioUser4 = new User("Ana", "JJ", "anita", "ani@gmail.com", passwordEncoder.encode("12345"), "USER", 5,
+				2.0);
+
+		User usuarioUser5 = new User("Juan", "Garrido", "juanchus", "juanito@gmail.com",
+				passwordEncoder.encode("12345"), "USER", 19, 12.0);
+
+		User usuarioUser6 = new User("Adrián", "García", "elAdri", "adri@gmail.com", passwordEncoder.encode("12345"),
+				"USER", 13, 8.0);
+
+		User usuarioUser7 = new User("María", "Marín", "lamari", "lamari@gmail.com", passwordEncoder.encode("12345"),
+				"USER", 11, 6.0);
+
+		User usuarioUser8 = new User("Jonás", "Salazar", "elJoni", "joni@gmail.com", passwordEncoder.encode("12345"),
+				"USER", 10, 5.0);
+
 		usuarioUser1.addFriend(usuarioUser2);
-		usuarioUser1.addFriend(usuario1);
-		usuarioUser1.addFriend(usuario2);
+		usuarioUser1.addFriend(usuarioUser3);
+		usuarioUser1.addFriend(usuarioUser4);
 
 		usuario1.setStartDate(fecha1);
 		usuario2.setStartDate(fecha1);
 		usuarioUser1.setStartDate(fecha3);
-
 		usuarioUser2.setStartDate(fecha3);
+		usuarioUser3.setStartDate(fecha4);
+		usuarioUser4.setStartDate(fecha4);
+		usuarioUser5.setStartDate(fecha5);
+		usuarioUser6.setStartDate(fecha6);
+		usuarioUser7.setStartDate(fecha7);
+		usuarioUser8.setStartDate(fecha7);
 
 		// Comentarios de la comunidad
 		CommentCommunity comentarioComunidad1 = new CommentCommunity("Buenos dias!", usuarioUser1, fecha1);
@@ -140,28 +168,46 @@ public class QuititApplication {
 				"days");
 		Penalty penalty20 = new Penalty("You're letting me down", "100 cigarettes smoked", "alzheimer.png", 100,
 				"cigarette");
-		
-		//SCHEDULED MESSAGES
-		ScheduledMessage sm1 = new ScheduledMessage("GREAT JOB! You haven't smoked for DAYS days",true);
-		ScheduledMessage sm2 = new ScheduledMessage("You got this! You haven't smoked for DAYSINAROW days in a row",false);
-		ScheduledMessage sm3 = new ScheduledMessage("Good luck today! I know you’ll do great. You've avoided CIGARETTES cigarettes",false);
-		ScheduledMessage sm4 = new ScheduledMessage("Sending major good vibes your way. You've earned MONEY€!",false);
-		ScheduledMessage sm5 = new ScheduledMessage("I know this won’t be easy, but I also know you’ve got what it takes to get through it. You haven't smoked for DAYSINAROW days in a row",false);
-		ScheduledMessage sm6 = new ScheduledMessage("Time to go kick cancer’s ass!",false);
-		ScheduledMessage sm7 = new ScheduledMessage("Sending you good thoughts—and hoping you believe in yourself just as much as we believe in you. You have avoided CIGARETTES cigarettes",false);
-		ScheduledMessage sm8 = new ScheduledMessage("We hope you feel your inner strength building day by day. You have earned MONEY€",false);
-		ScheduledMessage sm9 = new ScheduledMessage("This is tough, but you’re tougher. You haven't smoked for DAYS days",false);
-		ScheduledMessage sm10 = new ScheduledMessage("We're proud of you for walking this road, for doing what’s right for you. You have avoided CIGARETTES cigarettes!",false);
-		ScheduledMessage sm11 = new ScheduledMessage("You’re making a big change, and that’s a really big deal. You haven't smoked for DAYSINAROW days in a row",false);
-		ScheduledMessage sm12 = new ScheduledMessage("Even when you might not feel it, you’ve got the strength to get through. You haven't smoked for DAYS days",false);
-		ScheduledMessage sm13 = new ScheduledMessage("Take everything one day at a time. You've avoided CIGARETTES cigarettes. That's awesome!",false);
-		ScheduledMessage sm14 = new ScheduledMessage("It takes serious courage to get on this path and stay on it. Good on you. You've already earned MONEY€!", false);
-		ScheduledMessage sm15 = new ScheduledMessage("Awesome! You've earned MONEY€",false);
-		ScheduledMessage sm16 = new ScheduledMessage("Keep on keeping on! You haven'r smoked for DAYS days",false);
+
+		// SCHEDULED MESSAGES
+		ScheduledMessage sm1 = new ScheduledMessage("GREAT JOB! You haven't smoked for DAYS days", true);
+		ScheduledMessage sm2 = new ScheduledMessage("You got this! You haven't smoked for DAYSINAROW days in a row",
+				false);
+		ScheduledMessage sm3 = new ScheduledMessage(
+				"Good luck today! I know you’ll do great. You've avoided CIGARETTES cigarettes", false);
+		ScheduledMessage sm4 = new ScheduledMessage("Sending major good vibes your way. You've earned MONEY€!", false);
+		ScheduledMessage sm5 = new ScheduledMessage(
+				"I know this won’t be easy, but I also know you’ve got what it takes to get through it. You haven't smoked for DAYSINAROW days in a row",
+				false);
+		ScheduledMessage sm6 = new ScheduledMessage("Time to go kick cancer’s ass!", false);
+		ScheduledMessage sm7 = new ScheduledMessage(
+				"Sending you good thoughts—and hoping you believe in yourself just as much as we believe in you. You have avoided CIGARETTES cigarettes",
+				false);
+		ScheduledMessage sm8 = new ScheduledMessage(
+				"We hope you feel your inner strength building day by day. You have earned MONEY€", false);
+		ScheduledMessage sm9 = new ScheduledMessage(
+				"This is tough, but you’re tougher. You haven't smoked for DAYS days", false);
+		ScheduledMessage sm10 = new ScheduledMessage(
+				"We're proud of you for walking this road, for doing what’s right for you. You have avoided CIGARETTES cigarettes!",
+				false);
+		ScheduledMessage sm11 = new ScheduledMessage(
+				"You’re making a big change, and that’s a really big deal. You haven't smoked for DAYSINAROW days in a row",
+				false);
+		ScheduledMessage sm12 = new ScheduledMessage(
+				"Even when you might not feel it, you’ve got the strength to get through. You haven't smoked for DAYS days",
+				false);
+		ScheduledMessage sm13 = new ScheduledMessage(
+				"Take everything one day at a time. You've avoided CIGARETTES cigarettes. That's awesome!", false);
+		ScheduledMessage sm14 = new ScheduledMessage(
+				"It takes serious courage to get on this path and stay on it. Good on you. You've already earned MONEY€!",
+				false);
+		ScheduledMessage sm15 = new ScheduledMessage("Awesome! You've earned MONEY€", false);
+		ScheduledMessage sm16 = new ScheduledMessage("Keep on keeping on! You haven'r smoked for DAYS days", false);
 
 		return (args) -> {
 
-			repositorioUsers.saveAll(Arrays.asList(usuario1, usuario2, usuarioUser1, usuarioUser2));
+			repositorioUsers.saveAll(Arrays.asList(usuario1, usuario2, usuarioUser1, usuarioUser2, usuarioUser3,
+					usuarioUser4, usuarioUser5, usuarioUser6, usuarioUser7, usuarioUser8));
 
 			commentsCommunityRepo.saveAll(Arrays.asList(comentarioComunidad1, comentarioComunidad2));
 
@@ -174,13 +220,9 @@ public class QuititApplication {
 			penaltyRepo.saveAll(Arrays.asList(penalty1, penalty2, penalty3, penalty4, penalty5, penalty6, penalty7,
 					penalty8, penalty9, penalty10, penalty11, penalty12, penalty13, penalty14, penalty15, penalty16,
 					penalty17, penalty18, penalty19, penalty20));
-					
-					
-			scheduledMessageRepo.saveAll(
-					Arrays.asList(sm1, sm2, sm3, sm4, sm5, sm6, sm7, sm8, sm9, sm10, sm11, sm12, sm13, sm14, sm15, sm16)
-					);
-			
-			
+
+			scheduledMessageRepo.saveAll(Arrays.asList(sm1, sm2, sm3, sm4, sm5, sm6, sm7, sm8, sm9, sm10, sm11, sm12,
+					sm13, sm14, sm15, sm16));
 
 		};
 	}

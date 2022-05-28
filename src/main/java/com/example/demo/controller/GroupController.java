@@ -62,8 +62,8 @@ public class GroupController {
 	 */
 	@GetMapping("/group/{id}")
 	public Group getGroup(@PathVariable Long id) {
-		checkUser();
-		return groupService.getGroup(id);
+		
+		return groupService.getGroup(id, checkUser());
 	}
 	
 	/**
