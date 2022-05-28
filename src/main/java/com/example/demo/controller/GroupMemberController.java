@@ -97,7 +97,7 @@ public class GroupMemberController {
 	 * @return miembro modificado
 	 */
 	@PutMapping("/group/{id}/member/{idMember}")
-	public GroupMember modifyMemberCategory(@RequestParam Long id, @RequestParam Long idMember,
+	public GroupMember modifyMemberCategory(@PathVariable Long id, @PathVariable Long idMember,
 			@RequestBody GroupMember member) {
 		return groupMemberService.modifyMemberCategory(id, idMember, member, checkUser());
 	}
