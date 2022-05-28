@@ -94,23 +94,26 @@ public class GroupMemberService {
 		// Comprueba que el usuario sea admin para hacer modificaciones
 
 		// Comprueba que el miembro exista
-		if (groupMemberRepo.findById(idMember).get() == null) {
+		if (groupMemberRepo.getById(idMember) == null) {
 			throw new MemberNotAddedException();
 		}
 		// Comprueba que el miembro esté añadido
+		Boolean found = false;
 		for (GroupMember m : g.getGroupMembers()) {
 			if (Objects.equals(m.getId(), member.getId())) {
 				// Comprueba que el cambio sea realmente efectivo
 				if (member.getCargo().equals(m.getCargo())) {
 					throw new NoChangeOfRoleException();
 				} else {
+					found = true;
 					// es hace el cambio
 					m.setCargo(member.getCargo());
 					gm = m;
 				}
-			} else {
-				throw new MemberNotAddedException();
-			}
+			} 
+		}
+		if(!found) {
+			throw new MemberNotAddedException();
 		}
 		return groupMemberRepo.save(gm);
 	}
@@ -153,6 +156,8 @@ public class GroupMemberService {
 
 		GroupMember memberChanger;
 		if (user.equals(gm.getUser())) {
+			g.getGroupMembers().remove(g.getGroupMembers().indexOf(gm));
+			groupRepo.save(g);
 			groupMemberRepo.delete(gm);
 		} else {
 			Boolean found = false;

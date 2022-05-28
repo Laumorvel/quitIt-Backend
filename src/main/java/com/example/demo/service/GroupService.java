@@ -8,6 +8,8 @@ import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.example.demo.error.GroupNotFoundException;
+import com.example.demo.error.MemberNotAddedException;
 import com.example.demo.error.RepeatedMembersFoundException;
 import com.example.demo.model.Group;
 import com.example.demo.model.GroupMember;
@@ -29,31 +31,48 @@ public class GroupService {
 	GroupMemberRepository groupMemberRepo;
 
 	/**
-	 * Consigue un grupo concreto
+	 * Consigue un grupo concreto Comprueba que el grupo exista Comprueba que el
+	 * usuario que realiza la consulta sea miembro de ese grupo
 	 * 
 	 * @param id.
 	 * @return grupo por id
 	 */
-	public Group getGroup(Long id) {
-		return groupRepo.findById(id).get();
-	}
-	
-	/**
-	 * Consigue todos los grupos de un usuario
-	 * @param user
-	 * @return lista de grupos de un usuario
-	 */
-	public List<Group> getGroupsFromUser(User user){
-		return groupRepo.getGroupsFromUser(user.getId());
+	public Group getGroup(Long id, User user) {
+		checkGroup(id);
+		Group g = groupRepo.findById(id).get();
+		Boolean found = false;
+		for (GroupMember member : g.getGroupMembers()) {
+			if (member.getUser().equals(user)) {
+				found = true;
+			}
+		}
+		if (!found) {
+			throw new MemberNotAddedException();
+		}
+		return g;
 	}
 
 	/**
-	 * Devuelve la lista de grupos de un usuario
+	 * Comprueba que un grupo exista
 	 * 
-	 * @param idUser
-	 * @return grupos de un usuario
+	 * @param idGroup
+	 * @return grupo
 	 */
-	
+	private void checkGroup(Long idGroup) {
+		if (!groupRepo.existsById(idGroup)) {
+			throw new GroupNotFoundException();
+		}
+	}
+
+	/**
+	 * Consigue todos los grupos de un usuario
+	 * 
+	 * @param user
+	 * @return lista de grupos de un usuario
+	 */
+	public List<Group> getGroupsFromUser(User user) {
+		return groupRepo.getGroupsFromUser(user.getId());
+	}
 
 	/**
 	 * Crea un nuevo grupo
@@ -64,17 +83,17 @@ public class GroupService {
 	 * @return grupo nuevo
 	 */
 	public Group addGroup(Group group) {
-		//Comprobamos que no haya repeticiones
+		// Comprobamos que no haya repeticiones
 		Set<GroupMember> members = new HashSet<>(group.getGroupMembers());
 		if (members.size() < group.getGroupMembers().size()) {
 			throw new RepeatedMembersFoundException();
 		}
-		
-		//guardamos miembros del grupo y al user
+
+		// guardamos miembros del grupo y al user
 		for (GroupMember member : group.getGroupMembers()) {
 			groupMemberRepo.save(member);
 		}
-		//gruardamos grupo
+		// gruardamos grupo
 		return groupRepo.save(group);
 	}
 
@@ -85,24 +104,13 @@ public class GroupService {
 	 */
 	public void deleteGroup(Long id) {
 		Group g = groupRepo.getById(id);
+		checkGroup(id);
 		List<GroupMember> members = g.getGroupMembers();
 		List<GroupMember> members2 = new ArrayList<>(members);
 		g.getGroupMembers().removeAll(members);
 		groupRepo.save(g);
 		groupMemberRepo.deleteAll(members2);
 		groupRepo.deleteById(id);
-	}
-
-
-
-	/**
-	 * Comprueba si el miembro del grupo es administrador o no.
-	 * 
-	 * @param member
-	 * @return boolean indicando si es o no admin
-	 */
-	private Boolean checkAdmin(GroupMember member) {
-		return member.getCargo().equals("ADMIN");
 	}
 
 }

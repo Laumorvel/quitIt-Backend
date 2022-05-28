@@ -128,15 +128,16 @@ public class UserController {
 	 * @return
 	 */
 	@DeleteMapping("/user/{idDelete}")
-	public User deleteUser(@PathVariable Long idDelete) {
+	public void deleteUser(@PathVariable Long idDelete) {
 
 		String email = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		Long result = userRepo.findByEmail(email).getId();
+		User user = userRepo.findByEmail(email);
 
-		if (result == null) {
+		if (user == null) {
 			throw new UserNotFoundException();
 		} else {
-			return userService.borrarUsuario(idDelete);
+			//Encontrar todos los miembros de grupo, penalties, achievements, amigos, incidencias y comentarios en los que está el usuario
+			userService.borrarUsuario(idDelete);
 		}
 	}
 

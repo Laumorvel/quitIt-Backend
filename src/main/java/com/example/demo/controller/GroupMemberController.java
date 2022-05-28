@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.error.ActionOnlyAllowedForAdminsException;
@@ -97,7 +96,7 @@ public class GroupMemberController {
 	 * @return miembro modificado
 	 */
 	@PutMapping("/group/{id}/member/{idMember}")
-	public GroupMember modifyMemberCategory(@RequestParam Long id, @RequestParam Long idMember,
+	public GroupMember modifyMemberCategory(@PathVariable Long id, @PathVariable Long idMember,
 			@RequestBody GroupMember member) {
 		return groupMemberService.modifyMemberCategory(id, idMember, member, checkUser());
 	}
