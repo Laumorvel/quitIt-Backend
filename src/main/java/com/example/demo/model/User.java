@@ -150,6 +150,19 @@ public class User {
 		this.cigarettesBeforePerDay = cigarettesBeforePerDay;
 		this.moneyPerDay = moneyPerDay;
 	}
+	
+	public User(String name, String lastName, String username, String email, String password, String rol,
+			Integer cigarettesBeforePerDay, Double moneyPerDay, String imageUrl) {
+		this.name = name;
+		this.lastName = lastName;
+		this.username = username;
+		this.email = email;
+		this.password = password;
+		this.rol = rol;
+		this.cigarettesBeforePerDay = cigarettesBeforePerDay;
+		this.moneyPerDay = moneyPerDay;
+		this.imageUrl = imageUrl;
+	}
 
 
 	public User(String name, String lastName, String email, String password, String rol,

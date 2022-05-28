@@ -58,7 +58,7 @@ public class QuititApplication {
 
 		// Usuarios usuarios
 		User usuarioUser1 = new User("Loli", "Montero", "lolimontero", "loli@gmail.com",
-				passwordEncoder.encode("12345"), "USER", 17, 9.0);
+				passwordEncoder.encode("12345"), "USER", 17, 9.0, "https://res.cloudinary.com/lalalala/image/upload/v1651689445/foto_perfil_vo0omr.jpg");
 
 		User usuarioUser2 = new User("Pepe", "Lopez", "pepitoloooooopez", "pepe@gmail.com",
 				passwordEncoder.encode("12345"), "USER", 30, 10.30);
@@ -67,7 +67,7 @@ public class QuititApplication {
 				passwordEncoder.encode("12345"), "USER", 10, 5.0);
 
 		User usuarioUser4 = new User("Ana", "JJ", "anita", "ani@gmail.com", passwordEncoder.encode("12345"), "USER", 5,
-				2.0);
+				2.0, "https://res.cloudinary.com/lalalala/image/upload/v1651689345/cld-sample.jpg");
 
 		User usuarioUser5 = new User("Juan", "Garrido", "juanchus", "juanito@gmail.com",
 				passwordEncoder.encode("12345"), "USER", 19, 12.0);

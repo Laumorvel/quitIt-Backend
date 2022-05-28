@@ -8,6 +8,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.example.demo.error.UserNotFoundException;
 import com.example.demo.model.OrdenarPorNumero;
 import com.example.demo.model.User;
 import com.example.demo.repository.UserRepo;
@@ -48,9 +49,9 @@ public class UserService {
 	 */
 	public List<User> getUsername(String username, Long idUser) {
 		List<User> usuariosCoincidentes = userRepo.findByUsername(username, idUser);// no incluye al propio usuario
-		//Elimina los usuarios que sean administradores
+		// Elimina los usuarios que sean administradores
 		for (User user : usuariosCoincidentes) {
-			if(user.getRol().equals("ADMIN")) {
+			if (user.getRol().equals("ADMIN")) {
 				usuariosCoincidentes.remove(usuariosCoincidentes.indexOf(user));
 			}
 		}
@@ -65,21 +66,23 @@ public class UserService {
 	}
 
 	/**
-	 * Encuentra a los amigos del usuario que realiza la búsqueda por el nombre de usuario introducido.
-	 * Descarta a aquellos usuarios que ya se hayan incluido en el grupo que se esté formando si así fuera-
+	 * Encuentra a los amigos del usuario que realiza la búsqueda por el nombre de
+	 * usuario introducido. Descarta a aquellos usuarios que ya se hayan incluido en
+	 * el grupo que se esté formando si así fuera-
+	 * 
 	 * @param username
 	 * @param idUser
 	 * @return lista de usuarios
 	 */
-	public List<User> getFriendUsername(String username, Long idUser, List<User>groupMembers) {
+	public List<User> getFriendUsername(String username, Long idUser, List<User> groupMembers) {
 		List<User> friends = userRepo.findFriendsByUsername(username, idUser);
-		if(groupMembers!= null && !groupMembers.isEmpty()) {
+		if (groupMembers != null && !groupMembers.isEmpty()) {
 			for (User friend : friends) {
 				for (User member : groupMembers) {
-					if(friend.getUsername().equals(member.getUsername())) {
+					if (friend.getUsername().equals(member.getUsername())) {
 						friends.remove(friends.indexOf(member));
 					}
-				}				
+				}
 			}
 		}
 		return friends;
@@ -168,24 +171,17 @@ public class UserService {
 	 * Borra todos los datos del usuario en cascada
 	 * 
 	 * @param result
-	 * @return
 	 */
-	public User borrarUsuario(Long result) {
-		if (userRepo.existsById(result)) {
-
-			User user = userRepo.findById(result).orElse(null);
-			User usuarioParaImprimir = userRepo.findById(result).orElse(null);
-
-			user.setAchievementList(null);
-			user.setPenalties(null);
-			user.setFriends(null);
-
-			userRepo.delete(user);
-
-			return usuarioParaImprimir;
-		} else {
-			return null;
+	public void borrarUsuario(Long idDelete) {
+		//Comprueba que el usuario a borrar existe
+		User user;
+		try {
+			user = userRepo.getById(idDelete);
+		}catch (Exception e) {
+			throw new UserNotFoundException();
 		}
+
+		userRepo.delete(user);
 	}
 
 	public List<User> findUsers() {
