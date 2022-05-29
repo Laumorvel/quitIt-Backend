@@ -10,15 +10,14 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.error.UserNotFoundException;
-<<<<<<< HEAD
 import com.example.demo.model.CommentCommunity;
 import com.example.demo.model.CommentsGroup;
-=======
->>>>>>> 9c4e20635d5320f80dbf114ceb9d0f57ffbf2695
+import com.example.demo.model.MeetUp;
 import com.example.demo.model.OrdenarPorNumero;
 import com.example.demo.model.User;
 import com.example.demo.repository.CommentsCommunityRepo;
 import com.example.demo.repository.CommentsGroupRepo;
+import com.example.demo.repository.MeetUpRepo;
 import com.example.demo.repository.UserRepo;
 
 @Service
@@ -29,6 +28,8 @@ public class UserService {
 	@Autowired CommentsCommunityRepo commentsCommutinyRepo;
 	
 	@Autowired CommentsGroupRepo CommentsGroupRepo;
+	
+	@Autowired MeetUpRepo meetUpRepo;
 
 	/**
 	 * Busca un usuario por email
@@ -199,9 +200,20 @@ public class UserService {
 			List<CommentsGroup> comentariosGrupo = CommentsGroupRepo.findAll();
 			for (int i = 0; i < comentariosGrupo.size(); i++) {
 				if(comentariosGrupo.get(i).getUser().getId().equals(user.getId())) {
-					((CrudRepository<CommentCommunity, Long>) comentariosGrupo).deleteById(comentariosGrupo.get(i).getId());
+					CommentsGroupRepo.deleteById(comentariosGrupo.get(i).getId());
 				}
 			}
+			
+			List<MeetUp> meetups = meetUpRepo.findAllMeetUps();
+			for (int i = 0; i < meetups.size(); i++) {
+				for (int j = 0; j < meetups.get(i).getAssistantsList().size(); j++) {
+					if(meetups.get(i).getAssistantsList().get(j).getId().equals(user.getId())) {
+						meetUpRepo.deleteById(meetups.get(i).getAssistantsList().get(j).getId());
+					}
+				}
+					
+			}
+			
 			
 		}catch (Exception e) {
 			throw new UserNotFoundException();
