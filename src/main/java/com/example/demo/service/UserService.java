@@ -6,17 +6,26 @@ import java.util.Collections;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Service;
 
+import com.example.demo.error.UserNotFoundException;
+import com.example.demo.model.CommentCommunity;
+import com.example.demo.model.CommentsGroup;
 import com.example.demo.model.OrdenarPorNumero;
 import com.example.demo.model.User;
+import com.example.demo.repository.CommentsCommunityRepo;
+import com.example.demo.repository.CommentsGroupRepo;
 import com.example.demo.repository.UserRepo;
 
 @Service
 public class UserService {
 
-	@Autowired
-	UserRepo userRepo;
+	@Autowired UserRepo userRepo;
+	
+	@Autowired CommentsCommunityRepo commentsCommutinyRepo;
+	
+	@Autowired CommentsGroupRepo CommentsGroupRepo;
 
 	/**
 	 * Busca un usuario por email
@@ -139,27 +148,32 @@ public class UserService {
 	 * Borra todos los datos del usuario en cascada
 	 * 
 	 * @param result
-	 * @return
 	 */
-	public User borrarUsuario(Long result) {
-		if (userRepo.existsById(result)) {
-
-			User user = userRepo.findById(result).orElse(null);
-			User usuarioParaImprimir = userRepo.findById(result).orElse(null);
-
-			user.setAchievementList(null);
-			user.setGroupList(null);
-			user.setFile(null);
-			user.setPenalties(null);
-			user.setFriends(null);
-			user.setGroupList(null);
-
-			userRepo.delete(user);
-
-			return usuarioParaImprimir;
-		} else {
-			return null;
+	public void borrarUsuario(Long idDelete) {
+		//Comprueba que el usuario a borrar existe
+		
+		User user = userRepo.findById(idDelete).orElse(null);
+		try {
+		
+			List<CommentCommunity> comentarios = commentsCommutinyRepo.findAll();
+			for (int i = 0; i < comentarios.size(); i++) {
+				if(comentarios.get(i).getUser().getId().equals(user.getId())) {
+					commentsCommutinyRepo.deleteById(comentarios.get(i).getId());
+				}
+			}
+			
+			List<CommentsGroup> comentariosGrupo = CommentsGroupRepo.findAll();
+			for (int i = 0; i < comentariosGrupo.size(); i++) {
+				if(comentariosGrupo.get(i).getUser().getId().equals(user.getId())) {
+					((CrudRepository<CommentCommunity, Long>) comentariosGrupo).deleteById(comentariosGrupo.get(i).getId());
+				}
+			}
+			
+		}catch (Exception e) {
+			throw new UserNotFoundException();
 		}
+
+		userRepo.delete(user);
 	}
 
 	public List<User> findUsers() {

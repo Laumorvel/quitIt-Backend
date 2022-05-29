@@ -77,7 +77,7 @@ public class User {
 	@ManyToMany
 	private List<User> friends = new ArrayList<>();
 
-	@JsonIgnore
+	
 	@ManyToMany
 	private List<Achievement> achievementList = new ArrayList<>();
 

@@ -129,7 +129,7 @@ public class UserController {
 	 * @return
 	 */
 	@DeleteMapping("/user/{idDelete}")
-	public User deleteUser(@PathVariable Long idDelete) {
+	public void deleteUser(@PathVariable Long idDelete) {
 
 		String email = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		Long result = userRepo.findByEmail(email).getId();
@@ -137,7 +137,7 @@ public class UserController {
 		if (result == null) {
 			throw new UserNotFoundException();
 		} else {
-			return userService.borrarUsuario(idDelete);
+			userService.borrarUsuario(idDelete); //QUE DEVUELVE SI  SE BORRA
 		}
 	}
 
