@@ -23,6 +23,7 @@ public class CommentsCommunityService {
 
 	/**
 	 * Devuelve una lista con todos los comentarios de la comunidad
+	 * 
 	 * @return
 	 */
 	public List<CommentCommunity> getComments() {
@@ -31,6 +32,7 @@ public class CommentsCommunityService {
 
 	/**
 	 * Crea un nuevo comentario en el chat comunitario
+	 * 
 	 * @param result
 	 * @param datos
 	 * @return
@@ -53,16 +55,17 @@ public class CommentsCommunityService {
 
 	/**
 	 * Borra un comentario del chat de la comunidad
+	 * 
 	 * @param idC
 	 * @return
 	 */
 	public CommentCommunity delete(Long idC) {
 		if (commentsCommutinyRepo.existsById(idC)) {
-			
+
 			CommentCommunity c = commentsCommutinyRepo.findById(idC).get();
-			
+
 			commentsCommutinyRepo.deleteById(idC);
-			
+
 			return c;
 		} else {
 			return null;

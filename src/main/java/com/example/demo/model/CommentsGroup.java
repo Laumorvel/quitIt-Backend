@@ -19,6 +19,7 @@ public class CommentsGroup {
 	@ManyToOne
 	private User user;
 	private LocalDate date;
+	private Long idGroup;
 
 	/**
 	 * Constructor vacio.
@@ -26,17 +27,11 @@ public class CommentsGroup {
 	public CommentsGroup() {
 	}
 
-	/**
-	 * Constructor con todos los atributos de Comentario
-	 * 
-	 * @param text
-	 * @param user
-	 * @param date
-	 */
-	public CommentsGroup(String text, User user, LocalDate date) {
+	public CommentsGroup(String text, User user, LocalDate date, Long idGroup) {
 		this.text = text;
 		this.user = user;
 		this.date = date;
+		this.idGroup = idGroup;
 	}
 
 	/**
@@ -74,6 +69,14 @@ public class CommentsGroup {
 
 	public void setDate(LocalDate date) {
 		this.date = date;
+	}
+
+	public Long getIdGroup() {
+		return idGroup;
+	}
+
+	public void setIdGroup(Long idGroup) {
+		this.idGroup = idGroup;
 	}
 
 	/**

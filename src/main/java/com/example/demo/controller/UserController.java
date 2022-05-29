@@ -56,12 +56,11 @@ public class UserController {
 		} else {
 			return userService.setUser(result);
 		}
-
 	}
 
-	
 	/**
 	 * Añadir usuario a tu lista de amigos.
+	 * 
 	 * @param userRecibido
 	 * @return
 	 */
@@ -132,9 +131,9 @@ public class UserController {
 	public void deleteUser(@PathVariable Long idDelete) {
 
 		String email = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		Long result = userRepo.findByEmail(email).getId();
+		User user = userRepo.findByEmail(email);
 
-		if (result == null) {
+		if (user == null) {
 			throw new UserNotFoundException();
 		} else {
 			userService.borrarUsuario(idDelete); //QUE DEVUELVE SI  SE BORRA
@@ -160,12 +159,18 @@ public class UserController {
 	}
 
 	/**
-	 * Da la lista de usuarios
+	 * Comprueba que los usuarios coincidan con el nombre introducido. Si es el
+	 * username, los usuarios devueltos serán los que el usuario puede agregar como
+	 * amigos (no son sus amigos aún y coinciden en username). Si es el friend, los
+	 * usuarios devueltos serán aquellos que coinciden en username y ya son amigos
+	 * del usuario. En caso de tener groupMembers, estos serán los que conforman el
+	 * grupo que se está creando, para que no se agregue dos veces al mismo amigo.
 	 * 
-	 * @return
+	 * @return lista de usuariios
 	 */
 	@GetMapping("/users")
-	public List<User> getAllUsersRanking(@RequestParam(required = false) String username) {
+	public List<User> getAllUsersRanking(@RequestParam(required = false) String username,
+			@RequestParam(required = false) String friend, @RequestBody(required = false) List<User> groupMembers) {
 		String email = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		User result = userRepo.findByEmail(email);
 
@@ -174,11 +179,24 @@ public class UserController {
 		} else {
 			if (username != null) {
 				return userService.getUsername(username, result.getId());
+			} else if (friend != null) {
+				return userService.getFriendUsername(friend, result.getId(), groupMembers);
 			} else {
 				return userService.getAllUsers();
 			}
 		}
 
+	}
+	
+	@PostMapping("/users")
+	public List<User> getUsersWithMembers(@RequestParam(required= false) String friend, @RequestBody(required = false) List<User> groupMembers){
+		String email = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		User result = userRepo.findByEmail(email);
+		if (result == null) {
+			throw new UserNotFoundException();
+		} else {
+			return userService.getFriendUsername(friend, result.getId(), groupMembers);
+		}
 	}
 
 	/**
@@ -224,7 +242,4 @@ public class UserController {
 		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e);
 	}
 
-	
-
-	
 }

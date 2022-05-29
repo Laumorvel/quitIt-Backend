@@ -10,8 +10,11 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.error.UserNotFoundException;
+<<<<<<< HEAD
 import com.example.demo.model.CommentCommunity;
 import com.example.demo.model.CommentsGroup;
+=======
+>>>>>>> 9c4e20635d5320f80dbf114ceb9d0f57ffbf2695
 import com.example.demo.model.OrdenarPorNumero;
 import com.example.demo.model.User;
 import com.example.demo.repository.CommentsCommunityRepo;
@@ -50,19 +53,50 @@ public class UserService {
 	/**
 	 * Encuentra a los usuarios registrados, exceptuando al propio usuario logueado.
 	 * Descarta a aquellos usuarios que ya sean amigos del usuario logueado.
+	 * 
 	 * @param username
 	 * @param idUser
 	 * @return usuarios candidatos a ser amigos
 	 */
 	public List<User> getUsername(String username, Long idUser) {
-		List<User> usuariosCoincidentes = userRepo.findByUsername(username, idUser);//no incluye al propio usuario
+		List<User> usuariosCoincidentes = userRepo.findByUsername(username, idUser);// no incluye al propio usuario
+		// Elimina los usuarios que sean administradores
+		for (User user : usuariosCoincidentes) {
+			if (user.getRol().equals("ADMIN")) {
+				usuariosCoincidentes.remove(usuariosCoincidentes.indexOf(user));
+			}
+		}
 		for (User user : usuariosCoincidentes) {
 			Long idFriend = userRepo.findUsersToAddFriends(idUser, user.getId());
-			if(idFriend != null) {
-				usuariosCoincidentes.remove(usuariosCoincidentes.indexOf(user));//elimina de la lista al usuario que ya sea amigo
+			if (idFriend != null) {
+				usuariosCoincidentes.remove(usuariosCoincidentes.indexOf(user));// elimina de la lista al usuario que ya
+																				// sea amigo
 			}
 		}
 		return usuariosCoincidentes;
+	}
+
+	/**
+	 * Encuentra a los amigos del usuario que realiza la búsqueda por el nombre de
+	 * usuario introducido. Descarta a aquellos usuarios que ya se hayan incluido en
+	 * el grupo que se esté formando si así fuera-
+	 * 
+	 * @param username
+	 * @param idUser
+	 * @return lista de usuarios
+	 */
+	public List<User> getFriendUsername(String username, Long idUser, List<User> groupMembers) {
+		List<User> friends = userRepo.findFriendsByUsername(username, idUser);
+		if (groupMembers != null && !groupMembers.isEmpty()) {
+			for (User friend : friends) {
+				for (User member : groupMembers) {
+					if (friend.getUsername().equals(member.getUsername())) {
+						friends.remove(friends.indexOf(member));
+					}
+				}
+			}
+		}
+		return friends;
 	}
 
 	/**
@@ -204,6 +238,7 @@ public class UserService {
 
 	/**
 	 * Se agrega mutuamente a los usuarios como amigos. Se guardan en bbdd
+	 * 
 	 * @param result
 	 * @param userRecibido
 	 * @return usuario actualizado con su amigo añadido

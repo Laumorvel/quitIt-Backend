@@ -34,6 +34,15 @@ public interface UserRepo extends JpaRepository<User, Long> {
 	public List<User> findByUsername(String username, Long idUser);
 	
 	/**
+	 * Selecciona a los usuarios cuyos usernames coincidan con la búsqueda introducida y sean amigos del usuario que realiza la búsqueda.
+	 * @param username
+	 * @param idUser
+	 * @return lista de usuarios
+	 */
+	@Query(value = "SELECT * FROM user WHERE username LIKE %:username% AND id != :idUser AND id IN (SELECT friends_id FROM user_friends WHERE user_id = :idUser)", nativeQuery = true)
+	public List<User> findFriendsByUsername(String username, Long idUser);
+	
+	/**
 	 * Encuentra los id de los usuarios que sean amigos de un usuario en concreto
 	 * @param idUser
 	 * @param idFriend
@@ -50,15 +59,6 @@ public interface UserRepo extends JpaRepository<User, Long> {
 	 */
 	@Query(value = "select * from user", nativeQuery = true)
 	public List<User> findAllUsers();
-
-	/**
-	 * Query para conseguir a un usuario a través del id de su imagen
-	 * 
-	 * @param fileId
-	 * @return user
-	 */
-	@Query(value = "SELECT * FROM user WHERE file_id=?1", nativeQuery = true)
-	public User getUserFromFileId(String fileId);
 
 	/**
 	 * Query para conseguir a un usuario a través de su username
