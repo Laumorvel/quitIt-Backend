@@ -19,12 +19,21 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.demo.error.AchievementAlreadyAddedException;
+import com.example.demo.error.AchievementNotAddedException;
+import com.example.demo.error.AchievementNotFoundException;
 import com.example.demo.error.AlreadySetAsAnSmokingDayException;
 import com.example.demo.error.ApiError;
+import com.example.demo.error.PenaltyAlreadyAddedException;
+import com.example.demo.error.PenaltyNotAddedException;
+import com.example.demo.error.PenaltyNotFoundException;
 import com.example.demo.error.UserNotFoundException;
+import com.example.demo.model.Achievement;
 import com.example.demo.model.Message;
+import com.example.demo.model.Penalty;
 import com.example.demo.model.User;
 import com.example.demo.repository.UserRepo;
+import com.example.demo.service.PenaltyService;
 import com.example.demo.service.SmtpMailSender;
 import com.example.demo.service.UserService;
 
@@ -39,6 +48,8 @@ public class UserController {
 
 	@Autowired
 	private SmtpMailSender smtpMailSender;
+	
+	@Autowired PenaltyService penaltyService;
 
 	/**
 	 * Devuelve el usuario
@@ -226,6 +237,55 @@ public class UserController {
 
 		smtpMailSender.send(datos.getToUser(), datos.getSubject(), datos.getText(), datos.getFromUser());
 	}
+	
+	/**
+	 * Añade un achievement al usuario
+	 * @param achievement
+	 * @return usuario modificado
+	 */
+	@PostMapping("/achievement/user")
+	public User addAchievementToUser(@RequestBody Achievement achievement) {
+		User user;
+		try {
+			user = userRepo.findByEmail((String) SecurityContextHolder.getContext().getAuthentication().getPrincipal());	
+		}catch(Exception e) {
+			throw new UserNotFoundException();
+		}
+		return userService.addAchievementToUser(achievement, user);
+	}
+	
+	@DeleteMapping("/achievement/{id}/user")
+	public void removeAchievementFromUser(@PathVariable Long id) {
+		User user;
+		try {
+			user = userRepo.findByEmail((String) SecurityContextHolder.getContext().getAuthentication().getPrincipal());	
+		}catch(Exception e) {
+			throw new UserNotFoundException();
+		}
+		userService.deleteAchievementOfUser(id, user);
+	}
+	
+	@DeleteMapping("/penalty/{id}/user")
+	public void removePenaltyFromUser(@PathVariable Long id) {
+		User user;
+		try {
+			user = userRepo.findByEmail((String) SecurityContextHolder.getContext().getAuthentication().getPrincipal());	
+		}catch(Exception e) {
+			throw new UserNotFoundException();
+		}
+		penaltyService.deletePenaltyFromUser(user, id);
+	}
+	
+	@PostMapping("/penalty/user")
+	public User addPenaltyToUser(@RequestBody Penalty penalty) {
+		User user;
+		try {
+			user = userRepo.findByEmail((String) SecurityContextHolder.getContext().getAuthentication().getPrincipal());	
+		}catch(Exception e) {
+			throw new UserNotFoundException();
+		}
+		return userService.addPenaltyToUser(user, penalty.getId());
+	}
 
 	// EXCEPCIONES--------------------------------------------------------
 
@@ -249,6 +309,72 @@ public class UserController {
 	 */
 	@ExceptionHandler(UserNotFoundException.class)
 	public ResponseEntity<ApiError> userNotFound(UserNotFoundException ex) throws Exception {
+		ApiError e = new ApiError();
+		e.setEstado(HttpStatus.NOT_FOUND);
+		e.setMensaje(ex.getMessage());
+		e.setFecha(LocalDateTime.now());
+
+		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e);
+	}
+	
+	@ExceptionHandler(AchievementNotFoundException.class)
+	public ResponseEntity<ApiError> AchievementNotFoundException(AchievementNotFoundException ex)
+			throws Exception {
+		ApiError e = new ApiError();
+		e.setEstado(HttpStatus.NOT_FOUND);
+		e.setMensaje(ex.getMessage());
+		e.setFecha(LocalDateTime.now());
+
+		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e);
+	}
+	
+	@ExceptionHandler(AchievementAlreadyAddedException.class)
+	public ResponseEntity<ApiError> AchievementAlreadyAddedException(AchievementAlreadyAddedException ex)
+			throws Exception {
+		ApiError e = new ApiError();
+		e.setEstado(HttpStatus.CONFLICT);
+		e.setMensaje(ex.getMessage());
+		e.setFecha(LocalDateTime.now());
+
+		return ResponseEntity.status(HttpStatus.CONFLICT).body(e);
+	}
+	
+	@ExceptionHandler(AchievementNotAddedException.class)
+	public ResponseEntity<ApiError> AchievementNotAddedException(AchievementNotAddedException ex)
+			throws Exception {
+		ApiError e = new ApiError();
+		e.setEstado(HttpStatus.CONFLICT);
+		e.setMensaje(ex.getMessage());
+		e.setFecha(LocalDateTime.now());
+
+		return ResponseEntity.status(HttpStatus.CONFLICT).body(e);
+	}
+	
+	@ExceptionHandler(PenaltyNotAddedException.class)
+	public ResponseEntity<ApiError> PenaltyNotAddedException(PenaltyNotAddedException ex)
+			throws Exception {
+		ApiError e = new ApiError();
+		e.setEstado(HttpStatus.CONFLICT);
+		e.setMensaje(ex.getMessage());
+		e.setFecha(LocalDateTime.now());
+
+		return ResponseEntity.status(HttpStatus.CONFLICT).body(e);
+	}
+	
+	@ExceptionHandler(PenaltyAlreadyAddedException.class)
+	public ResponseEntity<ApiError> PenaltyAlreadyAddedException(PenaltyAlreadyAddedException ex)
+			throws Exception {
+		ApiError e = new ApiError();
+		e.setEstado(HttpStatus.CONFLICT);
+		e.setMensaje(ex.getMessage());
+		e.setFecha(LocalDateTime.now());
+
+		return ResponseEntity.status(HttpStatus.CONFLICT).body(e);
+	}
+	
+	@ExceptionHandler(PenaltyNotFoundException.class)
+	public ResponseEntity<ApiError> PenaltyNotFoundException(PenaltyNotFoundException ex)
+			throws Exception {
 		ApiError e = new ApiError();
 		e.setEstado(HttpStatus.NOT_FOUND);
 		e.setMensaje(ex.getMessage());

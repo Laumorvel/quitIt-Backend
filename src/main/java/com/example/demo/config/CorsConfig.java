@@ -140,6 +140,27 @@ public class CorsConfig implements WebMvcConfigurer {
 						"Authorization")
 				.exposedHeaders("Access-Control-Allow-Origin", "Access-Control-Allow-Credentials");
 				
+				/**
+				 * Añade achievement a un usuario
+				 */
+				registry.addMapping("/achievement/{id}/user").allowedOrigins(urlFront)
+				.allowedHeaders("GET", "POST", "OPTIONS", "PUT", "Content-Type", "X-Requested-With", "accept",
+						"Origin", "Access-Control-Request-Method", "Access-Control-Request-Headers",
+						"Authorization")
+				.exposedHeaders("Access-Control-Allow-Origin", "Access-Control-Allow-Credentials");
+				
+				registry.addMapping("/achievement/{id}").allowedOrigins(urlFront)
+				.allowedHeaders("GET", "POST", "OPTIONS", "PUT", "Content-Type", "X-Requested-With", "accept",
+						"Origin", "Access-Control-Request-Method", "Access-Control-Request-Headers",
+						"Authorization")
+				.exposedHeaders("Access-Control-Allow-Origin", "Access-Control-Allow-Credentials");
+				
+				registry.addMapping("/achievement/user").allowedOrigins(urlFront)
+				.allowedHeaders("GET", "POST", "OPTIONS", "PUT", "Content-Type", "X-Requested-With", "accept",
+						"Origin", "Access-Control-Request-Method", "Access-Control-Request-Headers",
+						"Authorization")
+				.exposedHeaders("Access-Control-Allow-Origin", "Access-Control-Allow-Credentials");
+				
 				
 				/**
 				 * Muestra todos las penalizaciones
@@ -148,6 +169,12 @@ public class CorsConfig implements WebMvcConfigurer {
 				.allowedHeaders("GET", "POST", "OPTIONS", "PUT", "Content-Type", "X-Requested-With", "accept",
 						"Origin", "Access-Control-Request-Method", "Access-Control-Request-Headers",
 						"Authorization")
+				.exposedHeaders("Access-Control-Allow-Origin", "Access-Control-Allow-Credentials");
+				
+				registry.addMapping("/penalty/{id}").allowedOrigins(urlFront)
+				.allowedMethods("GET", "POST", "OPTIONS", "PUT")
+				.allowedHeaders("Content-Type", "Authorization", "X-Requested-With", "accept", "Origin",
+						"Access-Control-Request-Method", "Access-Control-Request-Headers")
 				.exposedHeaders("Access-Control-Allow-Origin", "Access-Control-Allow-Credentials");
 				
 				
@@ -301,6 +328,21 @@ public class CorsConfig implements WebMvcConfigurer {
 				.allowedHeaders("Content-Type", "Authorization", "X-Requested-With", "accept", "Origin",
 						"Access-Control-Request-Method", "Access-Control-Request-Headers")
 				.exposedHeaders("Access-Control-Allow-Origin", "Access-Control-Allow-Credentials");
+				
+				
+				registry.addMapping("/penalty/{id}/user").allowedOrigins(urlFront)
+				.allowedMethods("GET", "POST", "OPTIONS", "PUT","DELETE")
+				.allowedHeaders("Content-Type", "Authorization", "X-Requested-With", "accept", "Origin",
+						"Access-Control-Request-Method", "Access-Control-Request-Headers")
+				.exposedHeaders("Access-Control-Allow-Origin", "Access-Control-Allow-Credentials");
+				
+				registry.addMapping("/penalty/user").allowedOrigins(urlFront)
+				.allowedMethods("GET", "POST", "OPTIONS", "PUT","DELETE")
+				.allowedHeaders("Content-Type", "Authorization", "X-Requested-With", "accept", "Origin",
+						"Access-Control-Request-Method", "Access-Control-Request-Headers")
+				.exposedHeaders("Access-Control-Allow-Origin", "Access-Control-Allow-Credentials");
+				
+				
 			};
 
 		};
