@@ -25,7 +25,6 @@ public class MeetUp {
 	private String place;
 	private String type;
 	private String choice;
-	@JsonIgnore
 	@ManyToMany
 	private List<User> assistantsList = new ArrayList<>();
 	
@@ -165,6 +164,11 @@ public class MeetUp {
 	public void addAttendace (User userRecibido) {
 		this.assistantsList.add(userRecibido);
 	}
+	
+	public void deleteAttendace (User userRecibido) {
+		this.assistantsList.remove(userRecibido);
+	}
+
 
 	
 	
