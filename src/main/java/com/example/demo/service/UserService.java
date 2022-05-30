@@ -6,6 +6,7 @@ import java.util.Collections;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.error.AchievementAlreadyAddedException;
@@ -14,19 +15,36 @@ import com.example.demo.error.AchievementNotFoundException;
 import com.example.demo.error.PenaltyAlreadyAddedException;
 import com.example.demo.error.PenaltyNotFoundException;
 import com.example.demo.error.UserNotFoundException;
+
 import com.example.demo.model.Achievement;
+
+import com.example.demo.model.CommentCommunity;
+import com.example.demo.model.CommentsGroup;
+import com.example.demo.model.MeetUp;
+
 import com.example.demo.model.OrdenarPorNumero;
 import com.example.demo.model.Penalty;
 import com.example.demo.model.User;
+
 import com.example.demo.repository.AchievementRepo;
 import com.example.demo.repository.PenaltyRepo;
+
+import com.example.demo.repository.CommentsCommunityRepo;
+import com.example.demo.repository.CommentsGroupRepo;
+import com.example.demo.repository.MeetUpRepo;
+
 import com.example.demo.repository.UserRepo;
 
 @Service
 public class UserService {
 
-	@Autowired
-	UserRepo userRepo;
+	@Autowired UserRepo userRepo;
+	
+	@Autowired CommentsCommunityRepo commentsCommutinyRepo;
+	
+	@Autowired CommentsGroupRepo CommentsGroupRepo;
+	
+	@Autowired MeetUpRepo meetUpRepo;
 
 	@Autowired
 	AchievementRepo achievementRepo;
@@ -236,11 +254,39 @@ public class UserService {
 	 * @param result
 	 */
 	public void borrarUsuario(Long idDelete) {
-		// Comprueba que el usuario a borrar existe
-		User user;
+
+		//Comprueba que el usuario a borrar existe
+		
+		User user = userRepo.findById(idDelete).orElse(null);
 		try {
-			user = userRepo.getById(idDelete);
-		} catch (Exception e) {
+		
+			List<CommentCommunity> comentarios = commentsCommutinyRepo.findAll();
+			for (int i = 0; i < comentarios.size(); i++) {
+				if(comentarios.get(i).getUser().getId().equals(user.getId())) {
+					commentsCommutinyRepo.deleteById(comentarios.get(i).getId());
+				}
+			}
+			
+			List<CommentsGroup> comentariosGrupo = CommentsGroupRepo.findAll();
+			for (int i = 0; i < comentariosGrupo.size(); i++) {
+				if(comentariosGrupo.get(i).getUser().getId().equals(user.getId())) {
+					CommentsGroupRepo.deleteById(comentariosGrupo.get(i).getId());
+				}
+			}
+			
+			List<MeetUp> meetups = meetUpRepo.findAllMeetUps();
+			for (int i = 0; i < meetups.size(); i++) {
+				for (int j = 0; j < meetups.get(i).getAssistantsList().size(); j++) {
+					if(meetups.get(i).getAssistantsList().get(j).getId().equals(user.getId())) {
+						meetUpRepo.deleteById(meetups.get(i).getAssistantsList().get(j).getId());
+					}
+				}
+					
+			}
+			
+			
+		}catch (Exception e) {
+
 			throw new UserNotFoundException();
 		}
 

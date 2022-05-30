@@ -147,8 +147,7 @@ public class UserController {
 		if (user == null) {
 			throw new UserNotFoundException();
 		} else {
-			//Encontrar todos los miembros de grupo, penalties, achievements, amigos, incidencias y comentarios en los que está el usuario
-			userService.borrarUsuario(idDelete);
+			userService.borrarUsuario(idDelete); //QUE DEVUELVE SI  SE BORRA
 		}
 	}
 
