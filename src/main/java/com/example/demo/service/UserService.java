@@ -8,9 +8,18 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.example.demo.error.AchievementAlreadyAddedException;
+import com.example.demo.error.AchievementNotAddedException;
+import com.example.demo.error.AchievementNotFoundException;
+import com.example.demo.error.PenaltyAlreadyAddedException;
+import com.example.demo.error.PenaltyNotFoundException;
 import com.example.demo.error.UserNotFoundException;
+import com.example.demo.model.Achievement;
 import com.example.demo.model.OrdenarPorNumero;
+import com.example.demo.model.Penalty;
 import com.example.demo.model.User;
+import com.example.demo.repository.AchievementRepo;
+import com.example.demo.repository.PenaltyRepo;
 import com.example.demo.repository.UserRepo;
 
 @Service
@@ -18,6 +27,11 @@ public class UserService {
 
 	@Autowired
 	UserRepo userRepo;
+
+	@Autowired
+	AchievementRepo achievementRepo;
+	
+	@Autowired PenaltyRepo penaltyRepo;
 
 	/**
 	 * Busca un usuario por email
@@ -148,6 +162,55 @@ public class UserService {
 	}
 
 	/**
+	 * Añade un achievement al usuario.
+	 * Comprueba que exista y que el usuario no lo tenga ya añadido
+	 * @param achievement
+	 * @param user
+	 * @return usuario modificado
+	 */
+	public User addAchievementToUser(Achievement achievement, User user) {
+		try {
+			achievementRepo.getById(achievement.getId());
+		} catch (Exception e) {
+			throw new AchievementNotFoundException();
+		}
+		for (Achievement a : user.getAchievementList()) {
+			if (a.equals(achievement)) {
+				throw new AchievementAlreadyAddedException();
+			}
+		}
+		user.getAchievementList().add(achievement);
+		return userRepo.save(user);
+
+	}
+	
+	/**
+	 * Elimina un achievement del usuario.
+	 * Comprueba que exista y el usuario lo tenga incluido en su lista.
+	 * @param idAchievement
+	 * @param user
+	 */
+	public void deleteAchievementOfUser(Long idAchievement, User user) {
+		Achievement achievement;
+		try {
+			achievement = achievementRepo.getById(idAchievement);
+		} catch (Exception e) {
+			throw new AchievementNotFoundException();
+		}
+		Boolean found = false;
+		for (Achievement a : user.getAchievementList()) {
+			if (a.equals(achievement)) {
+				found = true;
+			}
+		}
+		if(!found) {
+			throw new AchievementNotAddedException();
+		}
+		user.getAchievementList().remove(achievement);
+		userRepo.save(user);
+	}
+
+	/**
 	 * Resetea la información del usuario como si volviera a empezar a usar la
 	 * aplicación
 	 * 
@@ -173,11 +236,11 @@ public class UserService {
 	 * @param result
 	 */
 	public void borrarUsuario(Long idDelete) {
-		//Comprueba que el usuario a borrar existe
+		// Comprueba que el usuario a borrar existe
 		User user;
 		try {
 			user = userRepo.getById(idDelete);
-		}catch (Exception e) {
+		} catch (Exception e) {
 			throw new UserNotFoundException();
 		}
 
@@ -250,6 +313,32 @@ public class UserService {
 		} else {
 			return null;
 		}
+	}
+	
+	/**
+	 * Elimina una penalización del usuario
+	 * @param user
+	 * @param id
+	 * @return usuario modificado
+	 */
+	public User addPenaltyToUser(User user, Long id) {
+		Penalty penalty;
+		if(penaltyRepo.getById(id) != null) {
+			penalty = penaltyRepo.getById(id);
+		}else {
+			throw new PenaltyNotFoundException();
+		}
+		Boolean found = false;
+		for (Penalty p : user.getPenalties()) {
+			if (p.equals(penalty)) {
+				found = true;
+			}
+		}
+		if(found) {
+			throw new PenaltyAlreadyAddedException();
+		}
+		user.getPenalties().remove(penalty);
+		return userRepo.save(user);
 	}
 
 }

@@ -76,7 +76,7 @@ public class AchievementController {
 	 * @param id
 	 * @return usuario con la lista de logros modificada
 	 */
-	@PutMapping("/user/achievements")
+	@PutMapping("/user/achievements")//"user/{id}/achievement"
 	public User modifyAchivementsFromUser(@RequestBody List<Achievement> achievements) {
 		User user;
 		try {
@@ -87,6 +87,7 @@ public class AchievementController {
 			throw new UserNotFoundException();
 		}
 	}
+
 
 	/**
 	 * Modifica un logro concreto
