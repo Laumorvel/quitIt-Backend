@@ -110,10 +110,12 @@ public class UserController {
 	 * @return usuario actualizado
 	 */
 	@PutMapping("/user")
-	public User updateUser(@RequestParam(required = false) Integer cigarettes, @RequestBody User user1,
+	public User updateUser(@RequestParam(required = false) Integer cigarettes, 
 			@RequestParam(required = false) Double money, @RequestParam(required = false) Boolean reset,
-			@RequestParam(required = false) Boolean message, @RequestParam(required = false) String urlImage) {
-		User user = userRepo.findByEmail(user1.getEmail());
+			@RequestParam(required = false) Boolean message, @RequestParam(required = false) String urlImage,  @RequestBody String password) {
+		
+		String email = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		User user = userRepo.findByEmail(email);
 
 		if (user == null) {
 			throw new UserNotFoundException();
@@ -127,7 +129,11 @@ public class UserController {
 			return userService.updateUserAfertSmoking(cigarettes, user);
 		} else if (message != null) {
 			return userService.setPropertyMessageToFalse(user);
-		} else {
+		} else if (password != null) {
+			return userService.changePass(user, password);
+		} 
+		
+			else {
 			return userService.setUrlImage(user, urlImage);
 		}
 	}
@@ -161,11 +167,20 @@ public class UserController {
 	 */
 	@GetMapping("/email")
 	public User checkEmailUsers(@RequestParam(required = false) String email,
-			@RequestParam(required = false) String username) {
-		if (username == null) {
+			@RequestParam(required = false) String username,
+			@RequestParam(required = false) String password) {
+		
+		String mail = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		User result = userRepo.findByEmail(mail);
+		
+		
+		if (username == null & password==null) {
 			return userService.getUserEmail(email);
-		} else {
+		} else if (email == null & password==null) {
 			return userService.getUsernameComplete(username);
+		}
+		else {
+			return userService.getUserPassword(password, result);
 		}
 	}
 

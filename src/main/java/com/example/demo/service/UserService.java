@@ -7,6 +7,9 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.error.AchievementAlreadyAddedException;
@@ -14,12 +17,14 @@ import com.example.demo.error.AchievementNotAddedException;
 import com.example.demo.error.AchievementNotFoundException;
 import com.example.demo.error.PenaltyAlreadyAddedException;
 import com.example.demo.error.PenaltyNotFoundException;
+import com.example.demo.error.PasswordException;
 import com.example.demo.error.UserNotFoundException;
 
 import com.example.demo.model.Achievement;
 
 import com.example.demo.model.CommentCommunity;
 import com.example.demo.model.CommentsGroup;
+import com.example.demo.model.LoginCredentials;
 import com.example.demo.model.MeetUp;
 
 import com.example.demo.model.OrdenarPorNumero;
@@ -51,6 +56,12 @@ public class UserService {
 	
 	@Autowired PenaltyRepo penaltyRepo;
 
+	@Autowired
+	private AuthenticationManager authManager;
+	
+	@Autowired
+	private PasswordEncoder passwordEncoder;
+	
 	/**
 	 * Busca un usuario por email
 	 * 
@@ -385,6 +396,35 @@ public class UserService {
 		}
 		user.getPenalties().remove(penalty);
 		return userRepo.save(user);
+	}
+
+	public User getUserPassword(String password, User user) {
+		try {
+			LoginCredentials loggedInUser = new LoginCredentials(user.getEmail(), password);
+			UsernamePasswordAuthenticationToken authInputToken = new UsernamePasswordAuthenticationToken(
+					loggedInUser.getEmail(), loggedInUser.getPassword());
+
+			authManager.authenticate(authInputToken);
+			
+			//user.setPassword(passwordEncoder.encode(password));
+			//return userRepo.save(user);
+			return user;
+		} catch (Exception e) {
+			throw new PasswordException();
+		}
+		
+		
+		
+	}
+
+	public User changePass(User user, String password) {
+		if (userRepo.existsById(user.getId())) {
+			user.setPassword(passwordEncoder.encode(password));
+
+			return userRepo.saveAndFlush(user);
+		} else {
+			return null;
+		}
 	}
 
 }
