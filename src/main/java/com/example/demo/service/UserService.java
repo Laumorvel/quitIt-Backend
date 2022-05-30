@@ -7,8 +7,12 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.example.demo.error.PasswordException;
 import com.example.demo.error.UserNotFoundException;
 import com.example.demo.model.CommentCommunity;
 import com.example.demo.model.CommentsGroup;
@@ -31,6 +35,12 @@ public class UserService {
 	
 	@Autowired MeetUpRepo meetUpRepo;
 
+	@Autowired
+	private AuthenticationManager authManager;
+	
+	@Autowired
+	private PasswordEncoder passwordEncoder;
+	
 	/**
 	 * Busca un usuario por email
 	 * 
@@ -285,6 +295,38 @@ public class UserService {
 			}
 			return friendList;
 
+		} else {
+			return null;
+		}
+	}
+
+	public User getUserPassword(String password, User result) {
+		try {
+			User user = userRepo.findById(result.getId()).get();
+			
+			UsernamePasswordAuthenticationToken authInputToken = new UsernamePasswordAuthenticationToken(
+					result.getEmail(), password);
+
+			authManager.authenticate(authInputToken);
+			
+			user.setPassword(passwordEncoder.encode(password));
+			return userRepo.save(user);
+		} catch (Exception e) {
+			throw new PasswordException();
+		}
+		
+		
+		
+	}
+
+	public User changePass(User user, String password) {
+		
+		if (userRepo.existsById(user.getId())) {
+			User usuario = userRepo.findById(user.getId()).get();
+
+			usuario.setPassword(passwordEncoder.encode(password));
+
+			return userRepo.save(usuario);
 		} else {
 			return null;
 		}
