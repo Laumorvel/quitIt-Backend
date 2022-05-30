@@ -5,6 +5,8 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.example.demo.error.UserNotAttendanceException;
+import com.example.demo.error.UserRepeatException;
 import com.example.demo.model.MeetUp;
 import com.example.demo.model.User;
 import com.example.demo.repository.MeetUpRepo;
@@ -32,17 +34,17 @@ public class MeetUpService {
 	 * @return
 	 */
 	public MeetUp addAttendace(User result, Long id) {
-		if (userRepo.existsById(result.getId())) {
 			MeetUp meet = meetUpRepo.findById(id).orElse(null);
+			for (int i = 0; i < meet.getAssistantsList().size(); i++) {
+				if(meet.getAssistantsList().get(i).getUsername().equals(result.getUsername())){
+					throw new UserRepeatException();
+				}
+			}
 			
 			meet.addAttendace(result);
-			
 			meetUpRepo.save(meet);
 
 			return meet;
-		} else {
-			return null;
-		}
 	}
 
 	/**
@@ -52,8 +54,21 @@ public class MeetUpService {
 	 * @return
 	 */
 	public MeetUp deletetAttendace(User result, Long id) {
-		// TODO Auto-generated method stub
-		return null;
+		Boolean noExiste = false;
+		MeetUp meet = meetUpRepo.findById(id).orElse(null);
+		for (int i = 0; i < meet.getAssistantsList().size(); i++) {
+			if(meet.getAssistantsList().get(i).getUsername().equals(result.getUsername())){
+				meet.deleteAttendace(result);
+				meetUpRepo.save(meet);
+				noExiste=true;
+			}
+		}
+		if(!noExiste) {
+			throw new UserNotAttendanceException();
+		}
+
+		
+		return meet;
 	}
 
 	/**

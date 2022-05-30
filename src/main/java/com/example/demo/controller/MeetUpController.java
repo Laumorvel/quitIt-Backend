@@ -1,9 +1,13 @@
 package com.example.demo.controller;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -12,8 +16,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.demo.error.AlreadySetAsAnSmokingDayException;
+import com.example.demo.error.ApiError;
 import com.example.demo.error.MeetUpException;
+import com.example.demo.error.UserNotAttendanceException;
 import com.example.demo.error.UserNotFoundException;
+import com.example.demo.error.UserRepeatException;
 import com.example.demo.model.MeetUp;
 import com.example.demo.model.User;
 import com.example.demo.repository.MeetUpRepo;
@@ -78,7 +86,29 @@ public class MeetUpController {
 			}
 		}
 
-	
+
+	@ExceptionHandler(UserRepeatException.class)
+	public ResponseEntity<ApiError> alreadySetAsAnSmokingDayException(UserRepeatException ex)
+			throws Exception {
+		ApiError e = new ApiError();
+		e.setEstado(HttpStatus.CONFLICT);
+		e.setMensaje(ex.getMessage());
+		e.setFecha(LocalDateTime.now());
+
+		return ResponseEntity.status(HttpStatus.CONFLICT).body(e);
+	}
+
+	@ExceptionHandler(UserNotAttendanceException.class)
+	public ResponseEntity<ApiError> alreadySetAsAnSmokingDayException(UserNotAttendanceException ex)
+			throws Exception {
+		ApiError e = new ApiError();
+		e.setEstado(HttpStatus.CONFLICT);
+		e.setMensaje(ex.getMessage());
+		e.setFecha(LocalDateTime.now());
+
+		return ResponseEntity.status(HttpStatus.CONFLICT).body(e);
+	}
+
 	
 	
 	
