@@ -177,9 +177,17 @@ public class CorsConfig implements WebMvcConfigurer {
 						"Access-Control-Request-Method", "Access-Control-Request-Headers")
 				.exposedHeaders("Access-Control-Allow-Origin", "Access-Control-Allow-Credentials");
 				
+				/**
+				 * Muestra todos los meet ups
+				 */
+				registry.addMapping("/meetUps").allowedOrigins(urlFront)
+				.allowedHeaders("GET", "POST", "OPTIONS", "PUT", "Content-Type", "X-Requested-With", "accept",
+						"Origin", "Access-Control-Request-Method", "Access-Control-Request-Headers",
+						"Authorization")
+				.exposedHeaders("Access-Control-Allow-Origin", "Access-Control-Allow-Credentials");
 				
 				/**
-				 * Muestra todos los meets ups
+				 * Muestra todos los meets ups del usuario
 				 */
 				registry.addMapping("/meetUp").allowedOrigins(urlFront)
 				.allowedHeaders("GET", "POST", "OPTIONS", "PUT", "Content-Type", "X-Requested-With", "accept",
