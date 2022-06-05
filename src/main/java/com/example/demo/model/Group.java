@@ -101,4 +101,10 @@ public class Group {
 	public String toString() {
 		return "Group [id=" + id + ", name=" + name + "]";
 	}
+	
+	
+	public void deleteMember (GroupMember member) {
+		this.groupMembers.remove(member);
+	}
+
 }

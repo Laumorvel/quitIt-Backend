@@ -1,5 +1,6 @@
 package com.example.demo.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -87,6 +88,41 @@ public class MeetUpService {
 		meetUpRepo.save(meetup);
 		
 		return meetup;
+	}
+
+	public List<MeetUp> getAllMeetUpsUserAttendace(User result) {
+		List<MeetUp> meetUpUserAttendace = new ArrayList<>();
+		List<MeetUp> meetUps =  meetUpRepo.findAllMeetUps();
+		
+		for (int i = 0; i < meetUps.size(); i++) {
+			for (int j = 0; j < meetUps.get(i).getAssistantsList().size(); j++) {
+				if( meetUps.get(i).getAssistantsList().get(j).getUsername().equals(result.getUsername())) {
+					meetUpUserAttendace.add(meetUps.get(i));
+				}
+			}
+		}
+		
+		return meetUpUserAttendace;
+	}
+
+	public List<MeetUp> getAllMeetUpsUserNotAttendace(User result) {
+		List<MeetUp> meetUpUserNotAttendace = new ArrayList<>();
+		List<MeetUp> meetUps =  meetUpRepo.findAllMeetUps();
+		
+		
+		for (int i = 0; i < meetUps.size(); i++) {
+			Integer contador = 0;
+			for (int j = 0; j < meetUps.get(i).getAssistantsList().size(); j++) {
+				if( meetUps.get(i).getAssistantsList().get(j).getUsername().equals(result.getUsername())) {
+					contador++;
+				}
+			}
+			if(contador==0) {
+				meetUpUserNotAttendace.add(meetUps.get(i));
+			}
+		}
+		
+		return meetUpUserNotAttendace;
 	}
 
 }

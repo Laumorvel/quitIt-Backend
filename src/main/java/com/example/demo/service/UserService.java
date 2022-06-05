@@ -3,6 +3,7 @@ package com.example.demo.service;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +25,8 @@ import com.example.demo.model.Achievement;
 
 import com.example.demo.model.CommentCommunity;
 import com.example.demo.model.CommentsGroup;
+import com.example.demo.model.Group;
+import com.example.demo.model.GroupMember;
 import com.example.demo.model.LoginCredentials;
 import com.example.demo.model.MeetUp;
 
@@ -36,6 +39,8 @@ import com.example.demo.repository.PenaltyRepo;
 
 import com.example.demo.repository.CommentsCommunityRepo;
 import com.example.demo.repository.CommentsGroupRepo;
+import com.example.demo.repository.GroupMemberRepository;
+import com.example.demo.repository.GroupRepository;
 import com.example.demo.repository.MeetUpRepo;
 
 import com.example.demo.repository.UserRepo;
@@ -61,6 +66,12 @@ public class UserService {
 	
 	@Autowired
 	private PasswordEncoder passwordEncoder;
+	
+	@Autowired
+	private GroupMemberRepository groupMemberRepository;
+	
+	@Autowired
+	private GroupRepository groupRepository;
 	
 	/**
 	 * Busca un usuario por email
@@ -269,6 +280,7 @@ public class UserService {
 		//Comprueba que el usuario a borrar existe
 		
 		User user = userRepo.findById(idDelete).orElse(null);
+		Boolean found = false;
 		try {
 		
 			List<CommentCommunity> comentarios = commentsCommutinyRepo.findAll();
@@ -295,6 +307,56 @@ public class UserService {
 					
 			}
 			
+			List<Group> groupList = groupRepository.getGroupsFromUser(user.getId());
+			for (Group g : groupList) {
+				
+				boolean existe=false;
+				Iterator<GroupMember> groupMember = g.getGroupMembers().iterator();
+
+				while (existe == false && groupMember.hasNext() ){
+					GroupMember e = groupMember.next();
+					if(e.getUser().equals(user)) {
+						g.getGroupMembers().remove(g.getGroupMembers().indexOf(e));
+						groupRepository.save(g);
+						groupMemberRepository.delete(e);
+						existe=true;
+					}
+				}
+				
+				
+				
+				
+//				for (GroupMember groupMember : g.getGroupMembers()) {
+//					if (user.equals(groupMember.getUser() )) {
+//						g.getGroupMembers().remove(g.getGroupMembers().indexOf(groupMember));
+//						groupRepository.save(g);
+//						groupMemberRepository.delete(groupMember);
+//						found=true;
+//						
+//					}
+//				}
+			}
+			
+			
+			
+			
+//			for (int i = 0; i < group.size(); i++) {
+//				for (int j = 0; j < group.get(i).getGroupMembers().size(); j++) {
+//					if(group.get(i).getGroupMembers().get(j).getUser().getUsername().equals(user.getUsername())) {
+//						group.get(i).deleteMember(group.get(i).getGroupMembers().get(j));
+//						groupRepository.save(group.get(i));
+//						groupMemberRepository.deleteById(group.get(i).getGroupMembers().get(j).getUser().getId());
+//						
+//					}
+//				}
+//			}
+			
+//			List<GroupMember> groupMember = groupMemberRepository.findAllGroupMembers();
+//			for (int i = 0; i < groupMember.size(); i++) {
+//				if(groupMember.get(i).getUser().getId().equals(user.getId())) {
+//					groupMemberRepository.deleteById(groupMember.get(i).getId());
+//				}
+//			}
 			
 		}catch (Exception e) {
 

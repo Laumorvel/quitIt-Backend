@@ -45,6 +45,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		         .antMatchers("/friend").hasRole("USER")
 		         .antMatchers("/meetUp/{id}").permitAll()
 		         .antMatchers("/meetUp").permitAll()
+		         .antMatchers("/meetUps").permitAll()
 		         .and()
 		         .userDetailsService(uds)
 		         .exceptionHandling()

@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 import com.example.demo.model.Group;
+import com.example.demo.model.MeetUp;
 
 public interface GroupRepository extends JpaRepository<Group, Long>{
 	
@@ -19,5 +20,7 @@ public interface GroupRepository extends JpaRepository<Group, Long>{
 			+ "SELECT ggm.grupo_id FROM grupo_group_members ggm, group_member gm WHERE gm.user_id = ?1 "
 			+ "AND ggm.group_members_id = gm.id) ", nativeQuery = true)
 	List<Group>getGroupsFromUser(Long userId);
+	
+	
 
 }

@@ -45,9 +45,26 @@ public class MeetUpController {
 	 * 
 	 * @return
 	 */
-	@GetMapping("/meetUp")
+	@GetMapping("/meetUps")
 	public List<MeetUp> getAllMeetUps() {
 		return meetUpService.getAllMeetUps();
+	}
+	
+	@GetMapping("/meetUp")
+	public List<MeetUp> getAllMeetUpsUser(@RequestParam (required = false) String choice) {
+		String email = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		User result = userRepo.findByEmail(email);
+		
+		if (result == null) {
+			throw new UserNotFoundException();
+		} else if (choice.equals("true")) {
+			return meetUpService.getAllMeetUpsUserAttendace(result);
+		}
+		else {
+			return meetUpService.getAllMeetUpsUserNotAttendace(result);
+		}
+		
+		
 	}
 	
 	
