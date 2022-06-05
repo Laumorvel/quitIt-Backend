@@ -420,7 +420,6 @@ public class UserService {
 	public User changePass(User user, String password) {
 		if (userRepo.existsById(user.getId())) {
 			user.setPassword(passwordEncoder.encode(password));
-
 			return userRepo.saveAndFlush(user);
 		} else {
 			return null;

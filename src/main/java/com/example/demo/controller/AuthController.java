@@ -76,7 +76,7 @@ public class AuthController {
 		try {
 			UsernamePasswordAuthenticationToken authInputToken = new UsernamePasswordAuthenticationToken(
 					body.getEmail(), body.getPassword());
-
+			userRepo.findByEmail(body.getEmail()).getPassword();
 			authManager.authenticate(authInputToken);
 
 			String rol = userRepo.findByEmail(body.getEmail()).getRol();
