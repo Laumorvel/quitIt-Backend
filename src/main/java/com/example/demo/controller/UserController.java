@@ -106,13 +106,16 @@ public class UserController {
 	 * En caso de incluir message, se seteará la propiedad message de los usuarios a
 	 * false para indicar que se les ha mandado un mensaje
 	 * 
+	 * En caso de incluir password, se cambiara la contraseña del usuario.
+	 * 
 	 * @param cigarettes
 	 * @return usuario actualizado
 	 */
 	@PutMapping("/user")
 	public User updateUser(@RequestParam(required = false) Integer cigarettes, 
 			@RequestParam(required = false) Double money, @RequestParam(required = false) Boolean reset,
-			@RequestParam(required = false) Boolean message, @RequestParam(required = false) String urlImage,  @RequestBody(required=false) String password) {
+			@RequestParam(required = false) Boolean message, @RequestParam(required = false) String urlImage,  
+			@RequestBody(required=false) String password) {
 		
 		String email = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		User user = userRepo.findByEmail(email);
@@ -227,6 +230,12 @@ public class UserController {
 
 	}
 	
+	/**
+	 * Añade a un amigo del usuario al grupo
+	 * @param friend
+	 * @param groupMembers
+	 * @return
+	 */
 	@PostMapping("/users")
 	public List<User> getUsersWithMembers(@RequestParam(required= false) String friend, @RequestBody(required = false) List<User> groupMembers){
 		String email = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -267,6 +276,10 @@ public class UserController {
 		return userService.addAchievementToUser(achievement, user);
 	}
 	
+	/**
+	 * Elimina logros de un usuario
+	 * @param id
+	 */
 	@DeleteMapping("/achievement/{id}/user")
 	public void removeAchievementFromUser(@PathVariable Long id) {
 		User user;
@@ -278,6 +291,10 @@ public class UserController {
 		userService.deleteAchievementOfUser(id, user);
 	}
 	
+	/**
+	 * Elimina penalizaciones de un usuario
+	 * @param id
+	 */
 	@DeleteMapping("/penalty/{id}/user")
 	public void removePenaltyFromUser(@PathVariable Long id) {
 		User user;
@@ -289,6 +306,11 @@ public class UserController {
 		penaltyService.deletePenaltyFromUser(user, id);
 	}
 	
+	/**
+	 * Añade penalizaciones a un usuario
+	 * @param penalty
+	 * @return
+	 */
 	@PostMapping("/penalty/user")
 	public User addPenaltyToUser(@RequestBody Penalty penalty) {
 		User user;
