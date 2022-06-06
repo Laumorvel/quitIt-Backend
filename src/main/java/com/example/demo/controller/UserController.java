@@ -112,7 +112,7 @@ public class UserController {
 	@PutMapping("/user")
 	public User updateUser(@RequestParam(required = false) Integer cigarettes, 
 			@RequestParam(required = false) Double money, @RequestParam(required = false) Boolean reset,
-			@RequestParam(required = false) Boolean message, @RequestParam(required = false) String urlImage,  @RequestBody String password) {
+			@RequestParam(required = false) Boolean message, @RequestParam(required = false) String urlImage,  @RequestBody(required=false) String password) {
 		
 		String email = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		User user = userRepo.findByEmail(email);
