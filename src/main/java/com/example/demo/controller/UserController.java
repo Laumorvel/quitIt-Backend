@@ -112,7 +112,7 @@ public class UserController {
 	@PutMapping("/user")
 	public User updateUser(@RequestParam(required = false) Integer cigarettes, 
 			@RequestParam(required = false) Double money, @RequestParam(required = false) Boolean reset,
-			@RequestParam(required = false) Boolean message, @RequestParam(required = false) String urlImage,  @RequestBody String password) {
+			@RequestParam(required = false) Boolean message, @RequestParam(required = false) String urlImage,  @RequestBody(required=false) String password) {
 		
 		String email = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		User user = userRepo.findByEmail(email);
@@ -136,6 +136,17 @@ public class UserController {
 			else {
 			return userService.setUrlImage(user, urlImage);
 		}
+	}
+	
+	/**
+	 * Comprueba que la contraseña sea la correcta
+	 * @param password
+	 * @return usuario
+	 */
+	@PostMapping("/password")
+	public User getUserPassword(@RequestBody String password) {
+		User user = userRepo.findByEmail((String) SecurityContextHolder.getContext().getAuthentication().getPrincipal());
+		return userService.getUserPassword(password, user);
 	}
 
 	/**
@@ -173,15 +184,17 @@ public class UserController {
 		String mail = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		User result = userRepo.findByEmail(mail);
 		
+		if(result == null) {
+			throw new UserNotFoundException();
+		}
+		
 		
 		if (username == null & password==null) {
 			return userService.getUserEmail(email);
-		} else if (email == null & password==null) {
+		} else {
 			return userService.getUsernameComplete(username);
 		}
-		else {
-			return userService.getUserPassword(password, result);
-		}
+		
 	}
 
 	/**

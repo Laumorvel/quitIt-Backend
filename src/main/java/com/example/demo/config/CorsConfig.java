@@ -24,10 +24,10 @@ public class CorsConfig implements WebMvcConfigurer {
 				 * Iniciar sesión los usuarios
 				 */
 				registry.addMapping("/auth/login").allowedOrigins(urlFront)
-						.allowedHeaders("GET", "POST", "DELETE", "OPTIONS", "PUT", "Content-Type", "X-Requested-With",
-								"accept", "Origin", "Access-Control-Request-Method", "Authorization",
-								"Access-Control-Request-Headers")
-						.exposedHeaders("Access-Control-Allow-Origin", "Access-Control-Allow-Credentials");
+				.allowedMethods("GET", "POST", "OPTIONS", "PUT")
+				.allowedHeaders("Content-Type", "Authorization", "X-Requested-With", "accept", "Origin",
+						"Access-Control-Request-Method", "Access-Control-Request-Headers")
+				.exposedHeaders("Access-Control-Allow-Origin", "Access-Control-Allow-Credentials");
 
 				/**
 				 * Registro de usuarios
@@ -350,7 +350,14 @@ public class CorsConfig implements WebMvcConfigurer {
 						"Access-Control-Request-Method", "Access-Control-Request-Headers")
 				.exposedHeaders("Access-Control-Allow-Origin", "Access-Control-Allow-Credentials");
 				
-				
+				/**
+				 * Con este endpoint podemos comprobar si la contraseña introducida por el usuario es correcta
+				 */
+				registry.addMapping("/password").allowedOrigins(urlFront)
+				.allowedMethods("GET", "POST", "OPTIONS", "PUT","DELETE")
+				.allowedHeaders("Content-Type", "Authorization", "X-Requested-With", "accept", "Origin",
+						"Access-Control-Request-Method", "Access-Control-Request-Headers")
+				.exposedHeaders("Access-Control-Allow-Origin", "Access-Control-Allow-Credentials");
 			};
 
 		};
