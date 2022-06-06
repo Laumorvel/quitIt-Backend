@@ -50,6 +50,13 @@ public class MeetUpController {
 		return meetUpService.getAllMeetUps();
 	}
 	
+	/**
+	 * Si choise entra como true, devolvera la lista de meet ups a los que asiste el usuario.
+	 * 
+	 * Si choise entra como false u otro parametro, devolvera la lista de meet ups a los que no asiste el usuario.
+	 * @param choice
+	 * @return
+	 */
 	@GetMapping("/meetUp")
 	public List<MeetUp> getAllMeetUpsUser(@RequestParam (required = false) String choice) {
 		String email = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -67,7 +74,11 @@ public class MeetUpController {
 		
 	}
 	
-	
+	/**
+	 * Crea un nuevo meet up
+	 * @param meet
+	 * @return
+	 */
 	@PostMapping("/meetUp")
 	public MeetUp createMeetUp(@RequestBody MeetUp meet) {
 
@@ -81,7 +92,14 @@ public class MeetUpController {
 		}
 
 	
-
+	/**
+	 * Si choice es true añadira el usuario al meet up
+	 * 
+	 * Si choice es false u otro parametro se eliminara el usuario del meet up.
+	 * @param id
+	 * @param choice
+	 * @return
+	 */
 	@PostMapping("/meetUp/{id}")
 	public MeetUp addAttendace(@PathVariable Long id, @RequestParam (required = false) String choice) {
 
@@ -104,6 +122,15 @@ public class MeetUpController {
 		}
 
 
+	
+	//EXCEPCIONES
+	
+	/**
+	 * Excepción que controla que el usuario no este mas de una vez en un mismo meet up
+	 * @param ex
+	 * @return
+	 * @throws Exception
+	 */
 	@ExceptionHandler(UserRepeatException.class)
 	public ResponseEntity<ApiError> alreadySetAsAnSmokingDayException(UserRepeatException ex)
 			throws Exception {
@@ -115,6 +142,12 @@ public class MeetUpController {
 		return ResponseEntity.status(HttpStatus.CONFLICT).body(e);
 	}
 
+	/**
+	 * Excepción que controla que el usuario no indique mas de una vez que no asistira a un mismo meet up
+	 * @param ex
+	 * @return
+	 * @throws Exception
+	 */
 	@ExceptionHandler(UserNotAttendanceException.class)
 	public ResponseEntity<ApiError> alreadySetAsAnSmokingDayException(UserNotAttendanceException ex)
 			throws Exception {
