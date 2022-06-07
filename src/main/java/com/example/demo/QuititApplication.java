@@ -102,9 +102,9 @@ public class QuititApplication {
 		CommentCommunity comentarioComunidad2 = new CommentCommunity("Otro día más sumando!!!", usuarioUser2, fecha1);
 
 		// MeetUps
-		MeetUp meetUp1 = new MeetUp("Quedada para cervecita",
-				"Vamos a echar unas cervecitas al sol el sabado por el centro de Sevilla, apuntante!", fecha2,
-				"100 Montaditos frente al rectorado", "Presential");
+		MeetUp meetUp1 = new MeetUp("Beers and sun without cigar!",
+				"Beers and sun", fecha2,
+				"100 Montaditos", "Face-to-face");
 
 		// Logros
 		Achievement logro1 = new Achievement("First cross on the calendar", "No smoking for one day", "certified.png",
